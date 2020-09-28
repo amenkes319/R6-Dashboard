@@ -24,6 +24,7 @@ import javafx.scene.paint.Color;
 import main.java.Floor;
 import main.java.Global;
 import main.java.Map;
+import main.java.actions.AddNodeAction;
 import main.java.actions.MoveNodeAction;
 import main.java.undo.UndoCollector;
 
@@ -38,7 +39,9 @@ public class MakerController
 	private Map selectedMap;
 	private Floor[] floors;
 	
+	private AddNodeAction addNodeAction;
 	private MoveNodeAction moveNodeAction;
+	
 	
 	public void changeToScene(Map selectedMap)
 	{
@@ -67,6 +70,7 @@ public class MakerController
 		drawInit();
 		
 		moveNodeAction = new MoveNodeAction();
+		addNodeAction = new AddNodeAction();
 		
 		for (Button button : this.opList)
 		{
@@ -167,23 +171,27 @@ public class MakerController
 	public void addNode(ActionEvent event)
 	{
 		Image img = ((ImageView) ((Button) event.getSource()).getGraphic()).getImage();
-		ImageView view = new ImageView(img);
+		ImageView imgView = new ImageView(img);
 		double imgRatio = img.getWidth() / img.getHeight();
 
-		view.setFitHeight(75);
-		view.setFitWidth(view.getFitHeight() * imgRatio);
-		view.setOnMousePressed(e -> onImagePressed(view, e));
-		view.setOnMouseDragged(e -> onImageDragged(view, e));
-		view.setOnMouseReleased(e -> onImageReleased(view));
+		imgView.setFitHeight(75);
+		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
+		imgView.setOnMousePressed(e -> onImagePressed(imgView, e));
+		imgView.setOnMouseDragged(e -> onImageDragged(imgView, e));
+		imgView.setOnMouseReleased(e -> onImageReleased(imgView));
 
-		view.setX(getCurrentAnchorPane().getWidth() / 2);
-		view.setY(getCurrentAnchorPane().getHeight() / 2);
+		imgView.setX(getCurrentAnchorPane().getWidth() / 2);
+		imgView.setY(getCurrentAnchorPane().getHeight() / 2);
 		
-		Floor currentFloor = getCurrentFloor();
-		
-		currentFloor.addNode(view);
-		
-		getCurrentAnchorPane().getChildren().add(currentFloor.getNodes().get(currentFloor.getNodes().size()-1));
+		addNodeAction.setImageView(imgView);
+		if (addNodeAction.canExecute())
+		{
+			addNodeAction.execute();
+
+			UndoCollector.INSTANCE.add(addNodeAction);
+			addNodeAction.reset();
+			
+		}
 	}
 	
 	private double deltaX, deltaY, initX, initY;
@@ -267,22 +275,22 @@ public class MakerController
 		return this.colorPicker;
 	}
 	
-	private AnchorPane getCurrentAnchorPane()
+	public AnchorPane getCurrentAnchorPane()
 	{
 		return (AnchorPane) getCurrentScrollPane().getContent();
 	}
 	
-	private ScrollPane getCurrentScrollPane()
+	public ScrollPane getCurrentScrollPane()
 	{
 		return (ScrollPane) getCurrentTab().getContent();
 	}
 	
-	private Tab getCurrentTab()
+	public Tab getCurrentTab()
 	{
 		return this.tabPane.getSelectionModel().getSelectedItem();
 	}
 	
-	private Floor getCurrentFloor()
+	public Floor getCurrentFloor()
 	{
 		return floors[this.tabPane.getSelectionModel().getSelectedIndex()];
 	}

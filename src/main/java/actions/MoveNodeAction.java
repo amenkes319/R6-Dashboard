@@ -11,11 +11,7 @@ public class MoveNodeAction implements Action, Undoable
 
 	public MoveNodeAction()
 	{
-		this.imgView = null;
-		this.oldX = 0;
-		this.oldY = 0;
-		this.newX = 0;
-		this.newY = 0;
+		reset();
 	}
 	
 	public MoveNodeAction(MoveNodeAction moveNodeAction)

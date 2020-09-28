@@ -12,7 +12,6 @@ import javafx.scene.paint.Color;
 public class Floor
 {
 	private ImageView floorView;
-	private ArrayList<ImageView> nodes;
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private String name;
@@ -22,7 +21,6 @@ public class Floor
 	{
 		this.name = name;
 		this.floorView = new ImageView(floor);
-		this.nodes = new ArrayList<>();
 		this.canvas = new Canvas(floorView.getFitWidth(), floorView.getFitHeight());
 		this.gc = canvas.getGraphicsContext2D();
 	}
@@ -66,16 +64,6 @@ public class Floor
 	public ImageView getFloorView()
 	{
 		return this.floorView;
-	}
-	
-	public ArrayList<ImageView> getNodes()
-	{
-		return this.nodes;
-	}
-	
-	public void addNode(ImageView node)
-	{
-		this.nodes.add(node);
 	}
 	
 	public Canvas getCanvas()
