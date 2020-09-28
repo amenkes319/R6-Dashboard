@@ -54,13 +54,13 @@ public class AddNodeAction implements Action, Undoable
 	@Override
 	public void execute()
 	{
-		Global.makerController.getCurrentAnchorPane().getChildren().remove(imgView);
+		Global.makerController.getCurrentAnchorPane().getChildren().add(imgView);
 	}
 
 	@Override
 	public boolean canExecute()
 	{
-		return false;
+		return imgView != null;
 	}
 
 	@Override
