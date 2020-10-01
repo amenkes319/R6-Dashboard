@@ -25,6 +25,7 @@ import javafx.scene.paint.Color;
 import main.java.Global;
 import main.java.Map;
 import main.java.actions.AddNodeAction;
+import main.java.actions.ClearAction;
 import main.java.actions.MoveNodeAction;
 import main.java.floor.CloneableCanvas;
 import main.java.floor.Floor;
@@ -45,6 +46,7 @@ public class MakerController
 	
 	private AddNodeAction addNodeAction;
 	private MoveNodeAction moveNodeAction;
+	private ClearAction clearAction;
 	
 	public void changeToScene(Map selectedMap)
 	{
@@ -84,6 +86,7 @@ public class MakerController
 		
 		moveNodeAction = new MoveNodeAction();
 		addNodeAction = new AddNodeAction();
+		clearAction = new ClearAction();
 		
 		for (Button button : this.opList)
 		{
@@ -108,7 +111,11 @@ public class MakerController
 		backBtn.setOnAction(e -> Global.selectionController.changeToScene());
 		clearBtn.setOnAction(e ->
 		{
-			getCurrentAnchorPane().getChildren().remove(1, getCurrentAnchorPane().getChildren().size());
+			getCurrentAnchorPane().getChildren().remove(0, getCurrentAnchorPane().getChildren().size());
+//			clearAction.setOldAnchorPane(getCurrentAnchorPane());
+//			clearAction.execute();
+//			UndoCollector.INSTANCE.add(clearAction);
+//			clearAction.reset();
 		});
 		
 		drawRadio.setOnAction(e -> 
@@ -303,6 +310,11 @@ public class MakerController
 	public AnchorPane getCurrentAnchorPane()
 	{
 		return (AnchorPane) getCurrentScrollPane().getContent();
+	}
+	
+	public void setCurrentAnchorPane(AnchorPane anchorPane)
+	{
+		getCurrentScrollPane().setContent(anchorPane);
 	}
 	
 	public ScrollPane getCurrentScrollPane()
