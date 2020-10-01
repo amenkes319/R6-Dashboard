@@ -34,6 +34,7 @@ public class MakerController
 {
 	@FXML private TabPane tabPane;
 	@FXML private ArrayList<Button> opList, gadgetList;
+	@FXML private Button backBtn, clearBtn;
 	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio;
 	@FXML private ColorPicker colorPicker;
 	@FXML private Slider lineWidthSlider;
@@ -68,6 +69,16 @@ public class MakerController
 	
 	private void init()
 	{
+		lineWidthSlider.setValue(5.0);
+		lineWidthSlider.valueProperty().addListener(new ChangeListener<Number>() 
+		{
+			public void changed(ObservableValue<? extends Number> ov, Number oldVal, Number newVal)
+			{
+				for (Floor floor : floors)
+					floor.getGC().setLineWidth(lineWidthSlider.getValue());
+			}
+		});
+		
 		addFloors();
 		drawInit();
 		
@@ -94,6 +105,12 @@ public class MakerController
 			button.getStylesheets().add("/main/css/Maker.css");
 		}
 		
+		backBtn.setOnAction(e -> Global.selectionController.changeToScene());
+		clearBtn.setOnAction(e ->
+		{
+			getCurrentAnchorPane().getChildren().remove(1, getCurrentAnchorPane().getChildren().size());
+		});
+		
 		drawRadio.setOnAction(e -> 
 		{
 			getCurrentFloor().getCanvas().setWidth(getCurrentAnchorPane().getWidth());
@@ -117,16 +134,6 @@ public class MakerController
 	            }
 	        }
 	    });
-		
-		lineWidthSlider.setValue(5.0);
-		lineWidthSlider.valueProperty().addListener(new ChangeListener<Number>() 
-		{
-			public void changed(ObservableValue<? extends Number> ov, Number oldVal, Number newVal)
-			{
-				for (Floor floor : floors)
-					floor.getGC().setLineWidth(lineWidthSlider.getValue());
-			}
-		});
 
 		undoBtn.setOnAction(e -> UndoCollector.INSTANCE.undo());
 		redoBtn.setOnAction(e -> UndoCollector.INSTANCE.redo());
