@@ -13,7 +13,7 @@ public class Main extends Application
 		Global.selectionController.changeToScene();
 	}
 	
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{
 		launch(args);
 	}

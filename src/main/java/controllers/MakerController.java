@@ -14,6 +14,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -21,19 +22,21 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import main.java.Floor;
 import main.java.Global;
 import main.java.Map;
 import main.java.actions.AddNodeAction;
 import main.java.actions.MoveNodeAction;
+import main.java.floor.CloneableCanvas;
+import main.java.floor.Floor;
 import main.java.undo.UndoCollector;
 
 public class MakerController
 {
 	@FXML private TabPane tabPane;
 	@FXML private ArrayList<Button> opList, gadgetList;
-	@FXML private RadioButton dragRadio, rotateRadio, drawRadio;
+	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio;
 	@FXML private ColorPicker colorPicker;
+	@FXML private Slider lineWidthSlider;
 	@FXML private MenuItem undoBtn, redoBtn;
 	
 	private Map selectedMap;
@@ -41,7 +44,6 @@ public class MakerController
 	
 	private AddNodeAction addNodeAction;
 	private MoveNodeAction moveNodeAction;
-	
 	
 	public void changeToScene(Map selectedMap)
 	{
@@ -79,7 +81,7 @@ public class MakerController
 			imgView.setFitHeight(56);
 			imgView.setFitWidth(60);
 			button.setGraphic(imgView);
-			button.getStylesheets().add("/main/css/Selection.css");
+			button.getStylesheets().add("/main/css/Maker.css");
 		}
 		
 		for (Button button : this.gadgetList)
@@ -89,7 +91,7 @@ public class MakerController
 			imgView.setFitHeight(56);
 			imgView.setFitWidth(60);
 			button.setGraphic(imgView);
-			button.getStylesheets().add("/main/css/Selection.css");
+			button.getStylesheets().add("/main/css/Maker.css");
 		}
 		
 		drawRadio.setOnAction(e -> 
@@ -115,6 +117,16 @@ public class MakerController
 	            }
 	        }
 	    });
+		
+		lineWidthSlider.setValue(5.0);
+		lineWidthSlider.valueProperty().addListener(new ChangeListener<Number>() 
+		{
+			public void changed(ObservableValue<? extends Number> ov, Number oldVal, Number newVal)
+			{
+				for (Floor floor : floors)
+					floor.getGC().setLineWidth(lineWidthSlider.getValue());
+			}
+		});
 
 		undoBtn.setOnAction(e -> UndoCollector.INSTANCE.undo());
 		redoBtn.setOnAction(e -> UndoCollector.INSTANCE.redo());
@@ -123,33 +135,19 @@ public class MakerController
 	private void addFloors()
 	{
 		if (this.selectedMap == Map.CLUBHOUSE)
-		{
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
-		}
 		else if (this.selectedMap == Map.COASTLINE)
-		{
 			tabPane.getTabs().addAll(new Tab("1st Floor"), new Tab("2nd Floor"));
-		}
 		else if (this.selectedMap == Map.CONSULATE)
-		{
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
-		}
 		else if (this.selectedMap == Map.KAFE)
-		{
 			tabPane.getTabs().addAll(new Tab("1st Floor"), new Tab("2nd Floor"), new Tab("3rd Floor"));
-		}
 		else if (this.selectedMap == Map.OREGON)
-		{
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"), new Tab("T3"));
-		}
 		else if (this.selectedMap == Map.THEMEPARK)
-		{
 			tabPane.getTabs().addAll(new Tab("1st Floor"), new Tab("2nd Floor"));
-		}
 		else if (this.selectedMap == Map.VILLA)
-		{
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
-		}
 		
 		this.floors = new Floor[tabPane.getTabs().size()];
 		
@@ -159,7 +157,7 @@ public class MakerController
 			String floor = tabPane.getTabs().get(i).getText();
 			Image img = new Image("/main/resources/Blueprints/" + this.selectedMap.toString() + "/" + floor + ".jpg");
 			
-			floors[i] = new Floor(img, floor, 0, 0);
+			floors[i] = new Floor(img, floor);
 			
 			AnchorPane anchorPane = new AnchorPane();
 			anchorPane.getChildren().add(floors[i].getFloorView());
@@ -190,7 +188,6 @@ public class MakerController
 
 			UndoCollector.INSTANCE.add(addNodeAction);
 			addNodeAction.reset();
-			
 		}
 	}
 	
@@ -259,10 +256,21 @@ public class MakerController
 		colorPicker.setOnAction(e -> getCurrentFloor().getGC().setStroke(colorPicker.getValue()));
 		
 		for (Floor floor : floors)
-			floor.initDraw();
+			floor.drawInit();
 		
 		for (int i = 0; i < tabPane.getTabs().size(); i++)
-			((AnchorPane) ((ScrollPane) tabPane.getTabs().get(i).getContent()).getContent()).getChildren().add(floors[i].getCanvas());
+		{
+			ScrollPane sPane = (ScrollPane) tabPane.getTabs().get(i).getContent();
+			AnchorPane aPane = (AnchorPane) sPane.getContent();
+			aPane.getChildren().add(floors[i].getCanvas());
+		}
+	}
+	
+	public void updateFloorCanvas(CloneableCanvas canvas)
+	{
+		getCurrentAnchorPane().getChildren().remove(getCurrentFloor().getCanvas());
+		getCurrentFloor().setCanvas(canvas);
+		getCurrentAnchorPane().getChildren().add(1, canvas);
 	}
 	
 	public boolean drawSelected()
@@ -270,9 +278,19 @@ public class MakerController
 		return drawRadio.isSelected();
 	}
 	
+	public boolean eraseSelected()
+	{
+		return eraseRadio.isSelected();
+	}
+	
 	public ColorPicker getColorPicker()
 	{
 		return this.colorPicker;
+	}
+	
+	public Slider getLineWidthSlider()
+	{
+		return this.lineWidthSlider;
 	}
 	
 	public AnchorPane getCurrentAnchorPane()

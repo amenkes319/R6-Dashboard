@@ -393,7 +393,9 @@
                   </RadioButton>
                   <RadioButton fx:id="rotateRadio" mnemonicParsing="false" text="Rotate (WIP)" toggleGroup="$nodeClick" />
                   <RadioButton fx:id="drawRadio" mnemonicParsing="false" text="Draw" toggleGroup="$nodeClick" />
+                  <RadioButton fx:id="eraseRadio" mnemonicParsing="false" text="Erase" toggleGroup="$nodeClick" />
                   <ColorPicker fx:id="colorPicker" minHeight="25.0" prefHeight="25.0" prefWidth="90.0" />
+      			  <Slider fx:id="lineWidthSlider" minWidth="200" blockIncrement="1.0" majorTickUnit="10.0" max="30.0" minorTickCount="9" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

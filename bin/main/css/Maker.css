@@ -5,10 +5,10 @@
 
 .button:hover
 {
-	-fx-background-color : #1f1f1f;
+	-fx-background-color : #282828;
 }
 
 .button:pressed
 {
-	-fx-background-color : #181818;
+	-fx-background-color : #202020;
 }
