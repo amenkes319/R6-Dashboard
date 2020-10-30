@@ -6,13 +6,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
 import main.java.Global;
 import main.java.actions.DrawAction;
 
 public class Floor
 {
 	private ImageView floorView;
-	private CloneableCanvas canvas;
+	private Canvas canvas;
 	private GraphicsContext gc;
 	private String name;
 	
@@ -23,11 +25,11 @@ public class Floor
 	public Floor(Image floor, String name)
 	{
 		this.floorView = new ImageView(floor);
-		this.canvas = new CloneableCanvas(floorView.getFitWidth(), floorView.getFitHeight());
+		this.canvas = new Canvas(floorView.getFitWidth(), floorView.getFitHeight());
 		this.gc = canvas.getGraphicsContext2D();
 		this.name = name;
 		
-		this.drawAction = new DrawAction();
+		this.drawAction = new DrawAction(gc);
 
 		this.bDraw = false;
 	}
@@ -35,27 +37,17 @@ public class Floor
 	public void drawInit()
 	{
 		gc.setStroke(Color.BLACK);
+		gc.setLineCap(StrokeLineCap.ROUND);
+	    gc.setLineJoin(StrokeLineJoin.ROUND);
 		gc.setLineWidth(Global.makerController.getLineWidthSlider().getValue());
 		
 		canvas.setOnMousePressed(e ->
 		{
 			if (e.getButton() == MouseButton.PRIMARY && (Global.makerController.drawSelected() || Global.makerController.eraseSelected()))
 			{
-				try
-				{
-					drawAction.setOldCanvas(canvas.clone());
-				} 
-				catch (CloneNotSupportedException e1)
-				{
-					e1.printStackTrace();
-				}
-				
 				bDraw = true;
-				gc.beginPath();
-				drawAction.setX(e.getX());
-				drawAction.setY(e.getY());
-				drawAction.setNewCanvas(canvas);
-				drawAction.execute();
+				drawAction.setLastX(e.getX());
+				drawAction.setLastY(e.getY());
 			}
 		});
 		
@@ -93,7 +85,7 @@ public class Floor
 		return this.canvas;
 	}
 	
-	public void setCanvas(CloneableCanvas canvas)
+	public void setCanvas(Canvas canvas)
 	{
 		this.canvas = canvas;
 		this.gc = canvas.getGraphicsContext2D();

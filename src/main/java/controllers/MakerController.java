@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.MenuItem;
@@ -27,7 +28,6 @@ import main.java.Map;
 import main.java.actions.AddNodeAction;
 import main.java.actions.ClearAction;
 import main.java.actions.MoveNodeAction;
-import main.java.floor.CloneableCanvas;
 import main.java.floor.Floor;
 import main.java.undo.UndoCollector;
 
@@ -278,13 +278,6 @@ public class MakerController
 			AnchorPane aPane = (AnchorPane) sPane.getContent();
 			aPane.getChildren().add(floors[i].getCanvas());
 		}
-	}
-	
-	public void updateFloorCanvas(CloneableCanvas canvas)
-	{
-		getCurrentAnchorPane().getChildren().remove(getCurrentFloor().getCanvas());
-		getCurrentFloor().setCanvas(canvas);
-		getCurrentAnchorPane().getChildren().add(1, canvas);
 	}
 	
 	public boolean drawSelected()
