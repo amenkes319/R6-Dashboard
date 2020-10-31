@@ -1,4 +1,4 @@
-package main.java.controllers;
+package stratmaker.java.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,13 +23,13 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import main.java.Map;
-import main.java.actions.AddNodeAction;
-import main.java.actions.ClearAction;
-import main.java.actions.MoveNodeAction;
-import main.java.floor.Floor;
-import main.java.global.Global;
-import main.java.undo.UndoCollector;
+import stratmaker.java.Map;
+import stratmaker.java.actions.AddNodeAction;
+import stratmaker.java.actions.ClearAction;
+import stratmaker.java.actions.MoveNodeAction;
+import stratmaker.java.floor.Floor;
+import stratmaker.java.global.Global;
+import stratmaker.java.undo.UndoCollector;
 
 public class MakerController
 {

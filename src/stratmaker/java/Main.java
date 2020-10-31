@@ -1,8 +1,8 @@
-package main.java;
+package stratmaker.java;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
-import main.java.global.Global;
+import stratmaker.java.global.Global;
 
 public class Main extends Application 
 {

@@ -1,4 +1,4 @@
-package main.java.floor;
+package stratmaker.java.floor;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -8,8 +8,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
-import main.java.actions.DrawAction;
-import main.java.global.Global;
+import stratmaker.java.actions.DrawAction;
+import stratmaker.java.global.Global;
 
 public class Floor
 {

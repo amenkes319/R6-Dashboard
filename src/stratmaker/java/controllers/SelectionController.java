@@ -1,4 +1,4 @@
-package main.java.controllers;
+package stratmaker.java.controllers;
 
 import java.io.IOException;
 
@@ -9,8 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import main.java.Map;
-import main.java.global.Global;
+import stratmaker.java.Map;
+import stratmaker.java.global.Global;
 
 public class SelectionController
 {

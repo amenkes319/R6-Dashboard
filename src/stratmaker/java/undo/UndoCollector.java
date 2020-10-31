@@ -1,4 +1,4 @@
-package main.java.undo;
+package stratmaker.java.undo;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

@@ -1,4 +1,4 @@
-package main.java.undo;
+package stratmaker.java.undo;
 
 public interface Undoable
 {

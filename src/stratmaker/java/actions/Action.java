@@ -1,4 +1,4 @@
-package main.java.actions;
+package stratmaker.java.actions;
 
 public interface Action
 {

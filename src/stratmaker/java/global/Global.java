@@ -1,8 +1,8 @@
-package main.java.global;
+package stratmaker.java.global;
 
 import javafx.stage.Stage;
-import main.java.controllers.MakerController;
-import main.java.controllers.SelectionController;
+import stratmaker.java.controllers.MakerController;
+import stratmaker.java.controllers.SelectionController;
 
 public class Global
 {

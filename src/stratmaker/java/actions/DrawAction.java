@@ -1,8 +1,8 @@
-package main.java.actions;
+package stratmaker.java.actions;
 
 import javafx.scene.canvas.GraphicsContext;
-import main.java.global.Global;
-import main.java.undo.Undoable;
+import stratmaker.java.global.Global;
+import stratmaker.java.undo.Undoable;
 
 public class DrawAction implements Action, Undoable
 {

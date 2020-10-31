@@ -1,4 +1,4 @@
-package main.java;
+package stratmaker.java;
 
 public enum Map
 {

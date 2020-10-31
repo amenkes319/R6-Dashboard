@@ -1,7 +1,7 @@
-package main.java.actions;
+package stratmaker.java.actions;
 
 import javafx.scene.image.ImageView;
-import main.java.undo.Undoable;
+import stratmaker.java.undo.Undoable;
 
 public class MoveNodeAction implements Action, Undoable
 {
