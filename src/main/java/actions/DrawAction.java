@@ -1,18 +1,13 @@
 package main.java.actions;
 
 import javafx.scene.canvas.GraphicsContext;
-import main.java.Global;
+import main.java.global.Global;
 import main.java.undo.Undoable;
 
 public class DrawAction implements Action, Undoable
 {
 	private GraphicsContext gc;
 	private double x, y, lastX, lastY;
-
-	private DrawAction()
-	{
-		reset();
-	}
 
 	public DrawAction(GraphicsContext gc)
 	{

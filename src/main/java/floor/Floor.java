@@ -8,8 +8,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
-import main.java.Global;
 import main.java.actions.DrawAction;
+import main.java.global.Global;
 
 public class Floor
 {
@@ -66,8 +66,6 @@ public class Floor
 			if (e.getButton() == MouseButton.PRIMARY && (Global.makerController.drawSelected() || Global.makerController.eraseSelected()))
 			{
 				bDraw = false;
-				gc.save();
-				gc.closePath();
 
 //				UndoCollector.INSTANCE.add(drawAction);
 				drawAction.reset();

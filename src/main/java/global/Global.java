@@ -1,4 +1,4 @@
-package main.java;
+package main.java.global;
 
 import javafx.stage.Stage;
 import main.java.controllers.MakerController;

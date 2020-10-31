@@ -1,7 +1,7 @@
 package main.java.actions;
 
 import javafx.scene.image.ImageView;
-import main.java.Global;
+import main.java.global.Global;
 import main.java.undo.Undoable;
 
 public class AddNodeAction implements Action, Undoable

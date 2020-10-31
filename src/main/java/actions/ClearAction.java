@@ -2,7 +2,7 @@ package main.java.actions;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import main.java.Global;
+import main.java.global.Global;
 import main.java.undo.Undoable;
 
 public class ClearAction implements Action, Undoable

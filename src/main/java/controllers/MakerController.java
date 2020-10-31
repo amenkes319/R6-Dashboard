@@ -23,12 +23,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import main.java.Global;
 import main.java.Map;
 import main.java.actions.AddNodeAction;
 import main.java.actions.ClearAction;
 import main.java.actions.MoveNodeAction;
 import main.java.floor.Floor;
+import main.java.global.Global;
 import main.java.undo.UndoCollector;
 
 public class MakerController
