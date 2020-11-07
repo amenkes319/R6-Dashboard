@@ -27,6 +27,7 @@ import stratmaker.java.Map;
 import stratmaker.java.actions.AddNodeAction;
 import stratmaker.java.actions.ClearAction;
 import stratmaker.java.actions.MoveNodeAction;
+import stratmaker.java.actions.RotateNodeAction;
 import stratmaker.java.floor.Floor;
 import stratmaker.java.global.Global;
 import stratmaker.java.undo.UndoCollector;
@@ -46,6 +47,7 @@ public class MakerController
 	
 	private AddNodeAction addNodeAction;
 	private MoveNodeAction moveNodeAction;
+	private RotateNodeAction rotateNodeAction;
 	private ClearAction clearAction;
 	
 	public void changeToScene(Map selectedMap)
@@ -54,7 +56,7 @@ public class MakerController
 
 		try
         {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/resources/fxml/Maker.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/stratmaker/resources/fxml/Maker.fxml"));
 
             loader.setController(this);
             Global.primaryStage.setResizable(true);
@@ -86,32 +88,34 @@ public class MakerController
 		
 		moveNodeAction = new MoveNodeAction();
 		addNodeAction = new AddNodeAction();
+		rotateNodeAction = new RotateNodeAction();
 		clearAction = new ClearAction();
 		
 		for (Button button : this.opList)
 		{
 			button.setOnAction(e -> addNode(e));
-			ImageView imgView = new ImageView(new Image("/main/resources/Operators/Defenders/" + button.getText().toLowerCase() + ".png"));
+			ImageView imgView = new ImageView(new Image("/stratmaker/resources/Operators/Defenders/" + button.getText().toLowerCase() + ".png"));
 			imgView.setFitHeight(56);
 			imgView.setFitWidth(60);
 			button.setGraphic(imgView);
-			button.getStylesheets().add("/main/css/Maker.css");
+			button.getStylesheets().add("/stratmaker/css/Maker.css");
 		}
 		
 		for (Button button : this.gadgetList)
 		{
 			button.setOnAction(e -> addNode(e));
-			ImageView imgView = new ImageView(new Image("/main/resources/Gadgets/" + button.getText().toLowerCase() + ".png"));
+			ImageView imgView = new ImageView(new Image("/stratmaker/resources/Gadgets/" + button.getText().toLowerCase() + ".png"));
 			imgView.setFitHeight(56);
 			imgView.setFitWidth(60);
 			button.setGraphic(imgView);
-			button.getStylesheets().add("/main/css/Maker.css");
+			button.getStylesheets().add("/stratmaker/css/Maker.css");
 		}
 		
 		backBtn.setOnAction(e -> Global.selectionController.changeToScene());
 		clearBtn.setOnAction(e ->
 		{
-			getCurrentAnchorPane().getChildren().remove(0, getCurrentAnchorPane().getChildren().size());
+//			System.out.println(getCurrentAnchorPane().getChildren());
+			getCurrentAnchorPane().getChildren().remove(2, getCurrentAnchorPane().getChildren().size());
 //			clearAction.setOldAnchorPane(getCurrentAnchorPane());
 //			clearAction.execute();
 //			UndoCollector.INSTANCE.add(clearAction);
@@ -169,7 +173,7 @@ public class MakerController
 		{
 			ScrollPane scrollPane = new ScrollPane();
 			String floor = tabPane.getTabs().get(i).getText();
-			Image img = new Image("/main/resources/Blueprints/" + this.selectedMap.toString() + "/" + floor + ".jpg");
+			Image img = new Image("/stratmaker/resources/Blueprints/" + this.selectedMap.toString() + "/" + floor + ".jpg");
 			
 			floors[i] = new Floor(img, floor);
 			
@@ -188,23 +192,12 @@ public class MakerController
 
 		imgView.setFitHeight(75);
 		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
-		imgView.setOnMousePressed(e -> onImagePressed(e, imgView));
-		imgView.setOnMouseDragged(e -> onImageDragged(e, imgView));
-		imgView.setOnMouseReleased(e -> onImageReleased(e, imgView));
+		imgView.setOnMousePressed(e -> onImagePressed(e));
+		imgView.setOnMouseDragged(e -> onImageDragged(e));
+		imgView.setOnMouseReleased(e -> onImageReleased(e));
 		
-		double hScrollPosition = getCurrentScrollPane().getHvalue();
-		double anchorPaneWidth = getCurrentAnchorPane().getWidth();
-		double scrollPaneWidth = getCurrentScrollPane().getWidth();
-		double xPosition = getCurrentScrollPane().getWidth() / 2; //Desired x position of node relative to screen, not map
-		
-		imgView.setX(hScrollPosition * (anchorPaneWidth - scrollPaneWidth) + xPosition - imgView.getFitWidth());
-		
-		double vScrollPosition = getCurrentScrollPane().getVvalue();
-		double anchorPaneHeight = getCurrentAnchorPane().getHeight();
-		double scrollPaneHeight = getCurrentScrollPane().getHeight();
-		double yPosition = getCurrentScrollPane().getHeight() / 2; //Desired y position of node relative to screen, not map
-		
-		imgView.setY(vScrollPosition * (anchorPaneHeight - scrollPaneHeight) + yPosition - imgView.getFitHeight());
+		imgView.setX(scrollXPosition(getCurrentScrollPane().getWidth() / 2 - imgView.getFitWidth()));
+		imgView.setY(scrollYPosition(getCurrentScrollPane().getHeight() / 2 - imgView.getFitHeight()));
 			
 		addNodeAction.setImageView(imgView);
 		if (addNodeAction.canExecute())
@@ -216,64 +209,82 @@ public class MakerController
 		}
 	}
 	
-	private double deltaX, deltaY;
+	private double initX, initY, xOffset, yOffset;
 	
-	private void onImagePressed(MouseEvent event, ImageView imgView)
+	private void onImagePressed(MouseEvent event)
 	{
-		deltaX = event.getX() - imgView.getX();
-		deltaY = event.getY() - imgView.getY();
+		ImageView imgView = (ImageView) event.getSource();
+		initX = event.getSceneX();
+		initY = event.getSceneY();
+		xOffset = event.getX() - imgView.getX();
+		yOffset = event.getY() - imgView.getY();
+		
+		System.out.println(event.getY() + "  " + imgView.getY());
 		
 		moveNodeAction.setImageView(imgView);
-		moveNodeAction.setOldX(event.getX());
-		moveNodeAction.setOldY(event.getY());
+		moveNodeAction.setOldX(event.getSceneX());
+		moveNodeAction.setOldY(event.getSceneY());
+		
+		rotateNodeAction.setImageView(imgView);
+		rotateNodeAction.setOldTheta(imgView.getRotate());
 	}
 	
-	private void onImageDragged(MouseEvent event, ImageView imgView)
+	private void onImageDragged(MouseEvent event)
 	{
-		double mouseX = event.getX();
-		double mouseY = event.getY();
 		if (event.getButton() == MouseButton.PRIMARY)
 		{
+			double mouseX = event.getSceneX();
+			double mouseY = event.getSceneY();
 			if (rotateRadio.isSelected())
 			{
-				// rotation (WIP)
-	//			double opp = (mouseX - initX - imgView.getFitWidth() / 2);
-	//			double adj = -(mouseY - initY - imgView.getFitHeight() / 2);
-	//			double hyp = Math.sqrt(opp*opp + adj*adj);
-	//			double sinAngle = Math.asin(adj / hyp);
-	//			double cosAngle = Math.acos(opp / hyp);
-	//			double angle = 0;
-	//			
-	//			if (sinAngle > 0 && sinAngle < Math.PI / 2)
-	//				angle = cosAngle;
-	//			else if (sinAngle < 0 && sinAngle > -Math.PI / 2)
-	//				angle = 2 * Math.PI - cosAngle;
-	//			
-	//			System.out.println(angle * 180 / Math.PI);
-	//			System.out.println(mouseY + "  " + imgView.getY() + "  " + imgView.getFitHeight() / 2 + "  " + adj);
-	//			System.out.println(opp + "  " + adj + "  " + hyp + "  " + angle * 180 / Math.PI);
-	//			imgView.setRotate(angle * 180 / Math.PI);
-	//			System.out.println(imgView.getRotate());
-				System.out.println("ROTATE");
+				double deltaX = event.getSceneX() - initX;
+				double deltaY = event.getSceneY() - initY;
+				double theta = Math.atan(deltaY/deltaX) + Math.PI / 2;
+				
+				if (deltaX == 0 && deltaY == 0)
+				{
+					theta = 0;
+				}
+				else if (deltaX >= 0)
+				{
+					theta += Math.PI;
+				}
+				
+				rotateNodeAction.setNewTheta((theta + Math.PI) * 180 / Math.PI);
+				rotateNodeAction.execute();
+				
+				System.out.println(deltaX + "  " + deltaY + "  " + theta * 180 / Math.PI);
 			}
 			else if (dragRadio.isSelected() && moveNodeAction.canExecute())
 			{
-				moveNodeAction.setNewX(mouseX - deltaX);
-				moveNodeAction.setNewY(mouseY - deltaY);
+				moveNodeAction.setNewX(scrollXPosition(mouseX) - xOffset);
+				moveNodeAction.setNewY(scrollYPosition(mouseY) - yOffset - 112);
 				moveNodeAction.execute();
 			}
 		}
 	}
 	
-	private void onImageReleased(MouseEvent event, ImageView imgView)
+	private void onImageReleased(MouseEvent event)
 	{
+		ImageView imgView = (ImageView) event.getSource();
 		if (event.getButton() == MouseButton.PRIMARY)
 		{
-			moveNodeAction.setNewX(imgView.getX());
-			moveNodeAction.setNewY(imgView.getY());
-			UndoCollector.INSTANCE.add(moveNodeAction);
-			
-			moveNodeAction.reset();
+			if (dragRadio.isSelected())
+			{
+				moveNodeAction.setNewX(imgView.getX());
+				moveNodeAction.setNewY(imgView.getY());
+				UndoCollector.INSTANCE.add(moveNodeAction);
+				
+				moveNodeAction.reset();
+			}
+			else if (rotateRadio.isSelected())
+			{
+				System.out.println(imgView.getRotate());
+				rotateNodeAction.setNewTheta(imgView.getRotate());
+				UndoCollector.INSTANCE.add(rotateNodeAction);
+				
+				rotateNodeAction.reset();
+			}
 		}
 	}
 	
@@ -292,6 +303,24 @@ public class MakerController
 			AnchorPane aPane = (AnchorPane) sPane.getContent();
 			aPane.getChildren().add(floors[i].getCanvas());
 		}
+	}
+	
+	private double scrollXPosition(double x)
+	{
+		double hScrollPosition = getCurrentScrollPane().getHvalue();
+		double anchorPaneWidth = getCurrentAnchorPane().getWidth();
+		double scrollPaneWidth = getCurrentScrollPane().getWidth();
+		
+		return hScrollPosition * (anchorPaneWidth - scrollPaneWidth) + x;
+	}
+	
+	private double scrollYPosition(double y)
+	{
+		double vScrollPosition = getCurrentScrollPane().getVvalue();
+		double anchorPaneHeight = getCurrentAnchorPane().getHeight();
+		double scrollPaneHeight = getCurrentScrollPane().getHeight();
+		
+		return vScrollPosition * (anchorPaneHeight - scrollPaneHeight) + y;
 	}
 	
 	public boolean drawSelected()

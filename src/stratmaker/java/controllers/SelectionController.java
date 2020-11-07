@@ -22,7 +22,7 @@ public class SelectionController
 	{
 		try
         {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/resources/fxml/Selection.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/stratmaker/resources/fxml/Selection.fxml"));
 
             loader.setController(this);
             Global.primaryStage.setResizable(true);
@@ -52,44 +52,44 @@ public class SelectionController
 		clubBtn.setOnAction(e -> Global.makerController.changeToScene(Map.CLUBHOUSE));
 		clubBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		clubBtn.prefHeightProperty().bind(parentVBox.heightProperty());
-		clubBtn.setGraphic(new ImageView("/main/resources/Maps/Clubhouse.png"));
-		clubBtn.getStylesheets().add("/main/css/Selection.css");
+		clubBtn.setGraphic(new ImageView("/stratmaker/resources/Maps/Clubhouse.png"));
+		clubBtn.getStylesheets().add("/stratmaker/css/Selection.css");
 		clubBtn.getGraphic().prefWidth(clubBtn.getWidth());
 		clubBtn.getGraphic().prefHeight(clubBtn.getHeight());
 		
 		coastBtn.setOnAction(e -> Global.makerController.changeToScene(Map.COASTLINE));
-		coastBtn.getStylesheets().add("/main/css/Selection.css");
-		coastBtn.setGraphic(new ImageView("/main/resources/Maps/Coastline.png"));
+		coastBtn.getStylesheets().add("/stratmaker/css/Selection.css");
+		coastBtn.setGraphic(new ImageView("/stratmaker/resources/Maps/Coastline.png"));
 		coastBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		coastBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		
 		consulateBtn.setOnAction(e -> Global.makerController.changeToScene(Map.CONSULATE));
-		consulateBtn.getStylesheets().add("/main/css/Selection.css");
-		consulateBtn.setGraphic(new ImageView("/main/resources/Maps/Consulate.png"));
+		consulateBtn.getStylesheets().add("/stratmaker/css/Selection.css");
+		consulateBtn.setGraphic(new ImageView("/stratmaker/resources/Maps/Consulate.png"));
 		consulateBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		consulateBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		
 		kafeBtn.setOnAction(e -> Global.makerController.changeToScene(Map.KAFE));
-		kafeBtn.getStylesheets().add("/main/css/Selection.css");
-		kafeBtn.setGraphic(new ImageView("/main/resources/Maps/Kafe.png"));
+		kafeBtn.getStylesheets().add("/stratmaker/css/Selection.css");
+		kafeBtn.setGraphic(new ImageView("/stratmaker/resources/Maps/Kafe.png"));
 		kafeBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		kafeBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		
 		oregonBtn.setOnAction(e -> Global.makerController.changeToScene(Map.OREGON));
-		oregonBtn.getStylesheets().add("/main/css/Selection.css");
-		oregonBtn.setGraphic(new ImageView("/main/resources/Maps/Oregon.png"));
+		oregonBtn.getStylesheets().add("/stratmaker/css/Selection.css");
+		oregonBtn.setGraphic(new ImageView("/stratmaker/resources/Maps/Oregon.png"));
 		oregonBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		oregonBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		
 		themeBtn.setOnAction(e -> Global.makerController.changeToScene(Map.THEMEPARK));
-		themeBtn.getStylesheets().add("/main/css/Selection.css");
-		themeBtn.setGraphic(new ImageView("/main/resources/Maps/Themepark.png"));
+		themeBtn.getStylesheets().add("/stratmaker/css/Selection.css");
+		themeBtn.setGraphic(new ImageView("/stratmaker/resources/Maps/Themepark.png"));
 		themeBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		themeBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		
 		villaBtn.setOnAction(e -> Global.makerController.changeToScene(Map.VILLA));
-		villaBtn.getStylesheets().add("/main/css/Selection.css");
-		villaBtn.setGraphic(new ImageView("/main/resources/Maps/Villa.png"));
+		villaBtn.getStylesheets().add("/stratmaker/css/Selection.css");
+		villaBtn.setGraphic(new ImageView("/stratmaker/resources/Maps/Villa.png"));
 //		villaBtn.prefWidth(oregonBtn.getWidth());
 //		villaBtn.prefHeight(oregonBtn.getHeight());
 		villaBtn.prefWidthProperty().bind(parentVBox.widthProperty());

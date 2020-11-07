@@ -1,5 +1,8 @@
 package stratmaker.java.actions;
 
+import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import stratmaker.java.global.Global;
 import stratmaker.java.undo.Undoable;
@@ -43,27 +46,34 @@ public class ClearAction implements Action, Undoable
 	@Override
 	public void undo()
 	{
+		System.out.println(oldPane.getChildren());
 		Global.makerController.setCurrentAnchorPane(oldPane);
+//		Global.makerController.getCurrentFloor().setCanvas((Canvas) oldPane.getChildren().get(1));
 	}
 
 	@Override
 	public void redo()
 	{
 		Global.makerController.setCurrentAnchorPane(newPane);
+		Global.makerController.getCurrentFloor().setCanvas((Canvas) oldPane.getChildren().get(1));
 	}
 
 	@Override
 	public Undoable copy()
 	{
-		ClearAction clearAction = new ClearAction(this);
-		return clearAction;
+		return new ClearAction(this);
 	}
 
 	@Override
 	public void execute()
 	{
-		newPane = new AnchorPane(oldPane.getChildren().get(0));
+		System.out.println(oldPane.getWidth());
+		Canvas newCanvas = new Canvas(oldPane.getWidth(), oldPane.getHeight());
+		ImageView map = new ImageView(((ImageView) oldPane.getChildren().get(0)).getImage());
+		newPane = new AnchorPane(map, newCanvas);
+		System.out.println(((Canvas) newPane.getChildren().get(1)).getWidth());
 		Global.makerController.setCurrentAnchorPane(newPane);
+		Global.makerController.getCurrentFloor().setCanvas(newCanvas);
 	}
 
 	@Override
