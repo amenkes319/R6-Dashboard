@@ -2,6 +2,7 @@ package stratmaker.java.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,6 +18,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -41,6 +43,7 @@ public class MakerController
 	@FXML private ColorPicker colorPicker;
 	@FXML private Slider lineWidthSlider;
 	@FXML private MenuItem undoBtn, redoBtn;
+	@FXML private TextField opSearchTxtFld, gadgetSearchTxtFld;
 	
 	private Map selectedMap;
 	private Floor[] floors;
@@ -91,7 +94,7 @@ public class MakerController
 		rotateNodeAction = new RotateNodeAction();
 		clearAction = new ClearAction();
 		
-		for (Button button : this.opList)
+		for (Button button : opList)
 		{
 			button.setOnAction(e -> addNode(e));
 			ImageView imgView = new ImageView(new Image("/stratmaker/resources/Operators/Defenders/" + button.getText().toLowerCase() + ".png"));
@@ -101,7 +104,7 @@ public class MakerController
 			button.getStylesheets().add("/stratmaker/css/Maker.css");
 		}
 		
-		for (Button button : this.gadgetList)
+		for (Button button : gadgetList)
 		{
 			button.setOnAction(e -> addNode(e));
 			ImageView imgView = new ImageView(new Image("/stratmaker/resources/Gadgets/" + button.getText().toLowerCase() + ".png"));
@@ -110,6 +113,26 @@ public class MakerController
 			button.setGraphic(imgView);
 			button.getStylesheets().add("/stratmaker/css/Maker.css");
 		}
+		
+		opSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> 
+		{
+		    for (Button button : opList)
+		    {
+		    	
+		    	button.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(button.getText()).find());
+		    	button.setManaged(button.isVisible());
+		    }
+		});
+		
+		gadgetSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> 
+		{
+		    for (Button button : gadgetList)
+		    {
+		    	
+		    	button.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(button.getText()).find());
+		    	button.setManaged(button.isVisible());
+		    }
+		});
 		
 		backBtn.setOnAction(e -> Global.selectionController.changeToScene());
 		clearBtn.setOnAction(e ->
@@ -260,6 +283,7 @@ public class MakerController
 				moveNodeAction.setNewX(scrollXPosition(mouseX) - xOffset);
 				moveNodeAction.setNewY(scrollYPosition(mouseY) - yOffset - 112);
 				moveNodeAction.execute();
+				System.out.println(moveNodeAction.getNewX() + " " + moveNodeAction.getNewY());
 			}
 		}
 	}
