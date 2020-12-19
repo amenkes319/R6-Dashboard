@@ -1,15 +1,18 @@
 package stratmaker.java.floor;
 
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import stratmaker.java.actions.DrawAction;
 import stratmaker.java.global.Global;
+import stratmaker.java.undo.UndoCollector;
 
 public class Floor
 {
@@ -29,7 +32,7 @@ public class Floor
 		this.gc = canvas.getGraphicsContext2D();
 		this.name = name;
 		
-		this.drawAction = new DrawAction(gc);
+		this.drawAction = new DrawAction();
 
 		this.bDraw = false;
 	}
@@ -46,8 +49,9 @@ public class Floor
 			if (e.getButton() == MouseButton.PRIMARY && (Global.makerController.drawSelected() || Global.makerController.eraseSelected()))
 			{
 				bDraw = true;
-				drawAction.setLastX(e.getX());
-				drawAction.setLastY(e.getY());
+				drawAction.setOldX(e.getX());
+				drawAction.setOldY(e.getY());
+				drawAction.setOldCanvas(copyCanvas());
 			}
 		});
 		
@@ -66,11 +70,22 @@ public class Floor
 			if (e.getButton() == MouseButton.PRIMARY && (Global.makerController.drawSelected() || Global.makerController.eraseSelected()))
 			{
 				bDraw = false;
+				drawAction.setNewCanvas(canvas);
 
-//				UndoCollector.INSTANCE.add(drawAction);
+				UndoCollector.INSTANCE.add(drawAction);
 				drawAction.reset();
 			}
 		});
+	}
+	
+	private Canvas copyCanvas()
+	{
+		Canvas copyCanvas = new Canvas(canvas.getWidth(), canvas.getHeight());
+		SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT); 
+        WritableImage image = canvas.snapshot(params, null);
+        copyCanvas.getGraphicsContext2D().drawImage(image, 0, 0);
+        return copyCanvas;
 	}
 	
 	public ImageView getImgView()
@@ -87,7 +102,7 @@ public class Floor
 	{
 		this.canvas = canvas;
 		this.gc = canvas.getGraphicsContext2D();
-		this.drawAction = new DrawAction(gc);
+		this.drawAction = new DrawAction();
 		drawInit();
 	}
 	
