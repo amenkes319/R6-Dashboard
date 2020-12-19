@@ -175,6 +175,19 @@ public class MakerController
 
 		undoBtn.setOnAction(e -> UndoCollector.INSTANCE.undo());
 		redoBtn.setOnAction(e -> UndoCollector.INSTANCE.redo());
+		
+		Global.primaryStage.getScene().addEventHandler(KeyEvent.KEY_PRESSED, key ->
+		{
+			if (key.isControlDown())
+			{
+				if (key.getCode() == KeyCode.Z)
+					undoBtn.fire();
+				
+				if (key.getCode() == KeyCode.Y)
+					redoBtn.fire();
+			}
+			
+		});
 	}
 
 	private void addFloors()
