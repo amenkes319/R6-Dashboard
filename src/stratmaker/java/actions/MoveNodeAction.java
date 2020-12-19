@@ -5,9 +5,8 @@ import stratmaker.java.undo.Undoable;
 
 public class MoveNodeAction implements Action, Undoable
 {
-	ImageView imgView;
-	
-	double oldX, oldY, newX, newY;
+	private ImageView imgView;
+	private double oldX, oldY, newX, newY;
 
 	public MoveNodeAction()
 	{

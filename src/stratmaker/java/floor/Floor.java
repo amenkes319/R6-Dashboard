@@ -73,7 +73,7 @@ public class Floor
 		});
 	}
 	
-	public ImageView getFloorView()
+	public ImageView getImgView()
 	{
 		return this.floorView;
 	}
@@ -87,6 +87,8 @@ public class Floor
 	{
 		this.canvas = canvas;
 		this.gc = canvas.getGraphicsContext2D();
+		this.drawAction = new DrawAction(gc);
+		drawInit();
 	}
 	
 	public GraphicsContext getGC()

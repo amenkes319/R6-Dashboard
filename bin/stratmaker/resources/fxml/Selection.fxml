@@ -32,10 +32,19 @@
             </HBox>
             <HBox fx:id="bottomHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="1.0" minWidth="1.0" prefHeight="333.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="villaBtn" alignment="BOTTOM_CENTER" mnemonicParsing="false" />
+                  <Button fx:id="villaBtn" alignment="BOTTOM_CENTER" maxWidth="-Infinity" mnemonicParsing="false" />
                </children>
             </HBox>
          </children>
       </VBox>
+      <HBox alignment="CENTER_RIGHT">
+         <children>
+            <Label prefHeight="25.0" prefWidth="250.0" text="V 0.1.1 WIP Beta Made by Dash" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
    </children>
 </VBox>

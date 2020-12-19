@@ -85,7 +85,7 @@ public class RotateNodeAction implements Action, Undoable
 	@Override
 	public boolean canExecute()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

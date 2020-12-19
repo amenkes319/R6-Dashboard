@@ -29,6 +29,7 @@ import stratmaker.java.Map;
 import stratmaker.java.actions.AddNodeAction;
 import stratmaker.java.actions.ClearAction;
 import stratmaker.java.actions.MoveNodeAction;
+import stratmaker.java.actions.DeleteNodeAction;
 import stratmaker.java.actions.RotateNodeAction;
 import stratmaker.java.floor.Floor;
 import stratmaker.java.global.Global;
@@ -39,7 +40,7 @@ public class MakerController
 	@FXML private TabPane tabPane;
 	@FXML private ArrayList<Button> opList, gadgetList;
 	@FXML private Button backBtn, clearBtn;
-	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio;
+	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio, deleteRadio;
 	@FXML private ColorPicker colorPicker;
 	@FXML private Slider lineWidthSlider;
 	@FXML private MenuItem undoBtn, redoBtn;
@@ -52,6 +53,7 @@ public class MakerController
 	private MoveNodeAction moveNodeAction;
 	private RotateNodeAction rotateNodeAction;
 	private ClearAction clearAction;
+	private DeleteNodeAction deleteNodeAction;
 	
 	public void changeToScene(Map selectedMap)
 	{
@@ -93,6 +95,7 @@ public class MakerController
 		addNodeAction = new AddNodeAction();
 		rotateNodeAction = new RotateNodeAction();
 		clearAction = new ClearAction();
+		deleteNodeAction = new DeleteNodeAction();
 		
 		for (Button button : opList)
 		{
@@ -135,14 +138,13 @@ public class MakerController
 		});
 		
 		backBtn.setOnAction(e -> Global.selectionController.changeToScene());
+		
 		clearBtn.setOnAction(e ->
 		{
-//			System.out.println(getCurrentAnchorPane().getChildren());
-			getCurrentAnchorPane().getChildren().remove(2, getCurrentAnchorPane().getChildren().size());
-//			clearAction.setOldAnchorPane(getCurrentAnchorPane());
-//			clearAction.execute();
-//			UndoCollector.INSTANCE.add(clearAction);
-//			clearAction.reset();
+			clearAction.setOldAnchorPane(getCurrentAnchorPane());
+			clearAction.execute();
+			UndoCollector.INSTANCE.add(clearAction);
+			clearAction.reset();
 		});
 		
 		drawRadio.setOnAction(e -> 
@@ -175,19 +177,19 @@ public class MakerController
 
 	private void addFloors()
 	{
-		if (this.selectedMap == Map.CLUBHOUSE)
+		if (selectedMap == Map.CLUBHOUSE)
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
-		else if (this.selectedMap == Map.COASTLINE)
+		else if (selectedMap == Map.COASTLINE)
 			tabPane.getTabs().addAll(new Tab("1st Floor"), new Tab("2nd Floor"));
-		else if (this.selectedMap == Map.CONSULATE)
+		else if (selectedMap == Map.CONSULATE)
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
-		else if (this.selectedMap == Map.KAFE)
+		else if (selectedMap == Map.KAFE)
 			tabPane.getTabs().addAll(new Tab("1st Floor"), new Tab("2nd Floor"), new Tab("3rd Floor"));
-		else if (this.selectedMap == Map.OREGON)
+		else if (selectedMap == Map.OREGON)
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"), new Tab("T3"));
-		else if (this.selectedMap == Map.THEMEPARK)
+		else if (selectedMap == Map.THEMEPARK)
 			tabPane.getTabs().addAll(new Tab("1st Floor"), new Tab("2nd Floor"));
-		else if (this.selectedMap == Map.VILLA)
+		else if (selectedMap == Map.VILLA)
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
 		
 		this.floors = new Floor[tabPane.getTabs().size()];
@@ -201,7 +203,7 @@ public class MakerController
 			floors[i] = new Floor(img, floor);
 			
 			AnchorPane anchorPane = new AnchorPane();
-			anchorPane.getChildren().add(floors[i].getFloorView());
+			anchorPane.getChildren().add(floors[i].getImgView());
 			scrollPane.setContent(anchorPane);
 			tabPane.getTabs().get(i).setContent(scrollPane);
 		}
@@ -218,6 +220,7 @@ public class MakerController
 		imgView.setOnMousePressed(e -> onImagePressed(e));
 		imgView.setOnMouseDragged(e -> onImageDragged(e));
 		imgView.setOnMouseReleased(e -> onImageReleased(e));
+		imgView.setOnMouseClicked(e -> onImageClicked(e));
 		
 		imgView.setX(scrollXPosition(getCurrentScrollPane().getWidth() / 2 - imgView.getFitWidth()));
 		imgView.setY(scrollYPosition(getCurrentScrollPane().getHeight() / 2 - imgView.getFitHeight()));
@@ -236,20 +239,24 @@ public class MakerController
 	
 	private void onImagePressed(MouseEvent event)
 	{
-		ImageView imgView = (ImageView) event.getSource();
-		initX = event.getSceneX();
-		initY = event.getSceneY();
-		xOffset = event.getX() - imgView.getX();
-		yOffset = event.getY() - imgView.getY();
-		
-		System.out.println(event.getY() + "  " + imgView.getY());
-		
-		moveNodeAction.setImageView(imgView);
-		moveNodeAction.setOldX(event.getSceneX());
-		moveNodeAction.setOldY(event.getSceneY());
-		
-		rotateNodeAction.setImageView(imgView);
-		rotateNodeAction.setOldTheta(imgView.getRotate());
+		if (!deleteRadio.isSelected())
+		{
+			ImageView imgView = (ImageView) event.getSource();
+			
+			initX = event.getSceneX();
+			initY = event.getSceneY();
+			xOffset = event.getX() - imgView.getX();
+			yOffset = event.getY() - imgView.getY();
+			
+			System.out.println(event.getY() + "  " + imgView.getY());
+			
+			moveNodeAction.setImageView(imgView);
+			moveNodeAction.setOldX(event.getSceneX());
+			moveNodeAction.setOldY(event.getSceneY());
+			
+			rotateNodeAction.setImageView(imgView);
+			rotateNodeAction.setOldTheta(imgView.getRotate());
+		}
 	}
 	
 	private void onImageDragged(MouseEvent event)
@@ -283,7 +290,7 @@ public class MakerController
 				moveNodeAction.setNewX(scrollXPosition(mouseX) - xOffset);
 				moveNodeAction.setNewY(scrollYPosition(mouseY) - yOffset - 112);
 				moveNodeAction.execute();
-				System.out.println(moveNodeAction.getNewX() + " " + moveNodeAction.getNewY());
+//				System.out.println(moveNodeAction.getNewX() + " " + moveNodeAction.getNewY());
 			}
 		}
 	}
@@ -309,6 +316,18 @@ public class MakerController
 				
 				rotateNodeAction.reset();
 			}
+		}
+	}
+	
+	private void onImageClicked(MouseEvent event)
+	{
+		if (deleteRadio.isSelected())
+		{
+			ImageView imgView = (ImageView) event.getSource();
+			deleteNodeAction.setImageView(imgView);
+			deleteNodeAction.execute();
+			UndoCollector.INSTANCE.add(deleteNodeAction);
+			deleteNodeAction.reset();
 		}
 	}
 	
