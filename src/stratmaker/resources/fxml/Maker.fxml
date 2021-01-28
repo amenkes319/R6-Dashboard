@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.util.ArrayList?>
 
-<BorderPane prefHeight="810.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderPane" prefHeight="810.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
@@ -40,142 +40,7 @@
 							<content>
 								<VBox prefHeight="746.0" prefWidth="201.0" spacing="10.0" style="-fx-background-color: #3f3f3f;">
 									<children>
-                              <TextField fx:id="opSearchTxtFld" promptText="Search" />
-								        <Button fx:id="alibiOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="180.0" text="Alibi" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="banditOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="27.0" prefWidth="180.0" text="Bandit" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="castleOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Castle" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="caveiraOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Caveira" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="clashOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Clash" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="docOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Doc" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="echoOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Echo" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="elaOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Ela" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="frostOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Frost" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="goyoOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Goyo" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="jagerOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Jager" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="kaidOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Kaid" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="kapkanOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Kapkan" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="lesionOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Lesion" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="maestroOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Maestro" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="miraOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Mira" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="mozzieOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Mozzie" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="muteOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Mute" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="oryxOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Oryx" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="pulseOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Pulse" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="rookOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Rook" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="smokeOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Smoke" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="tachankaOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Tachanka" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="valkyrieOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Valkyrie" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="vigilOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Vigil" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="wamaiOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Wamai" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
-										<Button fx:id="wardenOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Warden" textFill="WHITE">
-											<font>
-												<Font size="16.0" />
-											</font>
-										</Button>
+                              			<TextField fx:id="opSearchTxtFld" promptText="Search" />
 									</children>
 									<padding>
 										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -183,37 +48,6 @@
 								</VBox>
 							</content>
 						</ScrollPane>
-				    	<fx:define>
-							<ArrayList fx:id="opList">
-								<fx:reference source="alibiOp" />
-								<fx:reference source="banditOp" />
-								<fx:reference source="castleOp" />
-								<fx:reference source="caveiraOp" />
-								<fx:reference source="clashOp" />
-								<fx:reference source="docOp" />
-								<fx:reference source="echoOp" />
-								<fx:reference source="elaOp" />
-								<fx:reference source="frostOp" />
-								<fx:reference source="goyoOp" />
-								<fx:reference source="jagerOp" />
-								<fx:reference source="kaidOp" />
-								<fx:reference source="kapkanOp" />
-								<fx:reference source="lesionOp" />
-								<fx:reference source="maestroOp" />
-								<fx:reference source="miraOp" />
-								<fx:reference source="mozzieOp" />
-								<fx:reference source="muteOp" />
-								<fx:reference source="oryxOp" />
-								<fx:reference source="pulseOp" />
-								<fx:reference source="rookOp" />
-								<fx:reference source="smokeOp" />
-								<fx:reference source="tachankaOp" />
-								<fx:reference source="valkyrieOp" />
-								<fx:reference source="vigilOp" />
-								<fx:reference source="wamaiOp" />
-								<fx:reference source="wardenOp" />
-							</ArrayList>
-						</fx:define>
 					</content>
 				</Tab>
 				<Tab closable="false" text="Gadgets">
