@@ -46,6 +46,11 @@
 												<Font size="16.0" />
 											</font>
 										</Button>
+										<Button fx:id="aruniOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Aruni" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
 										<Button fx:id="banditOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="27.0" prefWidth="180.0" text="Bandit" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
@@ -112,6 +117,11 @@
 											</font>
 										</Button>
 										<Button fx:id="maestroOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Maestro" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+										<Button fx:id="melusiOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Melusi" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
@@ -186,6 +196,7 @@
 				    	<fx:define>
 							<ArrayList fx:id="opList">
 								<fx:reference source="alibiOp" />
+								<fx:reference source="aruniOp" />
 								<fx:reference source="banditOp" />
 								<fx:reference source="castleOp" />
 								<fx:reference source="caveiraOp" />
@@ -200,6 +211,7 @@
 								<fx:reference source="kapkanOp" />
 								<fx:reference source="lesionOp" />
 								<fx:reference source="maestroOp" />
+								<fx:reference source="melusiOp" />
 								<fx:reference source="miraOp" />
 								<fx:reference source="mozzieOp" />
 								<fx:reference source="muteOp" />
@@ -273,6 +285,16 @@
 												<Font size="16.0" />
 											</font>
 										</Button>
+										<Button fx:id="goyoTopGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Goyo Top" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+										<Button fx:id="impactGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Impact" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
 										<Button fx:id="jagerGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Jager" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
@@ -298,6 +320,16 @@
 												<Font size="16.0" />
 											</font>
 										</Button>
+										<Button fx:id="maestroTopGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Maestro Top" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+										<Button fx:id="melusiGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Melusi" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
 										<Button fx:id="miraGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Mira" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
@@ -313,6 +345,11 @@
 												<Font size="16.0" />
 											</font>
 										</Button>
+										<Button fx:id="proxyGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Proxy" textFill="WHITE">
+											<font>
+												<Font size="15.0" />
+											</font>
+										</Button>
 										<Button fx:id="reinforcementGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Reinforce" textFill="WHITE">
 											<font>
 												<Font size="15.0" />
@@ -324,6 +361,11 @@
 											</font>
 										</Button>
 										<Button fx:id="shieldGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Shield" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+										<Button fx:id="shieldTopGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Shield Top" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
@@ -355,17 +397,23 @@
 												<fx:reference source="elaGadget" />
 												<fx:reference source="frostGadget" />
 												<fx:reference source="goyoGadget" />
+												<fx:reference source="goyoTopGadget" />
+												<fx:reference source="impactGadget" />
 												<fx:reference source="jagerGadget" />
 												<fx:reference source="kaidGadget" />
 												<fx:reference source="kapkanGadget" />
 												<fx:reference source="lesionGadget" />
 												<fx:reference source="maestroGadget" />
+												<fx:reference source="maestroTopGadget" />
+												<fx:reference source="melusiGadget" />
 												<fx:reference source="miraGadget" />
 												<fx:reference source="mozzieGadget" />
 												<fx:reference source="muteGadget" />
+												<fx:reference source="proxyGadget" />
 												<fx:reference source="reinforcementGadget" />
 												<fx:reference source="rotateGadget" />
 												<fx:reference source="shieldGadget" />
+												<fx:reference source="shieldTopGadget" />
 												<fx:reference source="smokeGadget" />
 												<fx:reference source="valkyrieGadget" />
 												<fx:reference source="wamaiGadget" />
