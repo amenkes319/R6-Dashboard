@@ -184,8 +184,6 @@ public class MakerController
 
 		exportBtn.setOnAction(e -> 
 		{
-			WritableImage image = getCurrentAnchorPane().snapshot(new SnapshotParameters(), null);
-
 			DirectoryChooser dirChooser = new DirectoryChooser();
 			File dir = dirChooser.showDialog(Global.primaryStage);
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -198,6 +196,7 @@ public class MakerController
 			{
 				for (int i = 0; i < files.length; i++)
 				{
+					WritableImage image = ((AnchorPane) ((ScrollPane) tabPane.getTabs().get(i).getContent()).getContent()).snapshot(new SnapshotParameters(), null);
 					files[i] = new File(dir.getAbsolutePath() + "/" + selectedMap + " " + floors[i] + ".png");
 					ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", files[i]);
 				}
