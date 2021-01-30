@@ -1,8 +1,6 @@
 package stratmaker.java.controllers;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -11,7 +9,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -29,23 +26,19 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import stratmaker.java.Map;
 import stratmaker.java.actions.AddNodeAction;
 import stratmaker.java.actions.ClearAction;
-import stratmaker.java.actions.DeleteNodeAction;
 import stratmaker.java.actions.MoveNodeAction;
+import stratmaker.java.actions.DeleteNodeAction;
 import stratmaker.java.actions.RotateNodeAction;
 import stratmaker.java.floor.Floor;
 import stratmaker.java.global.Global;
 import stratmaker.java.undo.UndoCollector;
-import stratmaker.java.zoom.ZoomScrollPane;
 
 public class MakerController
 {
-	@FXML private BorderPane borderPane;
 	@FXML private TabPane tabPane;
 	@FXML private ArrayList<Button> opList, gadgetList;
 	@FXML private Button backBtn, clearBtn;
@@ -106,33 +99,14 @@ public class MakerController
 		clearAction = new ClearAction();
 		deleteNodeAction = new DeleteNodeAction();
 		
-		File defOps = new File(System.getProperty("user.dir") + "/src/stratmaker/resources/Operators/Defenders");
-		for (File file : defOps.listFiles())
+		for (Button button : opList)
 		{
-			String name = file.getName().substring(0, file.getName().length() - 4);
-			Button button = new Button(name);
 			button.setOnAction(e -> addNode(e));
-			button.setTextFill(Color.WHITE);
-			button.setPrefWidth(180);
-			button.setPrefHeight(64);
-			button.setAlignment(Pos.CENTER_LEFT);
-			button.setStyle("-fx-font-size:16");
-			ImageView imgView;
-			
-			try
-			{
-				imgView = new ImageView(file.toURI().toURL().toString());
-				imgView.setFitHeight(56);
-				imgView.setFitWidth(60);
-				button.setGraphic(imgView);
-			} 
-			catch (MalformedURLException e1)
-			{
-				e1.printStackTrace();
-			}
-			
+			ImageView imgView = new ImageView(new Image("/stratmaker/resources/Operators/Defenders/" + button.getText().toLowerCase() + ".png"));
+			imgView.setFitHeight(56);
+			imgView.setFitWidth(60);
+			button.setGraphic(imgView);
 			button.getStylesheets().add("/stratmaker/css/Maker.css");
-			((VBox) ((ScrollPane) ((TabPane) borderPane.getRight()).getTabs().get(0).getContent()).getContent()).getChildren().add(button);
 		}
 		
 		for (Button button : gadgetList)
@@ -237,14 +211,15 @@ public class MakerController
 		
 		for (int i = 0; i < tabPane.getTabs().size(); i++)
 		{
+			ScrollPane scrollPane = new ScrollPane();
 			String floor = tabPane.getTabs().get(i).getText();
 			Image img = new Image("/stratmaker/resources/Blueprints/" + this.selectedMap.toString() + "/" + floor + ".jpg");
 			
 			floors[i] = new Floor(img, floor);
 			
 			AnchorPane anchorPane = new AnchorPane();
-			ZoomScrollPane scrollPane = new ZoomScrollPane(anchorPane);
 			anchorPane.getChildren().add(floors[i].getImgView());
+			scrollPane.setContent(anchorPane);
 			tabPane.getTabs().get(i).setContent(scrollPane);
 		}
 	}
