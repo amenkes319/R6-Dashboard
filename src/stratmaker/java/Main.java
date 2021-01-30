@@ -6,10 +6,11 @@ import stratmaker.java.global.Global;
 
 public class Main extends Application 
 {
+	@Override
 	public void start(Stage primaryStage) 
 	{
 		Global.primaryStage = primaryStage;
-        Global.primaryStage.setTitle("R6 Dashboard");
+        Global.primaryStage.setTitle("R6 Strat Maker");
 		Global.selectionController.changeToScene();
 	}
 	

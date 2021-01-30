@@ -12,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -31,7 +30,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import stratmaker.java.Map;
@@ -55,6 +53,7 @@ public class MakerController
 	@FXML private ColorPicker colorPicker;
 	@FXML private Slider lineWidthSlider;
 	@FXML private MenuItem undoBtn, redoBtn;
+	@FXML private TextField opSearchTxtFld, gadgetSearchTxtFld;
 	
 	private Map selectedMap;
 	private Floor[] floors;
@@ -107,11 +106,64 @@ public class MakerController
 		clearAction = new ClearAction();
 		deleteNodeAction = new DeleteNodeAction();
 		
-		String path = System.getProperty("user.dir") + "/src/stratmaker/resources/Nodes/";
-		addTab(new File(path + "Ops/Def"));
-//		addTab(new File(path + "Ops/Atk"));
-		addTab(new File(path + "Gadgets/Def"));
-//		addTab(new File(path + "Gadgets/Atk"));
+		File defOps = new File(System.getProperty("user.dir") + "/src/stratmaker/resources/Operators/Defenders");
+		for (File file : defOps.listFiles())
+		{
+			String name = file.getName().substring(0, file.getName().length() - 4);
+			Button button = new Button(name);
+			button.setOnAction(e -> addNode(e));
+			button.setTextFill(Color.WHITE);
+			button.setPrefWidth(180);
+			button.setPrefHeight(64);
+			button.setAlignment(Pos.CENTER_LEFT);
+			button.setStyle("-fx-font-size:16");
+			ImageView imgView;
+			
+			try
+			{
+				imgView = new ImageView(file.toURI().toURL().toString());
+				imgView.setFitHeight(56);
+				imgView.setFitWidth(60);
+				button.setGraphic(imgView);
+			} 
+			catch (MalformedURLException e1)
+			{
+				e1.printStackTrace();
+			}
+			
+			button.getStylesheets().add("/stratmaker/css/Maker.css");
+			((VBox) ((ScrollPane) ((TabPane) borderPane.getRight()).getTabs().get(0).getContent()).getContent()).getChildren().add(button);
+		}
+		
+		for (Button button : gadgetList)
+		{
+			button.setOnAction(e -> addNode(e));
+			ImageView imgView = new ImageView(new Image("/stratmaker/resources/Gadgets/" + button.getText().toLowerCase() + ".png"));
+			imgView.setFitHeight(56);
+			imgView.setFitWidth(60);
+			button.setGraphic(imgView);
+			button.getStylesheets().add("/stratmaker/css/Maker.css");
+		}
+		
+		opSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> 
+		{
+		    for (Button button : opList)
+		    {
+		    	
+		    	button.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(button.getText()).find());
+		    	button.setManaged(button.isVisible());
+		    }
+		});
+		
+		gadgetSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> 
+		{
+		    for (Button button : gadgetList)
+		    {
+		    	
+		    	button.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(button.getText()).find());
+		    	button.setManaged(button.isVisible());
+		    }
+		});
 		
 		backBtn.setOnAction(e -> Global.selectionController.changeToScene());
 		
@@ -197,62 +249,6 @@ public class MakerController
 		}
 	}
 	
-	public void addTab(File dir)
-	{
-		Tab tab = new Tab(dir.getName() + " " + dir.getParentFile().getName());
-		ScrollPane sp = new ScrollPane();
-		VBox vb = new VBox();
-		TextField search = new TextField();
-		search.setPromptText("Search");
-		search.textProperty().addListener((observable, oldValue, newValue) -> 
-		{
-		    for (Node n : vb.getChildren())
-		    {
-		    	if (n instanceof Button)
-		    	{
-			    	n.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(((Button) n).getText()).find());
-			    	n.setManaged(n.isVisible());
-		    	}
-		    }
-		});
-		
-		vb.getChildren().add(search);
-		vb.setSpacing(10);
-		vb.setStyle("-fx-background-color: #3f3f3f");
-		sp.setContent(vb);
-		tab.setContent(sp);
-		
-		for (File file : dir.listFiles())
-		{
-			String name = file.getName().substring(0, file.getName().length() - 4);
-			Button button = new Button(name);
-			button.setOnAction(e -> addNode(e));
-			button.setTextFill(Color.WHITE);
-			button.setPrefWidth(180);
-			button.setPrefHeight(64);
-			button.setAlignment(Pos.CENTER_LEFT);
-			button.setStyle("-fx-font-size:16");
-			
-			try
-			{
-				ImageView imgView = new ImageView(file.toURI().toURL().toString());
-				imgView.setFitHeight(56);
-				imgView.setFitWidth(60);
-				button.setGraphic(imgView);
-			} 
-			catch (MalformedURLException e)
-			{
-				e.printStackTrace();
-			}
-			
-			button.getStylesheets().add("/stratmaker/css/Maker.css");
-			vb.getChildren().add(button);
-		}
-
-		((TabPane) borderPane.getRight()).setPrefWidth(195);
-		((TabPane) borderPane.getRight()).getTabs().add(tab);
-	}
-	
 	public void addNode(ActionEvent event)
 	{
 		Image img = ((ImageView) ((Button) event.getSource()).getGraphic()).getImage();
@@ -324,18 +320,10 @@ public class MakerController
 					theta += Math.PI;
 				}
 				
-				theta = (theta + Math.PI) * 180 / Math.PI;
-				
-				//Theta value becomes 0-2pi
-				if (event.isControlDown())
-				{
-					if (theta % 45 < 23)
-						theta = 45 * ((int) (theta / 45));
-					else
-						theta = 45 * ((int) (theta / 45) + 1);
-				}
-				rotateNodeAction.setNewTheta(theta);
+				rotateNodeAction.setNewTheta((theta + Math.PI) * 180 / Math.PI);
 				rotateNodeAction.execute();
+				
+				System.out.println(deltaX + "  " + deltaY + "  " + theta * 180 / Math.PI);
 			}
 			else if (dragRadio.isSelected() && moveNodeAction.canExecute())
 			{
