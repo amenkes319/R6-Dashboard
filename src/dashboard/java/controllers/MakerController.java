@@ -1,8 +1,11 @@
 package dashboard.java.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
 
 import dashboard.java.Map;
 import dashboard.java.actions.AddNodeAction;
@@ -15,10 +18,14 @@ import dashboard.java.global.Global;
 import dashboard.java.undo.UndoCollector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.MenuItem;
@@ -30,12 +37,14 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.DirectoryChooser;
 
 public class MakerController
 {
@@ -45,7 +54,7 @@ public class MakerController
 	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio, deleteRadio;
 	@FXML private ColorPicker colorPicker;
 	@FXML private Slider lineWidthSlider;
-	@FXML private MenuItem undoBtn, redoBtn;
+	@FXML private MenuItem exportBtn, undoBtn, redoBtn;
 	@FXML private TextField opSearchTxtFld, gadgetSearchTxtFld;
 	
 	private Map selectedMap;
@@ -173,6 +182,32 @@ public class MakerController
 	        }
 	    });
 
+		exportBtn.setOnAction(e -> 
+		{
+			WritableImage image = getCurrentAnchorPane().snapshot(new SnapshotParameters(), null);
+
+			DirectoryChooser dirChooser = new DirectoryChooser();
+			File dir = dirChooser.showDialog(Global.primaryStage);
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setContentText("Saving... please wait");
+			alert.show();
+			dir = new File(dir.getAbsolutePath() + "/" + selectedMap);
+			dir.mkdir();
+			File files[] = new File[floors.length];
+			try
+			{
+				for (int i = 0; i < files.length; i++)
+				{
+					files[i] = new File(dir.getAbsolutePath() + "/" + selectedMap + " " + floors[i] + ".png");
+					ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", files[i]);
+				}
+			}
+			catch (IOException e1)
+			{
+				e1.printStackTrace();
+			}
+			alert.hide();
+		});
 		undoBtn.setOnAction(e -> UndoCollector.INSTANCE.undo());
 		redoBtn.setOnAction(e -> UndoCollector.INSTANCE.redo());
 		
