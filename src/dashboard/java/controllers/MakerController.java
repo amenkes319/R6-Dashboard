@@ -246,6 +246,14 @@ public class MakerController
 		for (int i = 0; i < tabPane.getTabs().size(); i++)
 		{
 			ScrollPane scrollPane = new ScrollPane();
+			
+			//Shitty pan solution for now
+			scrollPane.setOnMousePressed(e -> {
+				  if (e.getButton() == MouseButton.MIDDLE) scrollPane.setPannable(true);
+				});
+			scrollPane.setOnMouseReleased(e -> {
+				  if (e.getButton() == MouseButton.MIDDLE) scrollPane.setPannable(false);
+				});
 			String floor = tabPane.getTabs().get(i).getText();
 			Image img = new Image("/dashboard/resources/Blueprints/" + this.selectedMap.toString() + "/" + floor + ".jpg");
 			
