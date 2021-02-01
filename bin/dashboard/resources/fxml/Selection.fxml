@@ -39,7 +39,7 @@
       </VBox>
       <HBox alignment="CENTER_RIGHT">
          <children>
-            <Label prefHeight="25.0" prefWidth="250.0" text="Beta v0.1.1 Made by Dash" textFill="WHITE">
+            <Label prefHeight="25.0" prefWidth="250.0" text="Beta v0.1.2 Made by Dash" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
