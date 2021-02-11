@@ -24,7 +24,7 @@ public class MoveNodeAction implements Action, Undoable
 		this.oldDragContext = moveNodeAction.getOldDragContext();
 		this.newDragContext = moveNodeAction.getNewDragContext();
 		this.mouseEvent = null;
-		this.scale = 1;
+		this.scale = moveNodeAction.getScale();
 	}
 	
 	public MoveNodeAction(ImageView node, DragContext oldDragContext, DragContext newDragContext, MouseEvent mouseEvent, double scale)
@@ -111,6 +111,11 @@ public class MoveNodeAction implements Action, Undoable
 	public void setMouseEvent(MouseEvent mouseEvent)
 	{
 		this.mouseEvent = mouseEvent;
+	}
+	
+	public double getScale()
+	{
+		return this.scale;
 	}
 	
 	public void setScale(double scale)

@@ -281,76 +281,6 @@ public class MakerController
 		}
 	}
 	
-//	private void onImagePressed(MouseEvent event)
-//	{
-//		if (!deleteRadio.isSelected())
-//		{			
-//			rotateNodeAction.setImageView(imgView);
-//			rotateNodeAction.setOldTheta(imgView.getRotate());
-//		}
-//	}
-//	
-//	private void onImageDragged(MouseEvent event)
-//	{
-//		if (event.getButton() == MouseButton.PRIMARY)
-//		{
-//			double mouseX = event.getSceneX();
-//			double mouseY = event.getSceneY();
-//			if (rotateRadio.isSelected())
-//			{
-//				double deltaX = event.getSceneX() - initX;
-//				double deltaY = event.getSceneY() - initY;
-//				double theta = Math.atan(deltaY/deltaX) + Math.PI / 2;
-//				
-//				if (deltaX == 0 && deltaY == 0)
-//				{
-//					theta = 0;
-//				}
-//				else if (deltaX >= 0)
-//				{
-//					theta += Math.PI;
-//				}
-//				
-//				rotateNodeAction.setNewTheta((theta + Math.PI) * 180 / Math.PI);
-//				rotateNodeAction.execute();
-//				
-//				System.out.println(deltaX + "  " + deltaY + "  " + theta * 180 / Math.PI);
-//			}
-//			else if (dragRadio.isSelected() && moveNodeAction.canExecute())
-//			{
-//				moveNodeAction.setNewX(scrollXPosition(mouseX) - xOffset);
-//				moveNodeAction.setNewY(scrollYPosition(mouseY) - yOffset - 112);
-//				moveNodeAction.execute();
-//				System.out.println(moveNodeAction.getNewX() + " " + moveNodeAction.getNewY());
-//			}
-//		}
-//	}
-//	
-//	private void onImageReleased(MouseEvent event)
-//	{
-//		ImageView imgView = (ImageView) event.getSource();
-//		if (event.getButton() == MouseButton.PRIMARY)
-//		{
-//			if (dragRadio.isSelected())
-//			{
-//				moveNodeAction.setNewX(imgView.getX());
-//				moveNodeAction.setNewY(imgView.getY());
-//				UndoCollector.INSTANCE.add(moveNodeAction);
-//				
-//				moveNodeAction.reset();
-//			}
-//			else if (rotateRadio.isSelected())
-//			{
-//				System.out.println(imgView.getRotate());
-//				rotateNodeAction.setNewTheta(imgView.getRotate());
-//				UndoCollector.INSTANCE.add(rotateNodeAction);
-//				
-//				rotateNodeAction.reset();
-//			}
-//		}
-//	}
-//
-//	
 	public void drawInit()
 	{
 		colorPicker.setValue(Color.BLACK);
@@ -371,6 +301,16 @@ public class MakerController
 	public boolean isDeleteSelected()
 	{
 		return deleteRadio.isSelected();
+	}
+	
+	public boolean isDragSelected()
+	{
+		return dragRadio.isSelected();
+	}
+	
+	public boolean isRotateSelected()
+	{
+		return rotateRadio.isSelected();
 	}
 	
 	public ColorPicker getColorPicker()

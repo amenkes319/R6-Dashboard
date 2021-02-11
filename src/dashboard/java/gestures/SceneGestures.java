@@ -13,7 +13,12 @@ public class SceneGestures
 	private static final double MAX_SCALE = 4.0d;
 	private static final double MIN_SCALE = .26d;
 
-	private DragContext sceneDragContext = new DragContext();
+	private DragContext sceneDragContext;
+	
+	public SceneGestures()
+	{
+		sceneDragContext = new DragContext();
+	}
 	
 	public EventHandler<MouseEvent> getOnMousePressedEventHandler()
 	{

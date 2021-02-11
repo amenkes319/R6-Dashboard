@@ -12,10 +12,18 @@ import javafx.scene.input.MouseEvent;
 
 public class NodeGestures
 {
-	private DragContext nodeDragContext = new DragContext();
-	private MoveNodeAction moveNodeAction = new MoveNodeAction();
-	private RotateNodeAction rotateNodeAction = new RotateNodeAction();
-	private DeleteNodeAction deleteNodeAction = new DeleteNodeAction();
+	private DragContext nodeDragContext;
+	private MoveNodeAction moveNodeAction;
+	private RotateNodeAction rotateNodeAction;
+	private DeleteNodeAction deleteNodeAction;
+	
+	public NodeGestures()
+	{
+		nodeDragContext = new DragContext();
+		moveNodeAction = new MoveNodeAction();
+		rotateNodeAction = new RotateNodeAction();
+		deleteNodeAction = new DeleteNodeAction();
+	}
 	
 	public EventHandler<MouseEvent> getOnMousePressedEventHandler()
 	{
@@ -41,21 +49,27 @@ public class NodeGestures
 	{
 		public void handle(MouseEvent event)
 		{
-			if (event.getButton() != MouseButton.PRIMARY)
-				return;
-
-			nodeDragContext.setMouseAnchorX(event.getSceneX());
-			nodeDragContext.setMouseAnchorY(event.getSceneY());
+			if (event.getButton() != MouseButton.PRIMARY) return;
+			if (Global.maker.isDeleteSelected()) return;
 
 			Node node = (Node) event.getSource();
-
+			nodeDragContext.setMouseAnchorX(event.getSceneX());
+			nodeDragContext.setMouseAnchorY(event.getSceneY());
 			nodeDragContext.setTranslateAnchorX(node.getTranslateX());
 			nodeDragContext.setTranslateAnchorY(node.getTranslateY());
 			
-			moveNodeAction.setOldDragContext(nodeDragContext.copy());
-			moveNodeAction.setNode(node);
-			moveNodeAction.setMouseEvent(event);
-			moveNodeAction.setScale(Global.maker.getCurrentPane().getScale());
+			if (Global.maker.isDragSelected())
+			{
+				moveNodeAction.setOldDragContext(nodeDragContext.copy());
+				moveNodeAction.setNode(node);
+				moveNodeAction.setMouseEvent(event);
+				moveNodeAction.setScale(Global.maker.getCurrentPane().getScale());
+			}
+			else if (Global.maker.isRotateSelected())
+			{
+				rotateNodeAction.setNode(node);
+				rotateNodeAction.setOldTheta(node.getRotate());
+			}
 		}
 	};
 
@@ -66,10 +80,41 @@ public class NodeGestures
 			if (!event.isPrimaryButtonDown())
 				return;
 
-			moveNodeAction.setScale(Global.maker.getCurrentPane().getScale());
-			moveNodeAction.setNode((Node) event.getSource());
-			moveNodeAction.setMouseEvent(event);
-			moveNodeAction.execute();
+			if (Global.maker.isDragSelected())
+			{
+				moveNodeAction.setScale(Global.maker.getCurrentPane().getScale());
+				moveNodeAction.setNode((Node) event.getSource());
+				moveNodeAction.setMouseEvent(event);
+				moveNodeAction.execute();
+			}
+			else if (Global.maker.isRotateSelected())
+			{
+				double deltaX = nodeDragContext.getMouseAnchorX() - event.getSceneX();
+				double deltaY = nodeDragContext.getMouseAnchorY() - event.getSceneY();
+				double theta = Math.atan(deltaY/deltaX) + Math.PI / 2;
+				theta *= 180 / Math.PI;
+				
+				if (deltaX == 0 && deltaY == 0)
+				{
+					theta = 0;
+				}
+				else if (deltaX >= 0)
+				{
+					theta += 180;
+				}
+				
+				if (event.isControlDown())
+				{
+					int k = (int) theta / 45;
+					if (theta % 45 >= 23)
+						k++;
+					
+					theta = 45*k;
+				}
+				
+				rotateNodeAction.setNewTheta(theta);
+				rotateNodeAction.execute();
+			}
 
 			event.consume();
 		}
@@ -79,20 +124,27 @@ public class NodeGestures
 	{
 		public void handle(MouseEvent event)
 		{
-			if (event.getButton() != MouseButton.PRIMARY)
-				return;
-
-			nodeDragContext.setMouseAnchorX(event.getSceneX());
-			nodeDragContext.setMouseAnchorY(event.getSceneY());
+			if (event.getButton() != MouseButton.PRIMARY) return;
 
 			Node node = (Node) event.getSource();
-
-			nodeDragContext.setTranslateAnchorX(node.getTranslateX());
-			nodeDragContext.setTranslateAnchorY(node.getTranslateY());
-			
-			moveNodeAction.setNewDragContext(nodeDragContext.copy());
-			UndoCollector.INSTANCE.add(moveNodeAction.copy());
-			moveNodeAction.reset();
+			if (Global.maker.isDragSelected())
+			{
+				nodeDragContext.setMouseAnchorX(event.getSceneX());
+				nodeDragContext.setMouseAnchorY(event.getSceneY());	
+				nodeDragContext.setTranslateAnchorX(node.getTranslateX());
+				nodeDragContext.setTranslateAnchorY(node.getTranslateY());
+				
+				moveNodeAction.setNewDragContext(nodeDragContext.copy());
+				UndoCollector.INSTANCE.add(moveNodeAction.copy());
+				moveNodeAction.reset();
+			}			
+			else if (Global.maker.isRotateSelected())
+			{
+				System.out.println(node.getRotate());
+				UndoCollector.INSTANCE.add(rotateNodeAction);
+				
+				rotateNodeAction.reset();
+			}
 			
 			event.consume();
 		}
@@ -111,9 +163,4 @@ public class NodeGestures
 			deleteNodeAction.reset();
 		}
 	};
-	
-	private void updateNodeDragContext()
-	{
-		
-	}
 }

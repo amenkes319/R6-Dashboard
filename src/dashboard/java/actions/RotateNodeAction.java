@@ -1,11 +1,11 @@
 package dashboard.java.actions;
 
-import javafx.scene.image.ImageView;
 import dashboard.java.undo.Undoable;
+import javafx.scene.Node;
 
 public class RotateNodeAction implements Action, Undoable
 {
-	private ImageView imgView;
+	private Node node;
 	private double oldTheta, newTheta;
 
 	public RotateNodeAction()
@@ -13,28 +13,28 @@ public class RotateNodeAction implements Action, Undoable
 		reset();
 	}
 	
-	public RotateNodeAction(ImageView imgView)
+	public RotateNodeAction(Node node)
 	{
-		this.imgView = imgView;
+		this.node = node;
 		this.oldTheta = 0;
 		this.newTheta = 0;
 	}
 	
 	public RotateNodeAction(RotateNodeAction other)
 	{
-		this.imgView = other.getImageView();
+		this.node = other.getNode();
 		this.oldTheta = other.getOldTheta();
 		this.newTheta = other.getNewTheta();
 	}
 	
-	public ImageView getImageView()
+	public Node getNode()
 	{
-		return imgView;
+		return node;
 	}
 	
-	public void setImageView(ImageView imgView)
+	public void setNode(Node node)
 	{
-		this.imgView = imgView;
+		this.node = node;
 	}
 	
 	public double getOldTheta()
@@ -60,14 +60,14 @@ public class RotateNodeAction implements Action, Undoable
 	@Override
 	public void undo()
 	{
-		imgView.setRotate(oldTheta);
+		node.setRotate(oldTheta);
 	}
 
 	@Override
 	public void redo()
 	{
 		System.out.println(newTheta);
-		imgView.setRotate(newTheta);
+		node.setRotate(newTheta);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class RotateNodeAction implements Action, Undoable
 	@Override
 	public void execute()
 	{
-		imgView.setRotate(newTheta);
+		node.setRotate(newTheta);
 	}
 
 	@Override
@@ -91,9 +91,8 @@ public class RotateNodeAction implements Action, Undoable
 	@Override
 	public void reset()
 	{
-		this.imgView = null;
+		this.node = null;
 		this.oldTheta = 0;
 		this.newTheta = 0;
 	}
-
 }
