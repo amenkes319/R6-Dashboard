@@ -259,6 +259,7 @@ public class MakerController
 		
 		imgView.setTranslateX(Global.primaryStage.getScene().getWidth() / 2);
 		imgView.setTranslateY(Global.primaryStage.getScene().getHeight() / 2);
+		imgView.setPickOnBounds(true);
 		
 		imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
 		imgView.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
