@@ -11,8 +11,6 @@ import javax.imageio.ImageIO;
 import dashboard.java.Map;
 import dashboard.java.actions.AddNodeAction;
 import dashboard.java.actions.ClearAction;
-import dashboard.java.actions.MoveNodeAction;
-import dashboard.java.actions.RotateNodeAction;
 import dashboard.java.gestures.NodeGestures;
 import dashboard.java.gestures.SceneGestures;
 import dashboard.java.global.Global;
@@ -64,8 +62,6 @@ public class MakerController
 	private SceneGestures sceneGestures;
 	
 	private AddNodeAction addNodeAction;
-	private MoveNodeAction moveNodeAction;
-	private RotateNodeAction rotateNodeAction;
 	private ClearAction clearAction;
 	
 	public void changeToScene(Map selectedMap)
@@ -101,9 +97,7 @@ public class MakerController
 			}
 		});
 		
-		moveNodeAction = new MoveNodeAction();
 		addNodeAction = new AddNodeAction();
-		rotateNodeAction = new RotateNodeAction();
 		clearAction = new ClearAction();
 		
 		sceneGestures = new SceneGestures();

@@ -350,7 +350,12 @@
 												<Font size="15.0" />
 											</font>
 										</Button>
-										<Button fx:id="reinforcementGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Reinforce" textFill="WHITE">
+										<Button fx:id="reinforceGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Reinforce" textFill="WHITE">
+											<font>
+												<Font size="15.0" />
+											</font>
+										</Button>
+										<Button fx:id="reinforceLargeGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Reinforce 2" textFill="WHITE">
 											<font>
 												<Font size="15.0" />
 											</font>
@@ -410,7 +415,8 @@
 												<fx:reference source="mozzieGadget" />
 												<fx:reference source="muteGadget" />
 												<fx:reference source="proxyGadget" />
-												<fx:reference source="reinforcementGadget" />
+												<fx:reference source="reinforceGadget" />
+												<fx:reference source="reinforceLargeGadget" />
 												<fx:reference source="rotateGadget" />
 												<fx:reference source="shieldGadget" />
 												<fx:reference source="shieldTopGadget" />

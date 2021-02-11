@@ -140,7 +140,6 @@ public class NodeGestures
 			}			
 			else if (Global.maker.isRotateSelected())
 			{
-				System.out.println(node.getRotate());
 				UndoCollector.INSTANCE.add(rotateNodeAction);
 				
 				rotateNodeAction.reset();
