@@ -3,6 +3,7 @@ package dashboard.java.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -10,12 +11,13 @@ import javax.imageio.ImageIO;
 import dashboard.java.Map;
 import dashboard.java.actions.AddNodeAction;
 import dashboard.java.actions.ClearAction;
-import dashboard.java.actions.DeleteNodeAction;
 import dashboard.java.actions.MoveNodeAction;
 import dashboard.java.actions.RotateNodeAction;
-import dashboard.java.floor.Floor;
+import dashboard.java.gestures.NodeGestures;
+import dashboard.java.gestures.SceneGestures;
 import dashboard.java.global.Global;
 import dashboard.java.undo.UndoCollector;
+import dashboard.java.zoompane.ZoomPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
@@ -27,10 +29,10 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -40,9 +42,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 
@@ -58,13 +59,14 @@ public class MakerController
 	@FXML private TextField opSearchTxtFld, gadgetSearchTxtFld;
 	
 	private Map selectedMap;
-	private Floor[] floors;
+
+	private NodeGestures nodeGestures;
+	private SceneGestures sceneGestures;
 	
 	private AddNodeAction addNodeAction;
 	private MoveNodeAction moveNodeAction;
 	private RotateNodeAction rotateNodeAction;
 	private ClearAction clearAction;
-	private DeleteNodeAction deleteNodeAction;
 	
 	public void changeToScene(Map selectedMap)
 	{
@@ -94,19 +96,22 @@ public class MakerController
 		{
 			public void changed(ObservableValue<? extends Number> ov, Number oldVal, Number newVal)
 			{
-				for (Floor floor : floors)
-					floor.getGC().setLineWidth(lineWidthSlider.getValue());
+				for (Tab tab : tabPane.getTabs())
+					((ZoomPane) tab.getContent()).getGC().setLineWidth(lineWidthSlider.getValue());
 			}
 		});
-		
-		addFloors();
-		drawInit();
 		
 		moveNodeAction = new MoveNodeAction();
 		addNodeAction = new AddNodeAction();
 		rotateNodeAction = new RotateNodeAction();
 		clearAction = new ClearAction();
-		deleteNodeAction = new DeleteNodeAction();
+		
+		sceneGestures = new SceneGestures();
+		nodeGestures = new NodeGestures();
+
+		drawInit();
+		addFloors();
+		addSceneGestures();
 		
 		for (Button button : opList)
 		{
@@ -128,8 +133,7 @@ public class MakerController
 			button.getStylesheets().add("/dashboard/css/Maker.css");
 		}
 		
-		opSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> 
-		{
+		opSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> {
 		    for (Button button : opList)
 		    {
 		    	
@@ -138,8 +142,7 @@ public class MakerController
 		    }
 		});
 		
-		gadgetSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> 
-		{
+		gadgetSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> {
 		    for (Button button : gadgetList)
 		    {
 		    	
@@ -148,57 +151,48 @@ public class MakerController
 		    }
 		});
 		
-		backBtn.setOnAction(e -> Global.selectionController.changeToScene());
+		backBtn.setOnAction(e -> {
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to go back?");
+			alert.setHeaderText(null);
+			Optional<ButtonType> result = alert.showAndWait();
+			
+			if (result.get() == ButtonType.OK)
+				Global.selectionController.changeToScene();
+		});
 		
-		clearBtn.setOnAction(e ->
-		{
-			clearAction.setOldAnchorPane(getCurrentAnchorPane());
+		clearBtn.setOnAction(e -> {
+			clearAction.setOldPane(getCurrentPane());
 			clearAction.execute();
 			UndoCollector.INSTANCE.add(clearAction);
 			clearAction.reset();
 		});
-		
-		drawRadio.setOnAction(e -> 
-		{
-			getCurrentFloor().getCanvas().setWidth(getCurrentAnchorPane().getWidth());
-			getCurrentFloor().getCanvas().setHeight(getCurrentAnchorPane().getHeight());
-		});
-		
-		tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() 
-	    {
-	        @Override
-	        public void changed(ObservableValue<? extends Tab> ov, Tab oldTab, Tab newTab) 
-	        {
-	            for (Floor floor : floors)
-	            {
-	            	if (floor.toString().equals(newTab.getText()))
-	            	{
-	            		AnchorPane anchorPane = ((AnchorPane) ((ScrollPane) newTab.getContent()).getContent());
-	            		floor.getCanvas().setWidth(anchorPane.getWidth());
-	            		floor.getCanvas().setHeight(anchorPane.getHeight());
-	            		floor.getGC().setStroke(colorPicker.getValue());
-	            	}
-	            }
-	        }
-	    });
 
-		exportBtn.setOnAction(e -> 
-		{
+		exportBtn.setOnAction(e -> {
 			DirectoryChooser dirChooser = new DirectoryChooser();
 			File dir = dirChooser.showDialog(Global.primaryStage);
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setContentText("Saving... please wait");
+			
+			Alert alert = new Alert(AlertType.INFORMATION, "Saving... please wait");
+			alert.setTitle("Saving...");
+			alert.setHeaderText(null);
 			alert.show();
-			dir = new File(dir.getAbsolutePath() + "/" + selectedMap);
-			dir.mkdir();
-			File files[] = new File[floors.length];
+			
+			File folder = new File(dir.getAbsolutePath() + "/" + selectedMap);
+			int count = 1;
+			while (folder.exists())
+			{
+				folder = new File(dir.getAbsolutePath() + "/" + selectedMap + " (" + count + ")");
+				count++;
+			}
+
+			folder.mkdir();
+			
 			try
 			{
-				for (int i = 0; i < files.length; i++)
+				for (Tab tab : tabPane.getTabs())
 				{
-					WritableImage image = ((AnchorPane) ((ScrollPane) tabPane.getTabs().get(i).getContent()).getContent()).snapshot(new SnapshotParameters(), null);
-					files[i] = new File(dir.getAbsolutePath() + "/" + selectedMap + " " + floors[i] + ".png");
-					ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", files[i]);
+					WritableImage image = ((ZoomPane) tab.getContent()).snapshot(new SnapshotParameters(), null);
+					File file = new File(folder.getAbsolutePath() + "/" + selectedMap + " " + tab.getText() + ".png");
+					ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
 				}
 			}
 			catch (IOException e1)
@@ -207,11 +201,11 @@ public class MakerController
 			}
 			alert.hide();
 		});
+		
 		undoBtn.setOnAction(e -> UndoCollector.INSTANCE.undo());
 		redoBtn.setOnAction(e -> UndoCollector.INSTANCE.redo());
 		
-		Global.primaryStage.getScene().addEventHandler(KeyEvent.KEY_PRESSED, key ->
-		{
+		Global.primaryStage.getScene().addEventHandler(KeyEvent.KEY_PRESSED, key -> {
 			if (key.isControlDown())
 			{
 				if (key.getCode() == KeyCode.Z)
@@ -241,29 +235,23 @@ public class MakerController
 		else if (selectedMap == Map.VILLA)
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
 		
-		this.floors = new Floor[tabPane.getTabs().size()];
-		
 		for (int i = 0; i < tabPane.getTabs().size(); i++)
 		{
-			ScrollPane scrollPane = new ScrollPane();
-			
-			//Shitty pan solution for now
-			scrollPane.setOnMousePressed(e -> {
-				  if (e.getButton() == MouseButton.MIDDLE) scrollPane.setPannable(true);
-				});
-			scrollPane.setOnMouseReleased(e -> {
-				  if (e.getButton() == MouseButton.MIDDLE) scrollPane.setPannable(false);
-				});
 			String floor = tabPane.getTabs().get(i).getText();
-			Image img = new Image("/dashboard/resources/Blueprints/" + this.selectedMap.toString() + "/" + floor + ".jpg");
+			Image img = new Image("/dashboard/resources/Blueprints/" + selectedMap + "/" + floor + ".jpg");
 			
-			floors[i] = new Floor(img, floor);
+			ZoomPane zoomPane = new ZoomPane(new ImageView(img));
 			
-			AnchorPane anchorPane = new AnchorPane();
-			anchorPane.getChildren().add(floors[i].getImgView());
-			scrollPane.setContent(anchorPane);
-			tabPane.getTabs().get(i).setContent(scrollPane);
+			tabPane.getTabs().get(i).setContent(zoomPane);
 		}
+	}
+	
+	private void addSceneGestures()
+	{
+		tabPane.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+		tabPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
+		tabPane.addEventFilter(MouseEvent.MOUSE_RELEASED, sceneGestures.getOnMouseReleasedEventHandler());
+		tabPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
 	}
 	
 	public void addNode(ActionEvent event)
@@ -274,13 +262,14 @@ public class MakerController
 
 		imgView.setFitHeight(75);
 		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
-		imgView.setOnMousePressed(e -> onImagePressed(e));
-		imgView.setOnMouseDragged(e -> onImageDragged(e));
-		imgView.setOnMouseReleased(e -> onImageReleased(e));
-		imgView.setOnMouseClicked(e -> onImageClicked(e));
 		
-		imgView.setX(scrollXPosition(getCurrentScrollPane().getWidth() / 2 - imgView.getFitWidth()));
-		imgView.setY(scrollYPosition(getCurrentScrollPane().getHeight() / 2 - imgView.getFitHeight()));
+		imgView.setTranslateX(Global.primaryStage.getScene().getWidth() / 2);
+		imgView.setTranslateY(Global.primaryStage.getScene().getHeight() / 2);
+		
+		imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+		imgView.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+		imgView.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+		imgView.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnMouseClickedEventHandler());
 			
 		addNodeAction.setImageView(imgView);
 		if (addNodeAction.canExecute())
@@ -292,145 +281,96 @@ public class MakerController
 		}
 	}
 	
-	private double initX, initY, xOffset, yOffset;
-	
-	private void onImagePressed(MouseEvent event)
-	{
-		if (!deleteRadio.isSelected())
-		{
-			ImageView imgView = (ImageView) event.getSource();
-			
-			initX = event.getSceneX();
-			initY = event.getSceneY();
-			xOffset = event.getX() - imgView.getX();
-			yOffset = event.getY() - imgView.getY();
-			
-			System.out.println(event.getY() + "  " + imgView.getY());
-			
-			moveNodeAction.setImageView(imgView);
-			moveNodeAction.setOldX(event.getSceneX());
-			moveNodeAction.setOldY(event.getSceneY());
-			
-			rotateNodeAction.setImageView(imgView);
-			rotateNodeAction.setOldTheta(imgView.getRotate());
-		}
-	}
-	
-	private void onImageDragged(MouseEvent event)
-	{
-		if (event.getButton() == MouseButton.PRIMARY)
-		{
-			double mouseX = event.getSceneX();
-			double mouseY = event.getSceneY();
-			if (rotateRadio.isSelected())
-			{
-				double deltaX = event.getSceneX() - initX;
-				double deltaY = event.getSceneY() - initY;
-				double theta = Math.atan(deltaY/deltaX) + Math.PI / 2;
-				
-				if (deltaX == 0 && deltaY == 0)
-				{
-					theta = 0;
-				}
-				else if (deltaX >= 0)
-				{
-					theta += Math.PI;
-				}
-				
-				rotateNodeAction.setNewTheta((theta + Math.PI) * 180 / Math.PI);
-				rotateNodeAction.execute();
-				
-				System.out.println(deltaX + "  " + deltaY + "  " + theta * 180 / Math.PI);
-			}
-			else if (dragRadio.isSelected() && moveNodeAction.canExecute())
-			{
-				moveNodeAction.setNewX(scrollXPosition(mouseX) - xOffset);
-				moveNodeAction.setNewY(scrollYPosition(mouseY) - yOffset - 112);
-				moveNodeAction.execute();
+//	private void onImagePressed(MouseEvent event)
+//	{
+//		if (!deleteRadio.isSelected())
+//		{			
+//			rotateNodeAction.setImageView(imgView);
+//			rotateNodeAction.setOldTheta(imgView.getRotate());
+//		}
+//	}
+//	
+//	private void onImageDragged(MouseEvent event)
+//	{
+//		if (event.getButton() == MouseButton.PRIMARY)
+//		{
+//			double mouseX = event.getSceneX();
+//			double mouseY = event.getSceneY();
+//			if (rotateRadio.isSelected())
+//			{
+//				double deltaX = event.getSceneX() - initX;
+//				double deltaY = event.getSceneY() - initY;
+//				double theta = Math.atan(deltaY/deltaX) + Math.PI / 2;
+//				
+//				if (deltaX == 0 && deltaY == 0)
+//				{
+//					theta = 0;
+//				}
+//				else if (deltaX >= 0)
+//				{
+//					theta += Math.PI;
+//				}
+//				
+//				rotateNodeAction.setNewTheta((theta + Math.PI) * 180 / Math.PI);
+//				rotateNodeAction.execute();
+//				
+//				System.out.println(deltaX + "  " + deltaY + "  " + theta * 180 / Math.PI);
+//			}
+//			else if (dragRadio.isSelected() && moveNodeAction.canExecute())
+//			{
+//				moveNodeAction.setNewX(scrollXPosition(mouseX) - xOffset);
+//				moveNodeAction.setNewY(scrollYPosition(mouseY) - yOffset - 112);
+//				moveNodeAction.execute();
 //				System.out.println(moveNodeAction.getNewX() + " " + moveNodeAction.getNewY());
-			}
-		}
-	}
-	
-	private void onImageReleased(MouseEvent event)
-	{
-		ImageView imgView = (ImageView) event.getSource();
-		if (event.getButton() == MouseButton.PRIMARY)
-		{
-			if (dragRadio.isSelected())
-			{
-				moveNodeAction.setNewX(imgView.getX());
-				moveNodeAction.setNewY(imgView.getY());
-				UndoCollector.INSTANCE.add(moveNodeAction);
-				
-				moveNodeAction.reset();
-			}
-			else if (rotateRadio.isSelected())
-			{
-				System.out.println(imgView.getRotate());
-				rotateNodeAction.setNewTheta(imgView.getRotate());
-				UndoCollector.INSTANCE.add(rotateNodeAction);
-				
-				rotateNodeAction.reset();
-			}
-		}
-	}
-	
-	private void onImageClicked(MouseEvent event)
-	{
-		if (deleteRadio.isSelected())
-		{
-			ImageView imgView = (ImageView) event.getSource();
-			deleteNodeAction.setImageView(imgView);
-			deleteNodeAction.execute();
-			UndoCollector.INSTANCE.add(deleteNodeAction);
-			deleteNodeAction.reset();
-		}
-	}
-	
+//			}
+//		}
+//	}
+//	
+//	private void onImageReleased(MouseEvent event)
+//	{
+//		ImageView imgView = (ImageView) event.getSource();
+//		if (event.getButton() == MouseButton.PRIMARY)
+//		{
+//			if (dragRadio.isSelected())
+//			{
+//				moveNodeAction.setNewX(imgView.getX());
+//				moveNodeAction.setNewY(imgView.getY());
+//				UndoCollector.INSTANCE.add(moveNodeAction);
+//				
+//				moveNodeAction.reset();
+//			}
+//			else if (rotateRadio.isSelected())
+//			{
+//				System.out.println(imgView.getRotate());
+//				rotateNodeAction.setNewTheta(imgView.getRotate());
+//				UndoCollector.INSTANCE.add(rotateNodeAction);
+//				
+//				rotateNodeAction.reset();
+//			}
+//		}
+//	}
+//
+//	
 	public void drawInit()
 	{
 		colorPicker.setValue(Color.BLACK);
 		colorPicker.getCustomColors().addAll(Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.PURPLE);
-		colorPicker.setOnAction(e -> getCurrentFloor().getGC().setStroke(colorPicker.getValue()));
-		
-		for (Floor floor : floors)
-			floor.drawInit();
-		
-		for (int i = 0; i < tabPane.getTabs().size(); i++)
-		{
-			ScrollPane sPane = (ScrollPane) tabPane.getTabs().get(i).getContent();
-			AnchorPane aPane = (AnchorPane) sPane.getContent();
-			aPane.getChildren().add(floors[i].getCanvas());
-		}
+		colorPicker.setOnAction(e -> tabPane.getTabs().forEach(tab -> ((ZoomPane) tab.getContent()).getGC().setStroke(colorPicker.getValue())));
 	}
 	
-	private double scrollXPosition(double x)
-	{
-		double hScrollPosition = getCurrentScrollPane().getHvalue();
-		double anchorPaneWidth = getCurrentAnchorPane().getWidth();
-		double scrollPaneWidth = getCurrentScrollPane().getWidth();
-		
-		return hScrollPosition * (anchorPaneWidth - scrollPaneWidth) + x;
-	}
-	
-	private double scrollYPosition(double y)
-	{
-		double vScrollPosition = getCurrentScrollPane().getVvalue();
-		double anchorPaneHeight = getCurrentAnchorPane().getHeight();
-		double scrollPaneHeight = getCurrentScrollPane().getHeight();
-		
-		return vScrollPosition * (anchorPaneHeight - scrollPaneHeight) + y;
-	}
-	
-	public boolean drawSelected()
+	public boolean isDrawSelected()
 	{
 		return drawRadio.isSelected();
 	}
 	
-	public boolean eraseSelected()
+	public boolean isEraseSelected()
 	{
 		return eraseRadio.isSelected();
+	}
+	
+	public boolean isDeleteSelected()
+	{
+		return deleteRadio.isSelected();
 	}
 	
 	public ColorPicker getColorPicker()
@@ -443,23 +383,13 @@ public class MakerController
 		return this.lineWidthSlider;
 	}
 	
-	public AnchorPane getCurrentAnchorPane()
+	public ZoomPane getCurrentPane()
 	{
-		return (AnchorPane) getCurrentScrollPane().getContent();
+		return (ZoomPane) tabPane.getSelectionModel().getSelectedItem().getContent();
 	}
 	
-	public void setCurrentAnchorPane(AnchorPane anchorPane)
+	public void setCurrentPane(ZoomPane zoomPane)
 	{
-		getCurrentScrollPane().setContent(anchorPane);
-	}
-	
-	public ScrollPane getCurrentScrollPane()
-	{
-		return (ScrollPane) tabPane.getSelectionModel().getSelectedItem().getContent();
-	}
-	
-	public Floor getCurrentFloor()
-	{
-		return floors[this.tabPane.getSelectionModel().getSelectedIndex()];
+		tabPane.getSelectionModel().getSelectedItem().setContent(zoomPane);
 	}
 }

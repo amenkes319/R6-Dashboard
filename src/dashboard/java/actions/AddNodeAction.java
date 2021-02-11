@@ -1,8 +1,8 @@
 package dashboard.java.actions;
 
-import javafx.scene.image.ImageView;
 import dashboard.java.global.Global;
 import dashboard.java.undo.Undoable;
+import javafx.scene.image.ImageView;
 
 public class AddNodeAction implements Action, Undoable
 {
@@ -36,7 +36,7 @@ public class AddNodeAction implements Action, Undoable
 	@Override
 	public void undo()
 	{
-		Global.makerController.getCurrentAnchorPane().getChildren().remove(imgView);
+		Global.maker.getCurrentPane().getChildren().remove(imgView);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class AddNodeAction implements Action, Undoable
 	@Override
 	public void execute()
 	{
-		Global.makerController.getCurrentAnchorPane().getChildren().add(imgView);
+		Global.maker.getCurrentPane().getChildren().add(imgView);
 	}
 
 	@Override

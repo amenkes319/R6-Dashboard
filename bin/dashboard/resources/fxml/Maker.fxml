@@ -440,15 +440,15 @@
                   <Button fx:id="clearBtn" mnemonicParsing="false" text="Clear" />
                   <RadioButton fx:id="dragRadio" mnemonicParsing="false" selected="true" text="Drag">
                      <toggleGroup>
-                        <ToggleGroup fx:id="nodeClick" />
+                        <ToggleGroup fx:id="radioGroup" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="rotateRadio" mnemonicParsing="false" text="Rotate" toggleGroup="$nodeClick" />
-                  <RadioButton fx:id="drawRadio" mnemonicParsing="false" text="Draw" toggleGroup="$nodeClick" />
-                  <RadioButton fx:id="eraseRadio" mnemonicParsing="false" text="Erase" toggleGroup="$nodeClick" />
-                  <RadioButton fx:id="deleteRadio" mnemonicParsing="false" text="Delete" toggleGroup="$nodeClick" />
+                  <RadioButton fx:id="rotateRadio" mnemonicParsing="false" text="Rotate" toggleGroup="$radioGroup" />
+                  <RadioButton fx:id="drawRadio" mnemonicParsing="false" text="Draw" toggleGroup="$radioGroup" />
+                  <RadioButton fx:id="eraseRadio" mnemonicParsing="false" text="Erase" toggleGroup="$radioGroup" />
+                  <RadioButton fx:id="deleteRadio" mnemonicParsing="false" text="Delete" toggleGroup="$radioGroup" />
                   <ColorPicker fx:id="colorPicker" minHeight="25.0" prefHeight="25.0" prefWidth="90.0" />
-      			  <Slider fx:id="lineWidthSlider" blockIncrement="1.0" majorTickUnit="10.0" max="30.0" minWidth="200" minorTickCount="9" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      			  <Slider fx:id="lineWidthSlider" blockIncrement="1.0" majorTickUnit="10" min="0" max="30.0" minWidth="200" minorTickCount="9" showTickLabels="true" showTickMarks="true" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

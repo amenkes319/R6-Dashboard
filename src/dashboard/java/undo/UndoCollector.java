@@ -10,37 +10,29 @@ public class UndoCollector
 	private Deque<Undoable> undo;
 	private Deque<Undoable> redo;
 
-	private int sizeMax;
+	private final int MAX_SIZE;
 
 	private UndoCollector()
 	{
 		undo = new ArrayDeque<>();
 		redo = new ArrayDeque<>();
-		sizeMax = 50;
+		MAX_SIZE = 128;
 	}
-
-	/**
-	 * Adds an undoable object to the collector.
-	 * 
-	 * @param undoable The undoable object to add.
-	 */
+	
 	public void add(Undoable undoable)
 	{
-		if (undoable != null && sizeMax > 0)
+		if (undoable != null && MAX_SIZE > 0)
 		{
-			if (undo.size() == sizeMax)
+			if (undo.size() == MAX_SIZE)
 			{
 				undo.removeLast();
 			}
 
 			undo.push(undoable.copy());
-			redo.clear(); /* The redoable objects must be removed. */
+			redo.clear();
 		}
 	}
 
-	/**
-	 * Undoes the last undoable object.
-	 */
 	public void undo()
 	{
 		if (!undo.isEmpty())
@@ -51,9 +43,6 @@ public class UndoCollector
 		}
 	}
 
-	/**
-	 * Redoes the last undoable object.
-	 */
 	public void redo()
 	{
 		if (!redo.isEmpty())
@@ -63,35 +52,14 @@ public class UndoCollector
 			undo.push(undoable);
 		}
 	}
-
-	/**
-	 * @return The last undoable object or null.
-	 */
+	
 	public Undoable getLastUndo()
 	{
 		return undo.isEmpty() ? null : undo.peek();
 	}
 
-	/**
-	 * @return The last redoable object or null.
-	 */
 	public Undoable getLastRedo()
 	{
 		return redo.isEmpty() ? null : redo.peek();
-	}
-
-	/**
-	 * @param max The max number of saved undoable objects. Must be great than 0.
-	 */
-	public void setSizeMax(int max)
-	{
-		if (max >= 0)
-		{
-			for (int i = 0, nb = undo.size() - max; i < nb; i++)
-			{
-				undo.removeLast();
-			}
-			this.sizeMax = max;
-		}
 	}
 }

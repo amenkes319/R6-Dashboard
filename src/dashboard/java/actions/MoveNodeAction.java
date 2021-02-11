@@ -1,12 +1,17 @@
 package dashboard.java.actions;
 
-import javafx.scene.image.ImageView;
+import dashboard.java.gestures.DragContext;
 import dashboard.java.undo.Undoable;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class MoveNodeAction implements Action, Undoable
 {
-	private ImageView imgView;
-	private double oldX, oldY, newX, newY;
+	private Node node;
+	private DragContext oldDragContext, newDragContext;
+	private MouseEvent mouseEvent;
+	private double scale;
 
 	public MoveNodeAction()
 	{
@@ -15,111 +20,101 @@ public class MoveNodeAction implements Action, Undoable
 	
 	public MoveNodeAction(MoveNodeAction moveNodeAction)
 	{
-		this.imgView = moveNodeAction.getImageView();
-		this.oldX = moveNodeAction.getOldX();
-		this.oldY = moveNodeAction.getOldY();
-		this.newX = moveNodeAction.getNewX();
-		this.newY = moveNodeAction.getNewY();
+		this.node = moveNodeAction.getNode();
+		this.oldDragContext = moveNodeAction.getOldDragContext();
+		this.newDragContext = moveNodeAction.getNewDragContext();
+		this.mouseEvent = null;
+		this.scale = 1;
 	}
 	
-	public MoveNodeAction(ImageView img, double oldX, double oldY, double newX, double newY)
+	public MoveNodeAction(ImageView node, DragContext oldDragContext, DragContext newDragContext, MouseEvent mouseEvent, double scale)
 	{
-		this.imgView = img;
-		this.oldX = oldX;
-		this.oldY = oldY;
-		this.newX = newX;
-		this.newY = newY;
+		this.node = node;
+		this.oldDragContext = oldDragContext;
+		this.newDragContext = newDragContext;
+		this.mouseEvent = mouseEvent;
+		this.scale = scale;
 	}
 
-	public ImageView getImageView()
+	public Node getNode()
 	{
-		return imgView;
+		return node;
 	}
 
-	public void setImageView(ImageView img)
+	public void setNode(Node node)
 	{
-		this.imgView = img;
+		this.node = node;
 	}
-
-	public double getOldX()
+	
+	public DragContext getOldDragContext()
 	{
-		return oldX;
+		return oldDragContext;
 	}
-
-	public void setOldX(double oldX)
+	
+	public void setOldDragContext(DragContext oldDragContext)
 	{
-		this.oldX = oldX;
+		this.oldDragContext = oldDragContext;
 	}
-
-	public double getOldY()
+	
+	public DragContext getNewDragContext()
 	{
-		return oldY;
+		return newDragContext;
 	}
-
-	public void setOldY(double oldY)
+	
+	public void setNewDragContext(DragContext newDragContext)
 	{
-		this.oldY = oldY;
-	}
-
-	public double getNewX()
-	{
-		return newX;
-	}
-
-	public void setNewX(double newX)
-	{
-		this.newX = newX;
-	}
-
-	public double getNewY()
-	{
-		return newY;
-	}
-
-	public void setNewY(double newY)
-	{
-		this.newY = newY;
+		this.newDragContext = newDragContext;
 	}
 	
 	public void reset()
 	{
-		this.imgView = null;
-		this.oldX = 0;
-		this.oldY = 0;
-		this.newX = 0;
-		this.newY = 0;
+		this.node = null;
+		this.oldDragContext = null;
+		this.newDragContext = null;
+		this.mouseEvent = null;
+		this.scale = 0.0;
 	}
 
 	@Override
 	public void execute()
 	{
-		imgView.setX(newX);
-		imgView.setY(newY);
+		node.setTranslateX(oldDragContext.getTranslateAnchorX() + ((mouseEvent.getSceneX() - oldDragContext.getMouseAnchorX()) / scale));
+		node.setTranslateY(oldDragContext.getTranslateAnchorY() + ((mouseEvent.getSceneY() - oldDragContext.getMouseAnchorY()) / scale));
 	}
 
 	@Override
 	public boolean canExecute()
 	{
-		return imgView != null;
+		return node != null;
 	}
 
 	@Override
 	public void undo()
 	{
-		imgView.setX(oldX);
-		imgView.setY(oldY);
+		node.setTranslateX(oldDragContext.getTranslateAnchorX() / scale);
+		node.setTranslateY(oldDragContext.getTranslateAnchorY() / scale);
 	}
 
 	@Override
 	public void redo()
 	{
-		imgView.setX(newX);
-		imgView.setY(newY);
+		node.setTranslateX(newDragContext.getTranslateAnchorX() / scale);
+		node.setTranslateY(newDragContext.getTranslateAnchorY() / scale);
 	}
 	
 	@Override
 	public Undoable copy()
 	{
 		return new MoveNodeAction(this);
+	}
+	
+	public void setMouseEvent(MouseEvent mouseEvent)
+	{
+		this.mouseEvent = mouseEvent;
+	}
+	
+	public void setScale(double scale)
+	{
+		this.scale = scale;
 	}
 }

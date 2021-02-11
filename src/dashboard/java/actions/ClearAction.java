@@ -1,21 +1,21 @@
 package dashboard.java.actions;
 
-import javafx.scene.canvas.Canvas;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import dashboard.java.global.Global;
 import dashboard.java.undo.Undoable;
+import dashboard.java.zoompane.ZoomPane;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.image.ImageView;
 
 public class ClearAction implements Action, Undoable
 {
-	private AnchorPane oldPane, newPane;
+	private ZoomPane oldPane, newPane;
 
 	public ClearAction()
 	{
 		reset();
 	}
 	
-	public ClearAction(AnchorPane oldPane, AnchorPane newPane)
+	public ClearAction(ZoomPane oldPane, ZoomPane newPane)
 	{
 		this.oldPane = oldPane;
 		this.newPane = newPane;
@@ -23,21 +23,21 @@ public class ClearAction implements Action, Undoable
 	
 	public ClearAction(ClearAction clearAction)
 	{
-		this.oldPane = clearAction.getOldAnchorPane();
-		this.newPane = clearAction.getNewAnchorPane();
+		this.oldPane = clearAction.getOldPane();
+		this.newPane = clearAction.getNewPane();
 	}
 	
-	public AnchorPane getOldAnchorPane()
+	public ZoomPane getOldPane()
 	{
 		return this.oldPane;
 	}
 	
-	public void setOldAnchorPane(AnchorPane oldPane)
+	public void setOldPane(ZoomPane oldPane)
 	{
 		this.oldPane = oldPane;
 	}
 	
-	public AnchorPane getNewAnchorPane()
+	public ZoomPane getNewPane()
 	{
 		return this.newPane;
 	}
@@ -45,8 +45,7 @@ public class ClearAction implements Action, Undoable
 	@Override
 	public void undo()
 	{
-		Global.makerController.setCurrentAnchorPane(oldPane);
-		Global.makerController.getCurrentFloor().setCanvas((Canvas) oldPane.getChildren().get(1));
+		Global.maker.setCurrentPane(oldPane);
 	}
 
 	@Override
@@ -66,11 +65,11 @@ public class ClearAction implements Action, Undoable
 	{
 		Canvas newCanvas = new Canvas(oldPane.getWidth(), oldPane.getHeight());
 		ImageView map = new ImageView(((ImageView) oldPane.getChildren().get(0)).getImage());
-		newPane = new AnchorPane(map, newCanvas);
-		Global.makerController.setCurrentAnchorPane(newPane);
-		Global.makerController.getCurrentFloor().setCanvas(newCanvas);
-		
-		
+		newPane = new ZoomPane(map, newCanvas);
+		newPane.setScale(oldPane.getScale());
+		newPane.setTranslateX(oldPane.getTranslateX());
+		newPane.setTranslateY(oldPane.getTranslateY());
+		Global.maker.setCurrentPane(newPane);
 	}
 
 	@Override

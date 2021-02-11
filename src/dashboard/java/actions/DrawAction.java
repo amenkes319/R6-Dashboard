@@ -1,12 +1,14 @@
 package dashboard.java.actions;
 
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import dashboard.java.global.Global;
 import dashboard.java.undo.Undoable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 public class DrawAction implements Action, Undoable
 {
+	private static final double ERASER_MULTIPLIER = 1.4;
+
 	private Canvas oldCanvas, newCanvas;
 	private double x, y, oldX, oldY;
 
@@ -28,16 +30,14 @@ public class DrawAction implements Action, Undoable
 	@Override
 	public void undo()
 	{
-		System.out.println(Global.makerController.getCurrentAnchorPane().getChildren().get(1));
-		Global.makerController.getCurrentAnchorPane().getChildren().set(1, oldCanvas);
-		Global.makerController.getCurrentFloor().setCanvas(oldCanvas);
+		Global.maker.getCurrentPane().setCanvas(oldCanvas);
+
 	}
 
 	@Override
 	public void redo()
 	{
-		Global.makerController.getCurrentAnchorPane().getChildren().set(1, newCanvas);
-		Global.makerController.getCurrentFloor().setCanvas(newCanvas);
+		Global.maker.getCurrentPane().setCanvas(newCanvas);
 	}
 
 	@Override
@@ -49,17 +49,19 @@ public class DrawAction implements Action, Undoable
 	@Override
 	public void execute()
 	{
-		GraphicsContext gc = Global.makerController.getCurrentFloor().getGC();
-		if (Global.makerController.eraseSelected())
-			gc.clearRect(x - (gc.getLineWidth() / 2), y - (gc.getLineWidth() / 2), gc.getLineWidth(), gc.getLineWidth());
+		GraphicsContext gc = Global.maker.getCurrentPane().getGC();
+		if (Global.maker.isEraseSelected())
+		{
+			gc.clearRect(x - (gc.getLineWidth() * ERASER_MULTIPLIER / 2), y - (gc.getLineWidth() * ERASER_MULTIPLIER / 2), gc.getLineWidth() * ERASER_MULTIPLIER, gc.getLineWidth() * ERASER_MULTIPLIER);
+		} 
 		else
 		{
 			gc.strokeLine(oldX, oldY, x, y);
-			
+
 			oldX = x;
 			oldY = y;
 		}
-		
+
 		gc.stroke();
 	}
 
@@ -79,7 +81,7 @@ public class DrawAction implements Action, Undoable
 		this.oldX = 0;
 		this.oldY = 0;
 	}
-	
+
 	public Canvas getOldCanvas()
 	{
 		return oldCanvas;

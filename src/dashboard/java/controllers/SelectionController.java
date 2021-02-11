@@ -49,7 +49,7 @@ public class SelectionController
 		bottomHBox.prefWidthProperty().bind(parentVBox.widthProperty());
 		bottomHBox.prefHeightProperty().bind(parentVBox.heightProperty());
 		
-		clubBtn.setOnAction(e -> Global.makerController.changeToScene(Map.CLUBHOUSE));
+		clubBtn.setOnAction(e -> Global.maker.changeToScene(Map.CLUBHOUSE));
 		clubBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		clubBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		clubBtn.setGraphic(new ImageView("/dashboard/resources/Maps/Clubhouse.png"));
@@ -57,37 +57,37 @@ public class SelectionController
 		clubBtn.getGraphic().prefWidth(clubBtn.getWidth());
 		clubBtn.getGraphic().prefHeight(clubBtn.getHeight());
 		
-		coastBtn.setOnAction(e -> Global.makerController.changeToScene(Map.COASTLINE));
+		coastBtn.setOnAction(e -> Global.maker.changeToScene(Map.COASTLINE));
 		coastBtn.getStylesheets().add("/dashboard/css/Selection.css");
 		coastBtn.setGraphic(new ImageView("/dashboard/resources/Maps/Coastline.png"));
 		coastBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		coastBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		
-		consulateBtn.setOnAction(e -> Global.makerController.changeToScene(Map.CONSULATE));
+		consulateBtn.setOnAction(e -> Global.maker.changeToScene(Map.CONSULATE));
 		consulateBtn.getStylesheets().add("/dashboard/css/Selection.css");
 		consulateBtn.setGraphic(new ImageView("/dashboard/resources/Maps/Consulate.png"));
 		consulateBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		consulateBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		
-		kafeBtn.setOnAction(e -> Global.makerController.changeToScene(Map.KAFE));
+		kafeBtn.setOnAction(e -> Global.maker.changeToScene(Map.KAFE));
 		kafeBtn.getStylesheets().add("/dashboard/css/Selection.css");
 		kafeBtn.setGraphic(new ImageView("/dashboard/resources/Maps/Kafe.png"));
 		kafeBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		kafeBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		
-		oregonBtn.setOnAction(e -> Global.makerController.changeToScene(Map.OREGON));
+		oregonBtn.setOnAction(e -> Global.maker.changeToScene(Map.OREGON));
 		oregonBtn.getStylesheets().add("/dashboard/css/Selection.css");
 		oregonBtn.setGraphic(new ImageView("/dashboard/resources/Maps/Oregon.png"));
 		oregonBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		oregonBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		
-		themeBtn.setOnAction(e -> Global.makerController.changeToScene(Map.THEMEPARK));
+		themeBtn.setOnAction(e -> Global.maker.changeToScene(Map.THEMEPARK));
 		themeBtn.getStylesheets().add("/dashboard/css/Selection.css");
 		themeBtn.setGraphic(new ImageView("/dashboard/resources/Maps/Themepark.png"));
 		themeBtn.prefWidthProperty().bind(parentVBox.widthProperty());
 		themeBtn.prefHeightProperty().bind(parentVBox.heightProperty());
 		
-		villaBtn.setOnAction(e -> Global.makerController.changeToScene(Map.VILLA));
+		villaBtn.setOnAction(e -> Global.maker.changeToScene(Map.VILLA));
 		villaBtn.getStylesheets().add("/dashboard/css/Selection.css");
 		villaBtn.setGraphic(new ImageView("/dashboard/resources/Maps/Villa.png"));
 //		villaBtn.prefWidth(oregonBtn.getWidth());

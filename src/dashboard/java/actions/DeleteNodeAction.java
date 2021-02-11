@@ -1,12 +1,12 @@
 package dashboard.java.actions;
 
-import javafx.scene.image.ImageView;
 import dashboard.java.global.Global;
 import dashboard.java.undo.Undoable;
+import javafx.scene.Node;
 
 public class DeleteNodeAction implements Action, Undoable
 {
-	private ImageView imgView;
+	private Node node;
 	
 	public DeleteNodeAction()
 	{
@@ -15,34 +15,34 @@ public class DeleteNodeAction implements Action, Undoable
 	
 	public DeleteNodeAction(DeleteNodeAction removeNodeAction)
 	{
-		this.imgView = removeNodeAction.getImageView();
+		this.node = removeNodeAction.getNode();
 	}
 	
-	public DeleteNodeAction(ImageView img)
+	public DeleteNodeAction(Node node)
 	{
-		this.imgView = img;
+		this.node = node;
 	}
 	
-	public ImageView getImageView()
+	public Node getNode()
 	{
-		return imgView;
+		return node;
 	}
 	
-	public void setImageView(ImageView imgView)
+	public void setNode(Node node)
 	{
-		this.imgView = imgView;
+		this.node = node;
 	}
 
 	@Override
 	public void undo()
 	{
-		Global.makerController.getCurrentAnchorPane().getChildren().add(imgView);
+		Global.maker.getCurrentPane().getChildren().add(node);
 	}
 
 	@Override
 	public void redo()
 	{
-		Global.makerController.getCurrentAnchorPane().getChildren().remove(imgView);
+		Global.maker.getCurrentPane().getChildren().remove(node);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class DeleteNodeAction implements Action, Undoable
 	@Override
 	public void execute()
 	{
-		Global.makerController.getCurrentAnchorPane().getChildren().remove(imgView);
+		Global.maker.getCurrentPane().getChildren().remove(node);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class DeleteNodeAction implements Action, Undoable
 	@Override
 	public void reset()
 	{
-		this.imgView = null;
+		this.node = null;
 	}
 
 }
