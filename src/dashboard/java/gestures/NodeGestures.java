@@ -103,7 +103,7 @@ public class NodeGestures
 					theta += 180;
 				}
 				
-				if (event.isControlDown())
+				if (!event.isControlDown())
 				{
 					int k = (int) theta / 45;
 					if (theta % 45 >= 23)
