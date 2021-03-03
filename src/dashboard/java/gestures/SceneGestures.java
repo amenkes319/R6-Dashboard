@@ -11,7 +11,7 @@ import javafx.scene.input.ScrollEvent;
 public class SceneGestures
 {
 	private static final double MAX_SCALE = 4.0d;
-	private static final double MIN_SCALE = .26d;
+	private static final double MIN_SCALE = .19d;
 
 	private DragContext sceneDragContext;
 	

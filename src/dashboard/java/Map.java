@@ -2,7 +2,7 @@ package dashboard.java;
 
 public enum Map
 {
-	CLUBHOUSE("Clubhouse"), COASTLINE("Coastline"), CONSULATE("Consulate"), KAFE("Kafe"), OREGON("Oregon"), THEMEPARK("Themepark"), VILLA("Villa");
+	CHALET("Chalet"), CLUBHOUSE("Clubhouse"), COASTLINE("Coastline"), CONSULATE("Consulate"), KAFE("Kafe"), OREGON("Oregon"), THEMEPARK("Themepark"), VILLA("Villa");
 	
 	private String name;
 	

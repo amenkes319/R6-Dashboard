@@ -214,7 +214,9 @@ public class MakerController
 
 	private void addFloors()
 	{
-		if (selectedMap == Map.CLUBHOUSE)
+		if (selectedMap == Map.CHALET)
+			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
+		else if (selectedMap == Map.CLUBHOUSE)
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
 		else if (selectedMap == Map.COASTLINE)
 			tabPane.getTabs().addAll(new Tab("1st Floor"), new Tab("2nd Floor"));
