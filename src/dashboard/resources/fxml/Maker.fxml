@@ -32,156 +32,156 @@
 		</MenuBar>
 	</top>
 	<right>
-		<TabPane prefHeight="200.0" prefWidth="215.0" tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: #3f3f3f;" BorderPane.alignment="CENTER">
+		<TabPane prefHeight="200.0" prefWidth="275.0" tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: #3f3f3f;" BorderPane.alignment="CENTER">
 			<tabs>
-				<Tab closable="false" text="Operators">
+				<Tab closable="false" text="Def Op">
 					<content>
 						<ScrollPane prefHeight="775.0" prefViewportHeight="746.0" prefViewportWidth="200.0" prefWidth="210.0">
 							<content>
-								<VBox minHeight="4000" prefWidth="201.0" spacing="10.0" style="-fx-background-color: #3f3f3f;">
+								<VBox prefWidth="261.0" spacing="10.0" style="-fx-background-color: #3f3f3f;">
 									<children>
-                              <TextField fx:id="opSearchTxtFld" promptText="Search" />
-								        <Button fx:id="alibiOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="180.0" text="Alibi" textFill="WHITE">
+                              			<TextField fx:id="opSearchTxtFld" promptText="Search" />
+								        <Button fx:id="alibiOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Alibi" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="aruniOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Aruni" textFill="WHITE">
+										<Button fx:id="aruniOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Aruni" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="banditOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="27.0" prefWidth="180.0" text="Bandit" textFill="WHITE">
+										<Button fx:id="banditOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="27.0" prefWidth="240.0" text="Bandit" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="castleOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Castle" textFill="WHITE">
+										<Button fx:id="castleOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Castle" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="caveiraOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Caveira" textFill="WHITE">
+										<Button fx:id="caveiraOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Caveira" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="clashOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Clash" textFill="WHITE">
+										<Button fx:id="clashOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Clash" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="docOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Doc" textFill="WHITE">
+										<Button fx:id="docOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Doc" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="echoOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Echo" textFill="WHITE">
+										<Button fx:id="echoOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Echo" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="elaOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Ela" textFill="WHITE">
+										<Button fx:id="elaOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Ela" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="frostOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Frost" textFill="WHITE">
+										<Button fx:id="frostOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Frost" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="goyoOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Goyo" textFill="WHITE">
+										<Button fx:id="goyoOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Goyo" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="jagerOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Jager" textFill="WHITE">
+										<Button fx:id="jagerOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Jager" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="kaidOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Kaid" textFill="WHITE">
+										<Button fx:id="kaidOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Kaid" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="kapkanOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Kapkan" textFill="WHITE">
+										<Button fx:id="kapkanOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Kapkan" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="lesionOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Lesion" textFill="WHITE">
+										<Button fx:id="lesionOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Lesion" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="maestroOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Maestro" textFill="WHITE">
+										<Button fx:id="maestroOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Maestro" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="melusiOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Melusi" textFill="WHITE">
+										<Button fx:id="melusiOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Melusi" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="miraOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Mira" textFill="WHITE">
+										<Button fx:id="miraOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Mira" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="mozzieOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Mozzie" textFill="WHITE">
+										<Button fx:id="mozzieOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Mozzie" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="muteOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Mute" textFill="WHITE">
+										<Button fx:id="muteOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Mute" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="oryxOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Oryx" textFill="WHITE">
+										<Button fx:id="oryxOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Oryx" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="pulseOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Pulse" textFill="WHITE">
+										<Button fx:id="pulseOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Pulse" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="rookOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Rook" textFill="WHITE">
+										<Button fx:id="rookOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Rook" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="smokeOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Smoke" textFill="WHITE">
+										<Button fx:id="smokeOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Smoke" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="tachankaOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Tachanka" textFill="WHITE">
+										<Button fx:id="tachankaOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Tachanka" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="valkyrieOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Valkyrie" textFill="WHITE">
+										<Button fx:id="valkyrieOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Valkyrie" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="vigilOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Vigil" textFill="WHITE">
+										<Button fx:id="vigilOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Vigil" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="wamaiOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Wamai" textFill="WHITE">
+										<Button fx:id="wamaiOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Wamai" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="wardenOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Warden" textFill="WHITE">
+										<Button fx:id="wardenOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Warden" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
@@ -194,7 +194,7 @@
 							</content>
 						</ScrollPane>
 				    	<fx:define>
-							<ArrayList fx:id="opList">
+							<ArrayList fx:id="defOpList">
 								<fx:reference source="alibiOp" />
 								<fx:reference source="aruniOp" />
 								<fx:reference source="banditOp" />
@@ -228,170 +228,170 @@
 						</fx:define>
 					</content>
 				</Tab>
-				<Tab closable="false" text="Gadgets">
+				<Tab closable="false" text="Def Gadgets">
 					<content>
 						<ScrollPane prefViewportHeight="746.0" prefViewportWidth="200.0" prefWidth="215.0">
 							<content>
-								<VBox prefHeight="1804.0" prefWidth="201.0" spacing="10.0" style="-fx-background-color: #3f3f3f;">
+								<VBox prefWidth="261.0" spacing="10.0" style="-fx-background-color: #3f3f3f;">
 									<children>
                               			<TextField fx:id="gadgetSearchTxtFld" promptText="Search" />
-										<Button fx:id="alibiGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="180.0" text="Alibi" textFill="WHITE">
+										<Button fx:id="alibiGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Alibi" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="banditGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="27.0" prefWidth="180.0" text="Bandit" textFill="WHITE">
+										<Button fx:id="banditGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="27.0" prefWidth="240.0" text="Bandit" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="barbGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Barbed Wire" textFill="WHITE">
+										<Button fx:id="barbGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Barbed Wire" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="barricadeGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Barricade" textFill="WHITE">
+										<Button fx:id="barricadeGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Barricade" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="bulletproofGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Bulletproof" textFill="WHITE">
+										<Button fx:id="bulletproofGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Bulletproof" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="castleGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Castle" textFill="WHITE">
+										<Button fx:id="castleGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Castle" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="echoGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Echo" textFill="WHITE">
+										<Button fx:id="echoGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Echo" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="elaGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Ela" textFill="WHITE">
+										<Button fx:id="elaGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Ela" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="frostGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Frost" textFill="WHITE">
+										<Button fx:id="frostGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Frost" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="goyoGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Goyo" textFill="WHITE">
+										<Button fx:id="goyoGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Goyo" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="goyoTopGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Goyo Top" textFill="WHITE">
+										<Button fx:id="goyoTopGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Goyo Top" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="impactGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Impact" textFill="WHITE">
+										<Button fx:id="impactGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Impact" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="jagerGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Jager" textFill="WHITE">
+										<Button fx:id="jagerGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Jager" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="kaidGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Kaid" textFill="WHITE">
+										<Button fx:id="kaidGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Kaid" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="kapkanGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Kapkan" textFill="WHITE">
+										<Button fx:id="kapkanGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Kapkan" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="lesionGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Lesion" textFill="WHITE">
+										<Button fx:id="lesionGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Lesion" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="maestroGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Maestro" textFill="WHITE">
+										<Button fx:id="maestroGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Maestro" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="maestroTopGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Maestro Top" textFill="WHITE">
+										<Button fx:id="maestroTopGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Maestro Top" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="melusiGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Melusi" textFill="WHITE">
+										<Button fx:id="melusiGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Melusi" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="miraGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Mira" textFill="WHITE">
+										<Button fx:id="miraGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Mira" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="mozzieGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Mozzie" textFill="WHITE">
+										<Button fx:id="mozzieGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Mozzie" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="muteGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Mute" textFill="WHITE">
+										<Button fx:id="muteGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Mute" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="proxyGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Proxy" textFill="WHITE">
+										<Button fx:id="proxyGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Proxy" textFill="WHITE">
 											<font>
 												<Font size="15.0" />
 											</font>
 										</Button>
-										<Button fx:id="reinforceGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Reinforce" textFill="WHITE">
+										<Button fx:id="reinforceGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Reinforce" textFill="WHITE">
 											<font>
 												<Font size="15.0" />
 											</font>
 										</Button>
-										<Button fx:id="reinforceLargeGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Reinforce 2" textFill="WHITE">
+										<Button fx:id="reinforceLargeGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Reinforce 2" textFill="WHITE">
 											<font>
 												<Font size="15.0" />
 											</font>
 										</Button>
-										<Button fx:id="rotateGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Rotate" textFill="WHITE">
+										<Button fx:id="rotateGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Rotate" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="shieldGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Shield" textFill="WHITE">
+										<Button fx:id="shieldGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Shield" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="shieldTopGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Shield Top" textFill="WHITE">
+										<Button fx:id="shieldTopGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Shield Top" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="smokeGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Smoke" textFill="WHITE">
+										<Button fx:id="smokeGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Smoke" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="valkyrieGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Valkyrie" textFill="WHITE">
+										<Button fx:id="valkyrieGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Valkyrie" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
-										<Button fx:id="wamaiGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="180.0" text="Wamai" textFill="WHITE">
+										<Button fx:id="wamaiGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="64.0" prefWidth="240.0" text="Wamai" textFill="WHITE">
 											<font>
 												<Font size="16.0" />
 											</font>
 										</Button>
 									 	<fx:define>
-											<ArrayList fx:id="gadgetList">
+											<ArrayList fx:id="defGadgetList">
 												<fx:reference source="alibiGadget" />
 												<fx:reference source="banditGadget" />
 												<fx:reference source="barbGadget" />
@@ -423,6 +423,244 @@
 												<fx:reference source="smokeGadget" />
 												<fx:reference source="valkyrieGadget" />
 												<fx:reference source="wamaiGadget" />
+											</ArrayList>
+										</fx:define>
+									</children>
+									<padding>
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+									</padding>
+								</VBox>
+							</content>
+						</ScrollPane>
+					</content>
+				</Tab>
+				<Tab closable="false" text="Atk Op">
+					<content>
+						<ScrollPane prefHeight="775.0" prefViewportHeight="746.0" prefViewportWidth="200.0" prefWidth="210.0">
+							<content>
+								<VBox prefWidth="261.0" spacing="10.0" style="-fx-background-color: #3f3f3f;">
+									<children>
+                              		<TextField fx:id="opSearchTxtFld" promptText="Search" />
+								        <Button fx:id="aceOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Ace" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="amaruOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Amaru" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="ashOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Ash" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="blackbeardOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Blackbeard" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="blitzOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Blitz" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="buckOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Buck" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="capitaoOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Capitao" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="dokkaebiOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Dokkaebi" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="finkaOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Finka" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="fuzeOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Fuze" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="glazOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Glaz" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="gridlockOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Gridlock" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="hibanaOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Hibana" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="ianaOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Iana" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="iqOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="IQ" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="jackalOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Jackal" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="kaliOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Kali" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="lionOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Lion" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="maverickOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Maverick" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="montagneOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Montagne" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="nokkOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Nokk" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="nomadOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Nomad" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="sledgeOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Sledge" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="thatcherOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Thatcher" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="thermiteOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Thermite" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="twitchOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Twitch" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="yingOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Ying" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="zeroOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Zero" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+								        <Button fx:id="zofiaOp" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Zofia" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+									</children>
+									<padding>
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+									</padding>
+								</VBox>
+							</content>
+						</ScrollPane>
+				    	<fx:define>
+							<ArrayList fx:id="atkOpList">
+								<fx:reference source="aceOp" />
+								<fx:reference source="amaruOp" />
+								<fx:reference source="ashOp" />
+								<fx:reference source="blackbeardOp" />
+								<fx:reference source="blitzOp" />
+								<fx:reference source="buckOp" />
+								<fx:reference source="capitaoOp" />
+								<fx:reference source="dokkaebiOp" />
+								<fx:reference source="finkaOp" />
+								<fx:reference source="fuzeOp" />
+								<fx:reference source="glazOp" />
+								<fx:reference source="gridlockOp" />
+								<fx:reference source="hibanaOp" />
+								<fx:reference source="ianaOp" />
+								<fx:reference source="iqOp" />
+								<fx:reference source="jackalOp" />
+								<fx:reference source="kaliOp" />
+								<fx:reference source="lionOp" />
+								<fx:reference source="maverickOp" />
+								<fx:reference source="montagneOp" />
+								<fx:reference source="nokkOp" />
+								<fx:reference source="nomadOp" />
+								<fx:reference source="sledgeOp" />
+								<fx:reference source="thatcherOp" />
+								<fx:reference source="thermiteOp" />
+								<fx:reference source="twitchOp" />
+								<fx:reference source="yingOp" />
+								<fx:reference source="zeroOp" />
+								<fx:reference source="zofiaOp" />
+							</ArrayList>
+						</fx:define>
+					</content>
+				</Tab>
+				<Tab closable="false" text="Atk Gadgets">
+					<content>
+						<ScrollPane prefViewportHeight="746.0" prefViewportWidth="200.0" prefWidth="215.0" style="-fx-background-color: #3f3f3f;">
+							<content>
+								<VBox prefHeight="1440" prefWidth="261.0" spacing="10.0" style="-fx-background-color: #3f3f3f;">
+									<children>
+                              			<TextField fx:id="gadgetSearchTxtFld" promptText="Search" />
+										<Button fx:id="claymoreGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Claymore" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+										<Button fx:id="droneGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Drone" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+										<Button fx:id="gridlockGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Gridlock" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+										<Button fx:id="nomadGadget" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="58.0" prefWidth="240.0" text="Nomad" textFill="WHITE">
+											<font>
+												<Font size="16.0" />
+											</font>
+										</Button>
+									 	<fx:define>
+											<ArrayList fx:id="atkGadgetList">
+												<fx:reference source="claymoreGadget" />
+												<fx:reference source="droneGadget" />
+												<fx:reference source="gridlockGadget" />
+												<fx:reference source="nomadGadget" />
 											</ArrayList>
 										</fx:define>
 									</children>

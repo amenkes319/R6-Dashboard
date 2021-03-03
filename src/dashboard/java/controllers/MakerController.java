@@ -48,7 +48,7 @@ import javafx.stage.DirectoryChooser;
 public class MakerController
 {
 	@FXML private TabPane tabPane;
-	@FXML private ArrayList<Button> opList, gadgetList;
+	@FXML private ArrayList<Button> defOpList, defGadgetList, atkOpList, atkGadgetList;
 	@FXML private Button backBtn, clearBtn;
 	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio, deleteRadio;
 	@FXML private ColorPicker colorPicker;
@@ -107,7 +107,7 @@ public class MakerController
 		addFloors();
 		addSceneGestures();
 		
-		for (Button button : opList)
+		for (Button button : defOpList)
 		{
 			button.setOnAction(e -> addNode(e));
 			ImageView imgView = new ImageView(new Image("/dashboard/resources/Nodes/Ops/Def/" + button.getText() + ".png"));
@@ -117,7 +117,7 @@ public class MakerController
 			button.getStylesheets().add("/dashboard/css/Maker.css");
 		}
 		
-		for (Button button : gadgetList)
+		for (Button button : defGadgetList)
 		{
 			button.setOnAction(e -> addNode(e));
 			ImageView imgView = new ImageView(new Image("/dashboard/resources/Nodes/Gadgets/Def/" + button.getText() + ".png"));
@@ -127,8 +127,28 @@ public class MakerController
 			button.getStylesheets().add("/dashboard/css/Maker.css");
 		}
 		
+		for (Button button : atkOpList)
+		{
+			button.setOnAction(e -> addNode(e));
+			ImageView imgView = new ImageView(new Image("/dashboard/resources/Nodes/Ops/Atk/" + button.getText() + ".png"));
+			imgView.setFitHeight(56);
+			imgView.setFitWidth(60);
+			button.setGraphic(imgView);
+			button.getStylesheets().add("/dashboard/css/Maker.css");
+		}
+		
+		for (Button button : atkGadgetList)
+		{
+			button.setOnAction(e -> addNode(e));
+			ImageView imgView = new ImageView(new Image("/dashboard/resources/Nodes/Gadgets/Atk/" + button.getText() + ".png"));
+			imgView.setFitHeight(56);
+			imgView.setFitWidth(60);
+			button.setGraphic(imgView);
+			button.getStylesheets().add("/dashboard/css/Maker.css");
+		}
+		
 		opSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> {
-		    for (Button button : opList)
+		    for (Button button : defOpList)
 		    {
 		    	
 		    	button.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(button.getText()).find());
@@ -137,7 +157,7 @@ public class MakerController
 		});
 		
 		gadgetSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> {
-		    for (Button button : gadgetList)
+		    for (Button button : defGadgetList)
 		    {
 		    	
 		    	button.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(button.getText()).find());
