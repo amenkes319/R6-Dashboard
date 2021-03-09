@@ -63,12 +63,14 @@ public class ClearAction implements Action, Undoable
 	@Override
 	public void execute()
 	{
-		Canvas newCanvas = new Canvas(oldPane.getWidth(), oldPane.getHeight());
+		Canvas oldCanvas = (Canvas) oldPane.getChildren().get(1);
+		Canvas newCanvas = new Canvas(oldCanvas.getWidth(), oldCanvas.getHeight());
 		ImageView map = new ImageView(((ImageView) oldPane.getChildren().get(0)).getImage());
 		newPane = new ZoomPane(map, newCanvas);
 		newPane.setScale(oldPane.getScale());
 		newPane.setTranslateX(oldPane.getTranslateX());
 		newPane.setTranslateY(oldPane.getTranslateY());
+		System.out.println(newCanvas.getWidth());
 		Global.maker.setCurrentPane(newPane);
 	}
 
