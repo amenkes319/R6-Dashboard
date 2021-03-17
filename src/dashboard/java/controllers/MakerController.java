@@ -2,8 +2,12 @@ package dashboard.java.controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.Optional;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -22,6 +26,9 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
@@ -31,6 +38,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -42,13 +51,17 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 
 public class MakerController
 {
+	@FXML private BorderPane borderPane;
 	@FXML private TabPane tabPane;
-	@FXML private ArrayList<Button> defOpList, defGadgetList, atkOpList, atkGadgetList;
 	@FXML private Button backBtn, clearBtn;
 	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio, deleteRadio;
 	@FXML private ColorPicker colorPicker;
@@ -107,63 +120,33 @@ public class MakerController
 		addFloors();
 		addSceneGestures();
 		
-		for (Button button : defOpList)
+		TabPane tp = ((TabPane) borderPane.getRight());////////////////////////////////////////////////////////////////////////////////////////////////
+		for (Tab tabOut : tp.getTabs())
 		{
-			button.setOnAction(e -> addNode(e));
-			ImageView imgView = new ImageView(new Image("/dashboard/resources/Nodes/Ops/Def/" + button.getText() + ".png"));
-			imgView.setFitHeight(56);
-			imgView.setFitWidth(60);
-			button.setGraphic(imgView);
-			button.getStylesheets().add("/dashboard/css/Maker.css");
+			for (Tab tabIn : ((TabPane) tabOut.getContent()).getTabs())
+			{
+				final String path = "dashboard/resources/Nodes/" + tabOut.getText() + "/" + tabIn.getText();
+				final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+
+				if (jarFile.isFile())
+				{
+					try
+					{
+						JarFile jar = new JarFile(jarFile);
+						fillTab(tabIn, jar, path);
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+				}
+				else
+				{
+					final URL url = getClass().getResource("/" + path);
+					fillTab(tabIn, url, path);
+				}
+			}
 		}
-		
-		for (Button button : defGadgetList)
-		{
-			button.setOnAction(e -> addNode(e));
-			ImageView imgView = new ImageView(new Image("/dashboard/resources/Nodes/Gadgets/Def/" + button.getText() + ".png"));
-			imgView.setFitHeight(56);
-			imgView.setFitWidth(60);
-			button.setGraphic(imgView);
-			button.getStylesheets().add("/dashboard/css/Maker.css");
-		}
-		
-		for (Button button : atkOpList)
-		{
-			button.setOnAction(e -> addNode(e));
-			ImageView imgView = new ImageView(new Image("/dashboard/resources/Nodes/Ops/Atk/" + button.getText() + ".png"));
-			imgView.setFitHeight(56);
-			imgView.setFitWidth(60);
-			button.setGraphic(imgView);
-			button.getStylesheets().add("/dashboard/css/Maker.css");
-		}
-		
-		for (Button button : atkGadgetList)
-		{
-			button.setOnAction(e -> addNode(e));
-			ImageView imgView = new ImageView(new Image("/dashboard/resources/Nodes/Gadgets/Atk/" + button.getText() + ".png"));
-			imgView.setFitHeight(56);
-			imgView.setFitWidth(60);
-			button.setGraphic(imgView);
-			button.getStylesheets().add("/dashboard/css/Maker.css");
-		}
-		
-		opSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> {
-		    for (Button button : defOpList)
-		    {
-		    	
-		    	button.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(button.getText()).find());
-		    	button.setManaged(button.isVisible());
-		    }
-		});
-		
-		gadgetSearchTxtFld.textProperty().addListener((observable, oldValue, newValue) -> {
-		    for (Button button : defGadgetList)
-		    {
-		    	
-		    	button.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(button.getText()).find());
-		    	button.setManaged(button.isVisible());
-		    }
-		});
 		
 		backBtn.setOnAction(e -> {
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to go back?");
@@ -231,7 +214,137 @@ public class MakerController
 			
 		});
 	}
+	
+	public void fillTab(Tab tab, JarFile jar, String path)
+	{
+		TabPane tp = ((TabPane) borderPane.getRight());
+		ScrollPane sp = new ScrollPane();
+		VBox vbIn = new VBox(10);
+		VBox vbOut = new VBox(10);
+		TextField search = new TextField();
+		
+		vbOut.setAlignment(Pos.TOP_CENTER);
+		
+		vbIn.setPrefWidth(tp.getWidth());
+		vbIn.setSpacing(10);
+		vbIn.setPadding(new Insets(10));
+		vbIn.setStyle("-fx-background-color: #3f3f3f");
+		
+		vbOut.setAlignment(Pos.TOP_CENTER);
+		vbOut.setPadding(new Insets(5, 0, 0, 0));
+		vbOut.setStyle("-fx-background-color: #3f3f3f");
+		
+		sp.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
+		sp.setHbarPolicy(ScrollBarPolicy.NEVER);
+		sp.setContent(vbIn);
+		vbOut.getChildren().addAll(search, sp);
+		tab.setContent(vbOut);
+		
+		search.setMaxWidth(200);
+		search.setPromptText("Search");
+		search.textProperty().addListener((observable, oldValue, newValue) -> 
+		{
+		    for (Node n : vbIn.getChildren())
+		    {
+		    	n.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(((Button) n).getText()).find());
+		    	n.setManaged(n.isVisible());
+		    }
+		});
 
+		final Enumeration<JarEntry> entries = jar.entries();
+		while (entries.hasMoreElements())
+		{
+			String filePath = entries.nextElement().getName();
+			if (filePath.startsWith(path + "/") && filePath.contains("."))
+			{
+				String name = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.length() - 4);
+				Button button = new Button(name);
+				button.setOnAction(e -> addNode(e));
+				button.setTextFill(Color.WHITE);
+				button.setPrefWidth(180);
+				button.setPrefHeight(64);
+				button.setAlignment(Pos.CENTER_LEFT);
+				button.setStyle("-fx-font-size:16");
+				
+				ImageView imgView = new ImageView("/" + filePath);
+				imgView.setFitHeight(56);
+				imgView.setFitWidth(60);
+				button.setGraphic(imgView);
+				
+				button.getStylesheets().add("/dashboard/css/Maker.css");
+				vbIn.getChildren().add(button);
+			}
+		}
+	}
+	
+	public void fillTab(Tab tab, URL url, String path)
+	{
+		TabPane tp = ((TabPane) borderPane.getRight());
+		ScrollPane sp = new ScrollPane();
+		VBox vbIn = new VBox(10);
+		VBox vbOut = new VBox(10);
+		TextField search = new TextField();
+		
+		vbOut.setAlignment(Pos.TOP_CENTER);
+		
+		vbIn.setPrefWidth(tp.getWidth());
+		vbIn.setSpacing(10);
+		vbIn.setPadding(new Insets(10));
+		vbIn.setStyle("-fx-background-color: #3f3f3f");
+		
+		vbOut.setAlignment(Pos.TOP_CENTER);
+		vbOut.setPadding(new Insets(5, 0, 0, 0));
+		vbOut.setStyle("-fx-background-color: #3f3f3f");
+		
+		sp.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
+		sp.setHbarPolicy(ScrollBarPolicy.NEVER);
+		sp.setContent(vbIn);
+		vbOut.getChildren().addAll(search, sp);
+		tab.setContent(vbOut);
+		
+		search.setMaxWidth(200);
+		search.setPromptText("Search");
+		search.textProperty().addListener((observable, oldValue, newValue) -> 
+		{
+		    for (Node n : vbIn.getChildren())
+		    {
+		    	n.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(((Button) n).getText()).find());
+		    	n.setManaged(n.isVisible());
+		    }
+		});
+
+		if (url != null)
+		{
+			try
+			{
+				File dir = new File(url.toURI());
+				for (File file : dir.listFiles())
+				{
+					String name = file.getName().substring(0, file.getName().length() - 4);
+					Button button = new Button(name);
+					button.setOnAction(e -> addNode(e));
+					button.setTextFill(Color.WHITE);
+					button.setPrefWidth(180);
+					button.setPrefHeight(64);
+					button.setAlignment(Pos.CENTER_LEFT);
+					button.setStyle("-fx-font-size:16");
+					
+					ImageView imgView = new ImageView("/" + path + "/" + file.getName());
+					imgView.setFitHeight(56);
+					imgView.setFitWidth(60);
+					button.setGraphic(imgView);
+					
+					button.getStylesheets().add("/dashboard/css/Maker.css");
+					vbIn.getChildren().add(button);
+				}
+			}
+			catch (URISyntaxException e1)
+			{
+				e1.printStackTrace();
+			}
+		}
+	}
+	
 	private void addFloors()
 	{
 		if (selectedMap == Map.CHALET)

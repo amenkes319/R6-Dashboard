@@ -1,8 +1,8 @@
 package dashboard.java;
 	
+import dashboard.java.global.Global;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import dashboard.java.global.Global;
 
 public class Dashboard extends Application 
 {
