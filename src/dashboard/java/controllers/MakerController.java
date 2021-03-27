@@ -20,8 +20,6 @@ import dashboard.java.gestures.SceneGestures;
 import dashboard.java.global.Global;
 import dashboard.java.undo.UndoCollector;
 import dashboard.java.zoompane.ZoomPane;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,7 +64,7 @@ public class MakerController
 	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio, deleteRadio;
 	@FXML private ColorPicker colorPicker;
 	@FXML private Slider lineWidthSlider;
-	@FXML private MenuItem exportBtn, undoBtn, redoBtn;
+	@FXML private MenuItem exportBtn, settingsBtn, undoBtn, redoBtn;
 	@FXML private TextField opSearchTxtFld, gadgetSearchTxtFld;
 	
 	private Map selectedMap;
@@ -77,7 +75,7 @@ public class MakerController
 	private AddNodeAction addNodeAction;
 	private ClearAction clearAction;
 	
-	public void changeToScene(Map selectedMap)
+	public void show(Map selectedMap)
 	{
 		this.selectedMap = selectedMap;
 
@@ -101,13 +99,10 @@ public class MakerController
 	private void init()
 	{
 		lineWidthSlider.setValue(5.0);
-		lineWidthSlider.valueProperty().addListener(new ChangeListener<Number>() 
+		lineWidthSlider.valueProperty().addListener((v, oldVal, newVal) -> 
 		{
-			public void changed(ObservableValue<? extends Number> ov, Number oldVal, Number newVal)
-			{
-				for (Tab tab : tabPane.getTabs())
-					((ZoomPane) tab.getContent()).getGC().setLineWidth(lineWidthSlider.getValue());
-			}
+			for (Tab tab : tabPane.getTabs())
+				((ZoomPane) tab.getContent()).getGC().setLineWidth(lineWidthSlider.getValue());
 		});
 		
 		addNodeAction = new AddNodeAction();
@@ -120,7 +115,7 @@ public class MakerController
 		addFloors();
 		addSceneGestures();
 		
-		TabPane tp = ((TabPane) borderPane.getRight());////////////////////////////////////////////////////////////////////////////////////////////////
+		TabPane tp = ((TabPane) borderPane.getRight());
 		for (Tab tabOut : tp.getTabs())
 		{
 			for (Tab tabIn : ((TabPane) tabOut.getContent()).getTabs())
@@ -148,13 +143,19 @@ public class MakerController
 			}
 		}
 		
+		initButtons();
+		initShortcuts();
+	}
+	
+	private void initButtons()
+	{
 		backBtn.setOnAction(e -> {
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to go back?");
 			alert.setHeaderText(null);
 			Optional<ButtonType> result = alert.showAndWait();
 			
 			if (result.get() == ButtonType.OK)
-				Global.selectionController.changeToScene();
+				Global.selection.show();
 		});
 		
 		clearBtn.setOnAction(e -> {
@@ -162,6 +163,10 @@ public class MakerController
 			clearAction.execute();
 			UndoCollector.INSTANCE.add(clearAction);
 			clearAction.reset();
+		});
+		
+		settingsBtn.setOnAction(e -> {
+			
 		});
 
 		exportBtn.setOnAction(e -> {
@@ -201,8 +206,22 @@ public class MakerController
 		
 		undoBtn.setOnAction(e -> UndoCollector.INSTANCE.undo());
 		redoBtn.setOnAction(e -> UndoCollector.INSTANCE.redo());
-		
+	}
+	
+	private void initShortcuts()
+	{
 		Global.primaryStage.getScene().addEventHandler(KeyEvent.KEY_PRESSED, key -> {
+			if (key.getCode() == KeyCode.DIGIT1)
+				dragRadio.fire();
+			if (key.getCode() == KeyCode.DIGIT2)
+				rotateRadio.fire();
+			if (key.getCode() == KeyCode.DIGIT3)
+				drawRadio.fire();
+			if (key.getCode() == KeyCode.DIGIT4)
+				eraseRadio.fire();
+			if (key.getCode() == KeyCode.DIGIT5)
+				deleteRadio.fire();
+			
 			if (key.isControlDown())
 			{
 				if (key.getCode() == KeyCode.Z)
@@ -211,11 +230,10 @@ public class MakerController
 				if (key.getCode() == KeyCode.Y)
 					redoBtn.fire();
 			}
-			
 		});
 	}
 	
-	public void fillTab(Tab tab, JarFile jar, String path)
+	private void fillTab(Tab tab, JarFile jar, String path)
 	{
 		TabPane tp = ((TabPane) borderPane.getRight());
 		ScrollPane sp = new ScrollPane();
@@ -277,7 +295,7 @@ public class MakerController
 		}
 	}
 	
-	public void fillTab(Tab tab, URL url, String path)
+	private void fillTab(Tab tab, URL url, String path)
 	{
 		TabPane tp = ((TabPane) borderPane.getRight());
 		ScrollPane sp = new ScrollPane();
@@ -347,28 +365,35 @@ public class MakerController
 	
 	private void addFloors()
 	{
-		if (selectedMap == Map.CHALET)
+		switch (selectedMap)
+		{
+		case CHALET :
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
-		else if (selectedMap == Map.CLUBHOUSE)
+			break;
+		case CLUBHOUSE :
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
-		else if (selectedMap == Map.COASTLINE)
+			break;
+		case COASTLINE :
 			tabPane.getTabs().addAll(new Tab("1st Floor"), new Tab("2nd Floor"));
-		else if (selectedMap == Map.CONSULATE)
+			break;
+		case CONSULATE :
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
-		else if (selectedMap == Map.KAFE)
+			break;
+		case KAFE :
 			tabPane.getTabs().addAll(new Tab("1st Floor"), new Tab("2nd Floor"), new Tab("3rd Floor"));
-		else if (selectedMap == Map.OREGON)
+			break;
+		case OREGON :
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"), new Tab("T3"));
-		else if (selectedMap == Map.THEMEPARK)
-			tabPane.getTabs().addAll(new Tab("1st Floor"), new Tab("2nd Floor"));
-		else if (selectedMap == Map.VILLA)
+			break;
+		case VILLA :
 			tabPane.getTabs().addAll(new Tab("Basement"), new Tab("1st Floor"), new Tab("2nd Floor"));
+			break;
+		}
 		
 		for (int i = 0; i < tabPane.getTabs().size(); i++)
 		{
 			String floor = tabPane.getTabs().get(i).getText();
 			Image img = new Image("/dashboard/resources/Blueprints/" + selectedMap + "/" + floor + ".jpg");
-			
 			ZoomPane zoomPane = new ZoomPane(new ImageView(img));
 			
 			tabPane.getTabs().get(i).setContent(zoomPane);

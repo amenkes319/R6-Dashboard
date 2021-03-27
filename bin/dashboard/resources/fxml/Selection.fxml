@@ -16,36 +16,26 @@
       </Label>
       <VBox alignment="CENTER" layoutX="163.0" layoutY="100.0" prefHeight="1000.0" prefWidth="900.0">
          <children>
-            <HBox fx:id="topHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="1.0" minWidth="1.0" prefHeight="333.0" prefWidth="200.0">
+            <HBox fx:id="topHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" spacing="10" minHeight="1.0" minWidth="1.0" prefHeight="333.0" prefWidth="200.0">
                <children>
                   <Button fx:id="chaletBtn" maxWidth="200" mnemonicParsing="false" />
                   <Button fx:id="clubBtn" mnemonicParsing="false" />
                   <Button fx:id="coastBtn" mnemonicParsing="false" />
                </children>
             </HBox>
-            <HBox fx:id="midHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="1.0" minWidth="1.0" prefHeight="334.0" prefWidth="200.0">
+            <HBox fx:id="midHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" spacing="10" minHeight="1.0" minWidth="1.0" prefHeight="334.0" prefWidth="200.0">
                <children>
                   <Button fx:id="consulateBtn" mnemonicParsing="false" />
                   <Button fx:id="kafeBtn" mnemonicParsing="false" />
                   <Button fx:id="oregonBtn" mnemonicParsing="false" />
                </children>
             </HBox>
-            <HBox fx:id="bottomHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="1.0" minWidth="1.0" prefHeight="333.0" prefWidth="200.0">
+            <HBox fx:id="bottomHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" spacing="10" minHeight="1.0" minWidth="1.0" prefHeight="333.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="themeBtn" mnemonicParsing="false" />
                   <Button fx:id="villaBtn" mnemonicParsing="false" />
                </children>
             </HBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER_RIGHT">
-         <children>
-            <Label prefHeight="25.0" prefWidth="250.0" text="Beta v0.2.3 Made by Dash" textFill="WHITE">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
    </children>
 </VBox>
