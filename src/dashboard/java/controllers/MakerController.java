@@ -18,6 +18,9 @@ import dashboard.java.actions.ClearAction;
 import dashboard.java.gestures.NodeGestures;
 import dashboard.java.gestures.SceneGestures;
 import dashboard.java.global.Global;
+import dashboard.java.model.Data;
+import dashboard.java.model.Line;
+import dashboard.java.model.Stroke;
 import dashboard.java.undo.UndoCollector;
 import dashboard.java.zoompane.ZoomPane;
 import javafx.embed.swing.SwingFXUtils;
@@ -60,7 +63,7 @@ public class MakerController
 {
 	@FXML private BorderPane borderPane;
 	@FXML private TabPane tabPane;
-	@FXML private Button backBtn, clearBtn;
+	@FXML private Button testBtn, backBtn, clearBtn;
 	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio, deleteRadio;
 	@FXML private ColorPicker colorPicker;
 	@FXML private Slider lineWidthSlider;
@@ -99,8 +102,7 @@ public class MakerController
 	private void init()
 	{
 		lineWidthSlider.setValue(5.0);
-		lineWidthSlider.valueProperty().addListener((v, oldVal, newVal) -> 
-		{
+		lineWidthSlider.valueProperty().addListener((v, oldVal, newVal) -> {
 			for (Tab tab : tabPane.getTabs())
 				((ZoomPane) tab.getContent()).getGC().setLineWidth(lineWidthSlider.getValue());
 		});
@@ -163,6 +165,17 @@ public class MakerController
 			clearAction.execute();
 			UndoCollector.INSTANCE.add(clearAction);
 			clearAction.reset();
+		});
+		
+		testBtn.setOnAction(e -> {
+			for (Stroke stroke : Data.getStrokes())
+			{
+				for (Line line : stroke.getLines())
+				{
+					System.out.print(line);
+				}
+				System.out.println();
+			}
 		});
 		
 		settingsBtn.setOnAction(e -> {
@@ -260,8 +273,7 @@ public class MakerController
 		
 		search.setMaxWidth(200);
 		search.setPromptText("Search");
-		search.textProperty().addListener((observable, oldValue, newValue) -> 
-		{
+		search.textProperty().addListener((observable, oldValue, newValue) -> {
 		    for (Node n : vbIn.getChildren())
 		    {
 		    	n.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(((Button) n).getText()).find());
@@ -322,8 +334,7 @@ public class MakerController
 		
 		search.setMaxWidth(200);
 		search.setPromptText("Search");
-		search.textProperty().addListener((observable, oldValue, newValue) -> 
-		{
+		search.textProperty().addListener((observable, oldValue, newValue) -> {
 		    for (Node n : vbIn.getChildren())
 		    {
 		    	n.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(((Button) n).getText()).find());

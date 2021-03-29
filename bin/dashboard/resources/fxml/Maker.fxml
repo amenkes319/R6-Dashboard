@@ -113,6 +113,7 @@
 			<children>
 				<HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="785.0" spacing="20.0">
 					<children>
+						<Button fx:id="testBtn" mnemonicParsing="false" text="Test" />
 						<Button fx:id="backBtn" mnemonicParsing="false" text="Back" />
 						<Button fx:id="clearBtn" mnemonicParsing="false" text="Clear" />
 						<fx:define>

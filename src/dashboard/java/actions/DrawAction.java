@@ -1,6 +1,8 @@
 package dashboard.java.actions;
 
 import dashboard.java.global.Global;
+import dashboard.java.model.Data;
+import dashboard.java.model.Line;
 import dashboard.java.undo.Undoable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -53,11 +55,13 @@ public class DrawAction implements Action, Undoable
 		if (Global.maker.isEraseSelected())
 		{
 			gc.clearRect(x - (gc.getLineWidth() * ERASER_MULTIPLIER / 2), y - (gc.getLineWidth() * ERASER_MULTIPLIER / 2), gc.getLineWidth() * ERASER_MULTIPLIER, gc.getLineWidth() * ERASER_MULTIPLIER);
-		} 
+			Data.getStrokes().getLast().addLine(new Line(oldX, oldY, x, y, gc.getLineWidth()));
+		}
 		else
 		{
 			gc.strokeLine(oldX, oldY, x, y);
-
+			Data.getStrokes().getLast().addLine(new Line(oldX, oldY, x, y, gc.getLineWidth(), gc.getStroke()));
+			
 			oldX = x;
 			oldY = y;
 		}
@@ -74,12 +78,12 @@ public class DrawAction implements Action, Undoable
 	@Override
 	public void reset()
 	{
-		this.oldCanvas = null;
-		this.newCanvas = null;
-		this.x = 0;
-		this.y = 0;
-		this.oldX = 0;
-		this.oldY = 0;
+		oldCanvas = null;
+		newCanvas = null;
+		x = 0;
+		y = 0;
+		oldX = 0;
+		oldY = 0;
 	}
 
 	public Canvas getOldCanvas()

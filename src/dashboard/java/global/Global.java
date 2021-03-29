@@ -1,8 +1,11 @@
 package dashboard.java.global;
 
+import java.util.LinkedList;
+
 import dashboard.java.controllers.MakerController;
 import dashboard.java.controllers.SelectionController;
 import dashboard.java.controllers.SettingsController;
+import dashboard.java.model.Line;
 import javafx.stage.Stage;
 
 public class Global
