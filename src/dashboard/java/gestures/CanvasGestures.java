@@ -2,8 +2,6 @@ package dashboard.java.gestures;
 
 import dashboard.java.actions.DrawAction;
 import dashboard.java.global.Global;
-import dashboard.java.model.Data;
-import dashboard.java.model.Stroke;
 import dashboard.java.undo.UndoCollector;
 import javafx.event.EventHandler;
 import javafx.scene.SnapshotParameters;
@@ -32,7 +30,6 @@ public class CanvasGestures
 	
 	private DrawAction drawAction = new DrawAction();
 	private boolean bDraw = false;
-	private Stroke stroke;
 
 	private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>()
 	{
@@ -41,8 +38,6 @@ public class CanvasGestures
 			if (event.getButton() != MouseButton.PRIMARY) return;
 			if (!Global.maker.isDrawSelected() && !Global.maker.isEraseSelected()) return;
 			
-			
-			Data.addStroke();
 			bDraw = true;
 			double x = event.getX();
 			double y = event.getY();

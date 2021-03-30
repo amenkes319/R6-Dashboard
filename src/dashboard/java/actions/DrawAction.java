@@ -1,15 +1,15 @@
 package dashboard.java.actions;
 
 import dashboard.java.global.Global;
-import dashboard.java.model.Data;
-import dashboard.java.model.Line;
+import dashboard.java.model.Stroke;
 import dashboard.java.undo.Undoable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class DrawAction implements Action, Undoable
 {
-	private static final double ERASER_MULTIPLIER = 1.4;
+	public static final double ERASER_MULTIPLIER = 1.4;
 
 	private Canvas oldCanvas, newCanvas;
 	private double x, y, oldX, oldY;
@@ -54,13 +54,14 @@ public class DrawAction implements Action, Undoable
 		GraphicsContext gc = Global.maker.getCurrentPane().getGC();
 		if (Global.maker.isEraseSelected())
 		{
-			gc.clearRect(x - (gc.getLineWidth() * ERASER_MULTIPLIER / 2), y - (gc.getLineWidth() * ERASER_MULTIPLIER / 2), gc.getLineWidth() * ERASER_MULTIPLIER, gc.getLineWidth() * ERASER_MULTIPLIER);
-			Data.getStrokes().getLast().addLine(new Line(oldX, oldY, x, y, gc.getLineWidth()));
+			double width = gc.getLineWidth();
+			gc.clearRect(x - (width * ERASER_MULTIPLIER / 2), y - (width * ERASER_MULTIPLIER / 2), width * ERASER_MULTIPLIER, width * ERASER_MULTIPLIER);
+			Global.data.addStroke(new Stroke(Global.maker.getCurrentTab().getText(), oldX, oldY, x, y, gc.getLineWidth()));
 		}
 		else
 		{
 			gc.strokeLine(oldX, oldY, x, y);
-			Data.getStrokes().getLast().addLine(new Line(oldX, oldY, x, y, gc.getLineWidth(), gc.getStroke()));
+			Global.data.addStroke(new Stroke(Global.maker.getCurrentTab().getText(), oldX, oldY, x, y, gc.getLineWidth(), (Color) gc.getStroke()));
 			
 			oldX = x;
 			oldY = y;

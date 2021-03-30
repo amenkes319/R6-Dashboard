@@ -1,11 +1,9 @@
 package dashboard.java.global;
 
-import java.util.LinkedList;
-
 import dashboard.java.controllers.MakerController;
 import dashboard.java.controllers.SelectionController;
 import dashboard.java.controllers.SettingsController;
-import dashboard.java.model.Line;
+import dashboard.java.model.Data;
 import javafx.stage.Stage;
 
 public class Global
@@ -15,4 +13,5 @@ public class Global
 	public static SelectionController selection = new SelectionController();
 	public static MakerController maker = new MakerController();
 	public static SettingsController settings = new SettingsController();
+	public static Data data = new Data();
 }

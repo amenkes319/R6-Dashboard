@@ -16,7 +16,7 @@ public class UndoCollector
 	{
 		undo = new ArrayDeque<>();
 		redo = new ArrayDeque<>();
-		MAX_SIZE = 128;
+		MAX_SIZE = 1000;
 	}
 	
 	public void add(Undoable undoable)

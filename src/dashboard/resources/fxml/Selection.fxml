@@ -18,7 +18,7 @@
          <children>
             <HBox fx:id="topHBox" alignment="CENTER" maxHeight="1.7976931348623157E308" spacing="10" minHeight="1.0" minWidth="1.0" prefHeight="333.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="chaletBtn" maxWidth="200" mnemonicParsing="false" />
+                  <Button fx:id="chaletBtn" mnemonicParsing="false" />
                   <Button fx:id="clubBtn" mnemonicParsing="false" />
                   <Button fx:id="coastBtn" mnemonicParsing="false" />
                </children>

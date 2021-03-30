@@ -19,12 +19,11 @@ import dashboard.java.gestures.NodeGestures;
 import dashboard.java.gestures.SceneGestures;
 import dashboard.java.global.Global;
 import dashboard.java.model.Data;
-import dashboard.java.model.Line;
-import dashboard.java.model.Stroke;
+import dashboard.java.model.NodeData;
+import dashboard.java.model.RandomString;
 import dashboard.java.undo.UndoCollector;
 import dashboard.java.zoompane.ZoomPane;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -58,6 +57,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 public class MakerController
 {
@@ -67,7 +67,7 @@ public class MakerController
 	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio, deleteRadio;
 	@FXML private ColorPicker colorPicker;
 	@FXML private Slider lineWidthSlider;
-	@FXML private MenuItem exportBtn, settingsBtn, undoBtn, redoBtn;
+	@FXML private MenuItem exportBtn, saveBtn, saveAsBtn, openBtn, settingsBtn, undoBtn, redoBtn;
 	@FXML private TextField opSearchTxtFld, gadgetSearchTxtFld;
 	
 	private Map selectedMap;
@@ -81,6 +81,7 @@ public class MakerController
 	public void show(Map selectedMap)
 	{
 		this.selectedMap = selectedMap;
+		Global.data.setMap(selectedMap);
 
 		try
         {
@@ -168,18 +169,6 @@ public class MakerController
 		});
 		
 		testBtn.setOnAction(e -> {
-			for (Stroke stroke : Data.getStrokes())
-			{
-				for (Line line : stroke.getLines())
-				{
-					System.out.print(line);
-				}
-				System.out.println();
-			}
-		});
-		
-		settingsBtn.setOnAction(e -> {
-			
 		});
 
 		exportBtn.setOnAction(e -> {
@@ -217,8 +206,38 @@ public class MakerController
 			alert.hide();
 		});
 		
-		undoBtn.setOnAction(e -> UndoCollector.INSTANCE.undo());
-		redoBtn.setOnAction(e -> UndoCollector.INSTANCE.redo());
+		saveAsBtn.setOnAction(e -> {
+			FileChooser fileChooser = new FileChooser();
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+            fileChooser.getExtensionFilters().add(extFilter);
+			File file = fileChooser.showSaveDialog(Global.primaryStage);
+			Data.serialize(file);
+		});
+		
+		openBtn.setOnAction(e -> {
+			FileChooser fileChooser = new FileChooser();
+			File file = fileChooser.showOpenDialog(Global.primaryStage);
+			Data.deserialize(file);
+		});
+		
+		settingsBtn.setOnAction(e -> {
+			Global.settings.show();
+		});
+		
+		undoBtn.setOnAction(e -> {
+			UndoCollector.INSTANCE.undo();
+//			if (UndoCollector.INSTANCE.getLastUndo() == null)
+//				undoBtn.setDisable(true);
+//			else
+//				undoBtn.setDisable(false);
+		});
+		redoBtn.setOnAction(e -> {
+			UndoCollector.INSTANCE.redo();
+//			if (UndoCollector.INSTANCE.getLastRedo() == null)
+//				redoBtn.setDisable(true);
+//			else
+//				redoBtn.setDisable(false);
+		});
 	}
 	
 	private void initShortcuts()
@@ -289,7 +308,7 @@ public class MakerController
 			{
 				String name = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.length() - 4);
 				Button button = new Button(name);
-				button.setOnAction(e -> addNode(e));
+				button.setOnAction(e -> addNode(filePath));
 				button.setTextFill(Color.WHITE);
 				button.setPrefWidth(180);
 				button.setPrefHeight(64);
@@ -337,8 +356,7 @@ public class MakerController
 		search.textProperty().addListener((observable, oldValue, newValue) -> {
 		    for (Node n : vbIn.getChildren())
 		    {
-		    	n.setVisible(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(((Button) n).getText()).find());
-		    	n.setManaged(n.isVisible());
+		    	n.setManaged(Pattern.compile(Pattern.quote(newValue), Pattern.CASE_INSENSITIVE).matcher(((Button) n).getText()).find());
 		    }
 		});
 
@@ -351,7 +369,7 @@ public class MakerController
 				{
 					String name = file.getName().substring(0, file.getName().length() - 4);
 					Button button = new Button(name);
-					button.setOnAction(e -> addNode(e));
+					button.setOnAction(e -> addNode(path + "/" + file.getName()));
 					button.setTextFill(Color.WHITE);
 					button.setPrefWidth(180);
 					button.setPrefHeight(64);
@@ -419,32 +437,66 @@ public class MakerController
 		tabPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
 	}
 	
-	public void addNode(ActionEvent event)
+	public void addNode(String path)
 	{
-		Image img = ((ImageView) ((Button) event.getSource()).getGraphic()).getImage();
+		Image img = new Image(path);
 		ImageView imgView = new ImageView(img);
-		double imgRatio = img.getWidth() / img.getHeight();
 
+		double imgRatio = img.getWidth() / img.getHeight();
 		imgView.setFitHeight(75);
 		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
 		
-		imgView.setTranslateX(Global.primaryStage.getScene().getWidth() / 2);
-		imgView.setTranslateY(Global.primaryStage.getScene().getHeight() / 2);
+		imgView.setTranslateX(getCurrentPane().getWidth() / 2);
+		imgView.setTranslateY(getCurrentPane().getHeight() / 2);
 		imgView.setPickOnBounds(true);
 		
 		imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
 		imgView.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 		imgView.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
 		imgView.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnMouseClickedEventHandler());
-			
+		imgView.setId(new RandomString().nextString());
 		addNodeAction.setImageView(imgView);
 		if (addNodeAction.canExecute())
 		{
 			addNodeAction.execute();
-
+			Global.data.addNode(imgView, path, getCurrentTab().getText());
+			
 			UndoCollector.INSTANCE.add(addNodeAction);
 			addNodeAction.reset();
 		}
+	}
+	
+	public void addNodeJSON(NodeData nodeData)
+	{
+		Image img = new Image(nodeData.getPath());
+		ImageView imgView = new ImageView(img);
+		
+		double imgRatio = img.getWidth() / img.getHeight();
+		imgView.setFitHeight(75);
+		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
+
+		imgView.setTranslateX(nodeData.getX());
+		imgView.setTranslateY(nodeData.getY());
+		imgView.setPickOnBounds(true);
+		
+		imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+		imgView.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+		imgView.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+		imgView.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnMouseClickedEventHandler());
+		
+		imgView.setId(nodeData.getId());
+		imgView.setRotate(nodeData.getAngle());
+		
+		Tab currentTab = null;
+		for (Tab tab : Global.maker.getTabPane().getTabs())
+		{
+			if (tab.getText().equals(nodeData.getTab()))
+			{
+				currentTab = tab;
+				break;
+			}
+		}
+		((ZoomPane) currentTab.getContent()).getChildren().add(imgView);
 	}
 	
 	public void drawInit()
@@ -489,13 +541,28 @@ public class MakerController
 		return this.lineWidthSlider;
 	}
 	
+	public Map getMap()
+	{
+		return selectedMap;
+	}
+	
 	public ZoomPane getCurrentPane()
 	{
-		return (ZoomPane) tabPane.getSelectionModel().getSelectedItem().getContent();
+		return (ZoomPane) getCurrentTab().getContent();
 	}
 	
 	public void setCurrentPane(ZoomPane zoomPane)
 	{
-		tabPane.getSelectionModel().getSelectedItem().setContent(zoomPane);
+		getCurrentTab().setContent(zoomPane);
+	}
+	
+	public Tab getCurrentTab()
+	{
+		return tabPane.getSelectionModel().getSelectedItem();
+	}
+	
+	public TabPane getTabPane()
+	{
+		return tabPane;
 	}
 }

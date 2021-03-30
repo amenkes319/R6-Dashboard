@@ -2,12 +2,13 @@ package dashboard.java.controllers;
 
 import java.io.IOException;
 
-import dashboard.java.global.Global;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class SettingsController
 {
+	private Stage settingsStage;
 
 	public void show()
 	{
@@ -16,10 +17,11 @@ public class SettingsController
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/dashboard/resources/fxml/Settings.fxml"));
 
             loader.setController(this);
-            Global.primaryStage.setResizable(false);
-            Global.primaryStage.setScene(new Scene(loader.load()));
-            Global.primaryStage.centerOnScreen();
-            Global.primaryStage.show();
+            settingsStage = new Stage();
+            settingsStage.setResizable(false);
+            settingsStage.setScene(new Scene(loader.load()));
+            settingsStage.centerOnScreen();
+            settingsStage.showAndWait();
         }
         catch(IOException e)
         {

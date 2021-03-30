@@ -8,15 +8,16 @@
 <?import javafx.scene.layout.*?>
 <?import java.util.ArrayList?>
 
-<BorderPane fx:id="borderPane" prefHeight="810.0"
-	prefWidth="1440.0" xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderPane" prefHeight="810.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
 				<Menu mnemonicParsing="false" text="File">
 					<items>
-						<MenuItem fx:id="exportBtn" mnemonicParsing="false" text="Export" />
+						<MenuItem fx:id="exportBtn" mnemonicParsing="false" text="Export..." />
+                  <MenuItem fx:id="saveBtn" mnemonicParsing="false" text="Save" />
+                  <MenuItem fx:id="saveAsBtn" mnemonicParsing="false" text="Save as..." />
+                  <MenuItem fx:id="openBtn" mnemonicParsing="false" text="Open" />
 						<MenuItem fx:id="settingsBtn" mnemonicParsing="false" text="Settings" />
 					</items>
 				</Menu>
@@ -113,13 +114,14 @@
 			<children>
 				<HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="785.0" spacing="20.0">
 					<children>
-						<Button fx:id="testBtn" mnemonicParsing="false" text="Test" />
+						<Button fx:id="testBtn" managed="false" mnemonicParsing="false" text="Test" />
 						<Button fx:id="backBtn" mnemonicParsing="false" text="Back" />
 						<Button fx:id="clearBtn" mnemonicParsing="false" text="Clear" />
-						<fx:define>
-							<ToggleGroup fx:id="modeGroup" />
-						</fx:define>
-						<RadioButton fx:id="dragRadio" mnemonicParsing="false" selected="true" text="Drag" toggleGroup="$modeGroup"/>
+						<RadioButton fx:id="dragRadio" mnemonicParsing="false" selected="true" text="Drag">
+	                    	<toggleGroup>
+	                    		<ToggleGroup fx:id="modeGroup" />
+	                    	</toggleGroup>
+	                  	</RadioButton>
 						<RadioButton fx:id="rotateRadio" mnemonicParsing="false" text="Rotate" toggleGroup="$modeGroup" />
 						<RadioButton fx:id="drawRadio" mnemonicParsing="false" text="Draw" toggleGroup="$modeGroup" />
 						<RadioButton fx:id="eraseRadio" mnemonicParsing="false" text="Erase" toggleGroup="$modeGroup" />
