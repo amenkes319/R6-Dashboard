@@ -42,7 +42,6 @@ public class SceneGestures
 
 	private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>()
 	{
-
 		public void handle(MouseEvent event)
 		{
 			if (event.getButton() != MouseButton.MIDDLE) return;

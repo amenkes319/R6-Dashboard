@@ -33,7 +33,6 @@ public class DrawAction implements Action, Undoable
 	public void undo()
 	{
 		Global.maker.getCurrentPane().setCanvas(oldCanvas);
-
 	}
 
 	@Override

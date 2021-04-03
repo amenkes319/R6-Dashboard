@@ -208,7 +208,7 @@ public class MakerController
 		
 		saveAsBtn.setOnAction(e -> {
 			FileChooser fileChooser = new FileChooser();
-			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON File (*.json)", "*.json");
             fileChooser.getExtensionFilters().add(extFilter);
 			File file = fileChooser.showSaveDialog(Global.primaryStage);
 			Data.serialize(file);
@@ -334,8 +334,6 @@ public class MakerController
 		VBox vbOut = new VBox(10);
 		TextField search = new TextField();
 		
-		vbOut.setAlignment(Pos.TOP_CENTER);
-		
 		vbIn.setPrefWidth(tp.getWidth());
 		vbIn.setSpacing(10);
 		vbIn.setPadding(new Insets(10));
@@ -344,7 +342,8 @@ public class MakerController
 		vbOut.setAlignment(Pos.TOP_CENTER);
 		vbOut.setPadding(new Insets(5, 0, 0, 0));
 		vbOut.setStyle("-fx-background-color: #3f3f3f");
-		
+		vbOut.setAlignment(Pos.TOP_CENTER);
+
 		sp.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
 		sp.setHbarPolicy(ScrollBarPolicy.NEVER);
 		sp.setContent(vbIn);
@@ -445,16 +444,15 @@ public class MakerController
 		double imgRatio = img.getWidth() / img.getHeight();
 		imgView.setFitHeight(75);
 		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
-		
 		imgView.setTranslateX(getCurrentPane().getWidth() / 2);
 		imgView.setTranslateY(getCurrentPane().getHeight() / 2);
 		imgView.setPickOnBounds(true);
-		
 		imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
 		imgView.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 		imgView.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
 		imgView.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnMouseClickedEventHandler());
 		imgView.setId(new RandomString().nextString());
+
 		addNodeAction.setImageView(imgView);
 		if (addNodeAction.canExecute())
 		{
@@ -470,22 +468,20 @@ public class MakerController
 	{
 		Image img = new Image(nodeData.getPath());
 		ImageView imgView = new ImageView(img);
-		
+
 		double imgRatio = img.getWidth() / img.getHeight();
+
 		imgView.setFitHeight(75);
 		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
-
 		imgView.setTranslateX(nodeData.getX());
 		imgView.setTranslateY(nodeData.getY());
 		imgView.setPickOnBounds(true);
-		
+		imgView.setId(nodeData.getId());
+		imgView.setRotate(nodeData.getAngle());
 		imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
 		imgView.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 		imgView.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
 		imgView.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnMouseClickedEventHandler());
-		
-		imgView.setId(nodeData.getId());
-		imgView.setRotate(nodeData.getAngle());
 		
 		Tab currentTab = null;
 		for (Tab tab : Global.maker.getTabPane().getTabs())
