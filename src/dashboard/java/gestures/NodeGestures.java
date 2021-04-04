@@ -153,14 +153,15 @@ public class NodeGestures
 	{
 		public void handle(MouseEvent event)
 		{
-			if (!Global.maker.isDeleteSelected()) return;
-			
-			Node node = (Node) event.getSource();
-			deleteNodeAction.setNode(node);
-			deleteNodeAction.execute();
-
-			UndoCollector.INSTANCE.add(deleteNodeAction);
-			deleteNodeAction.reset();
+			if (Global.maker.isDeleteSelected())
+			{
+				Node node = (Node) event.getSource();
+				deleteNodeAction.setNode(node);
+				deleteNodeAction.execute();
+	
+				UndoCollector.INSTANCE.add(deleteNodeAction);
+				deleteNodeAction.reset();
+			}
 		}
 	};
 }

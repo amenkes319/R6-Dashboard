@@ -4,6 +4,7 @@ import dashboard.java.global.Global;
 import dashboard.java.zoompane.ZoomPane;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -35,6 +36,11 @@ public class SceneGestures
 		return onMouseReleasedEventHandler;
 	}
 
+	public EventHandler<MouseEvent> getOnMouseClickedEventHandler()
+	{
+		return onClickEventHandler;
+	}
+	
 	public EventHandler<ScrollEvent> getOnScrollEventHandler()
 	{
 		return onScrollEventHandler;
@@ -80,6 +86,21 @@ public class SceneGestures
 				return;
 
 			Global.primaryStage.getScene().setCursor(Cursor.DEFAULT);
+		}
+	};
+	
+	private EventHandler<MouseEvent> onClickEventHandler = new EventHandler<MouseEvent>()
+	{
+		@Override
+		public void handle(MouseEvent event)
+		{
+			if (Global.maker.isDragSelected())
+			{
+				if (event.getTarget() instanceof ImageView)
+					Global.maker.setSelectedNode((ImageView) event.getTarget());
+				else
+					Global.maker.setSelectedNode(null);
+			}
 		}
 	};
 

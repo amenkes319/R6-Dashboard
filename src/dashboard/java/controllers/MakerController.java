@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import dashboard.java.Map;
 import dashboard.java.actions.AddNodeAction;
 import dashboard.java.actions.ClearAction;
+import dashboard.java.actions.ResizeAction;
 import dashboard.java.gestures.NodeGestures;
 import dashboard.java.gestures.SceneGestures;
 import dashboard.java.global.Global;
@@ -64,11 +65,12 @@ public class MakerController
 	@FXML private BorderPane borderPane;
 	@FXML private TabPane tabPane;
 	@FXML private Button testBtn, backBtn, clearBtn;
-	@FXML private RadioButton dragRadio, rotateRadio, drawRadio, eraseRadio, deleteRadio;
+	@FXML private RadioButton selectRadio, dragRadio, rotateRadio, drawRadio, eraseRadio, deleteRadio;
 	@FXML private ColorPicker colorPicker;
-	@FXML private Slider lineWidthSlider;
+	@FXML private Slider lineWidthSlider, nodeSizeSlider;
 	@FXML private MenuItem exportBtn, saveBtn, saveAsBtn, openBtn, settingsBtn, undoBtn, redoBtn;
 	@FXML private TextField opSearchTxtFld, gadgetSearchTxtFld;
+	@FXML private ImageView selectedImgView;
 	
 	private Map selectedMap;
 
@@ -77,6 +79,9 @@ public class MakerController
 	
 	private AddNodeAction addNodeAction;
 	private ClearAction clearAction;
+	private ResizeAction resizeAction;
+	
+	private ImageView selectedNode;
 	
 	public void show(Map selectedMap)
 	{
@@ -101,18 +106,48 @@ public class MakerController
 	}
 	
 	private void init()
-	{
+	{		
+		addNodeAction = new AddNodeAction();
+		clearAction = new ClearAction();
+		resizeAction = new ResizeAction();
+		
+		sceneGestures = new SceneGestures();
+		nodeGestures = new NodeGestures();
+
 		lineWidthSlider.setValue(5.0);
 		lineWidthSlider.valueProperty().addListener((v, oldVal, newVal) -> {
 			for (Tab tab : tabPane.getTabs())
 				((ZoomPane) tab.getContent()).getGC().setLineWidth(lineWidthSlider.getValue());
 		});
 		
-		addNodeAction = new AddNodeAction();
-		clearAction = new ClearAction();
+		nodeSizeSlider.setOnMousePressed(e -> {
+			if (selectedNode != null)
+			{
+				System.out.println(selectedNode);
+				resizeAction.setNode(selectedNode);
+				resizeAction.setOldScale(nodeSizeSlider.getValue());
+			}
+		});
 		
-		sceneGestures = new SceneGestures();
-		nodeGestures = new NodeGestures();
+		nodeSizeSlider.setOnMouseReleased(e -> {
+			if (selectedNode != null)
+			{
+
+				resizeAction.setNewScale(nodeSizeSlider.getValue());
+				resizeAction.execute();
+				
+				UndoCollector.INSTANCE.add(resizeAction);
+				resizeAction.reset();
+			}
+		});
+		
+		nodeSizeSlider.valueProperty().addListener((v, oldVal, newVal) -> {
+			if (selectedNode != null)
+			{
+				selectedNode.setScaleX(newVal.doubleValue());
+				selectedNode.setScaleY(newVal.doubleValue());
+			}
+		});
 
 		drawInit();
 		addFloors();
@@ -306,18 +341,19 @@ public class MakerController
 			String filePath = entries.nextElement().getName();
 			if (filePath.startsWith(path + "/") && filePath.contains("."))
 			{
-				String name = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.length() - 4);
+				String name = filePath.substring(filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.'));
+				name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
 				Button button = new Button(name);
 				button.setOnAction(e -> addNode(filePath));
 				button.setTextFill(Color.WHITE);
-				button.setPrefWidth(180);
+				button.setPrefWidth(200);
 				button.setPrefHeight(64);
 				button.setAlignment(Pos.CENTER_LEFT);
 				button.setStyle("-fx-font-size:16");
 				
 				ImageView imgView = new ImageView("/" + filePath);
-				imgView.setFitHeight(56);
-				imgView.setFitWidth(60);
+				imgView.setFitHeight(75);
+				imgView.setFitWidth(75);
 				button.setGraphic(imgView);
 				
 				button.getStylesheets().add("/dashboard/css/Maker.css");
@@ -366,18 +402,18 @@ public class MakerController
 				File dir = new File(url.toURI());
 				for (File file : dir.listFiles())
 				{
-					String name = file.getName().substring(0, file.getName().length() - 4);
+					String name = Character.toUpperCase(file.getName().charAt(0)) + file.getName().substring(1, file.getName().lastIndexOf('.'));
 					Button button = new Button(name);
 					button.setOnAction(e -> addNode(path + "/" + file.getName()));
 					button.setTextFill(Color.WHITE);
-					button.setPrefWidth(180);
+					button.setPrefWidth(200);
 					button.setPrefHeight(64);
 					button.setAlignment(Pos.CENTER_LEFT);
 					button.setStyle("-fx-font-size:16");
 					
 					ImageView imgView = new ImageView("/" + path + "/" + file.getName());
-					imgView.setFitHeight(56);
-					imgView.setFitWidth(60);
+					imgView.setFitHeight(75);
+					imgView.setFitWidth(75);
 					button.setGraphic(imgView);
 					
 					button.getStylesheets().add("/dashboard/css/Maker.css");
@@ -433,6 +469,7 @@ public class MakerController
 		tabPane.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
 		tabPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
 		tabPane.addEventFilter(MouseEvent.MOUSE_RELEASED, sceneGestures.getOnMouseReleasedEventHandler());
+		tabPane.addEventFilter(MouseEvent.MOUSE_CLICKED, sceneGestures.getOnMouseClickedEventHandler());
 		tabPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
 	}
 	
@@ -502,6 +539,16 @@ public class MakerController
 		colorPicker.setOnAction(e -> tabPane.getTabs().forEach(tab -> ((ZoomPane) tab.getContent()).getGC().setStroke(colorPicker.getValue())));
 	}
 	
+	public boolean isDragSelected()
+	{
+		return dragRadio.isSelected();
+	}
+	
+	public boolean isRotateSelected()
+	{
+		return rotateRadio.isSelected();
+	}
+	
 	public boolean isDrawSelected()
 	{
 		return drawRadio.isSelected();
@@ -517,14 +564,19 @@ public class MakerController
 		return deleteRadio.isSelected();
 	}
 	
-	public boolean isDragSelected()
+	public void setSelectedNode(ImageView selectedNode)
 	{
-		return dragRadio.isSelected();
-	}
-	
-	public boolean isRotateSelected()
-	{
-		return rotateRadio.isSelected();
+		this.selectedNode = selectedNode;
+		if (selectedNode == null)
+		{
+			nodeSizeSlider.setValue(1.1);
+			selectedImgView.setImage(null);
+		}
+		else
+		{
+			nodeSizeSlider.setValue(selectedNode.getScaleX());
+			selectedImgView.setImage(selectedNode.getImage());
+		}
 	}
 	
 	public ColorPicker getColorPicker()
