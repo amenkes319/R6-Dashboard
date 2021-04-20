@@ -1,14 +1,14 @@
-package dashboard.java.actions;
+package dashboard.java.action;
 
-import dashboard.java.gestures.DragContext;
+import dashboard.java.gesture.DragContext;
+import dashboard.java.global.Global;
 import dashboard.java.undo.Undoable;
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class MoveNodeAction implements Action, Undoable
 {
-	private Node node;
+	private ImageView node;
 	private DragContext oldDragContext, newDragContext;
 	private MouseEvent mouseEvent;
 	private double scale;
@@ -36,12 +36,12 @@ public class MoveNodeAction implements Action, Undoable
 		this.scale = scale;
 	}
 
-	public Node getNode()
+	public ImageView getNode()
 	{
 		return node;
 	}
 
-	public void setNode(Node node)
+	public void setNode(ImageView node)
 	{
 		this.node = node;
 	}
@@ -65,6 +65,51 @@ public class MoveNodeAction implements Action, Undoable
 	{
 		this.newDragContext = newDragContext;
 	}
+
+	@Override
+	public void undo()
+	{
+		double x = oldDragContext.getTranslateAnchorX() / scale;
+		double y = oldDragContext.getTranslateAnchorY() / scale;
+		node.setTranslateX(x);
+		node.setTranslateY(y);
+		Global.maker.getBorder(node).setTranslateX(x);
+		Global.maker.getBorder(node).setTranslateY(y);
+	}
+
+	@Override
+	public void redo()
+	{
+		double x = newDragContext.getTranslateAnchorX() / scale;
+		double y = newDragContext.getTranslateAnchorY() / scale;
+		node.setTranslateX(x);
+		node.setTranslateY(y);
+		Global.maker.getBorder(node).setTranslateX(x);
+		Global.maker.getBorder(node).setTranslateY(y);
+	}
+	
+	@Override
+	public Undoable copy()
+	{
+		return new MoveNodeAction(this);
+	}
+	
+	@Override
+	public void execute()
+	{
+		double x = oldDragContext.getTranslateAnchorX() + ((mouseEvent.getSceneX() - oldDragContext.getMouseAnchorX()) / scale);
+		double y = oldDragContext.getTranslateAnchorY() + ((mouseEvent.getSceneY() - oldDragContext.getMouseAnchorY()) / scale);
+		node.setTranslateX(x);
+		node.setTranslateY(y);
+		Global.maker.getBorder(node).setTranslateX(x);
+		Global.maker.getBorder(node).setTranslateY(y);
+	}
+
+	@Override
+	public boolean canExecute()
+	{
+		return node != null;
+	}
 	
 	public void reset()
 	{
@@ -73,39 +118,6 @@ public class MoveNodeAction implements Action, Undoable
 		this.newDragContext = null;
 		this.mouseEvent = null;
 		this.scale = 0.0;
-	}
-
-	@Override
-	public void execute()
-	{
-		node.setTranslateX(oldDragContext.getTranslateAnchorX() + ((mouseEvent.getSceneX() - oldDragContext.getMouseAnchorX()) / scale));
-		node.setTranslateY(oldDragContext.getTranslateAnchorY() + ((mouseEvent.getSceneY() - oldDragContext.getMouseAnchorY()) / scale));
-	}
-
-	@Override
-	public boolean canExecute()
-	{
-		return node != null;
-	}
-
-	@Override
-	public void undo()
-	{
-		node.setTranslateX(oldDragContext.getTranslateAnchorX() / scale);
-		node.setTranslateY(oldDragContext.getTranslateAnchorY() / scale);
-	}
-
-	@Override
-	public void redo()
-	{
-		node.setTranslateX(newDragContext.getTranslateAnchorX() / scale);
-		node.setTranslateY(newDragContext.getTranslateAnchorY() / scale);
-	}
-	
-	@Override
-	public Undoable copy()
-	{
-		return new MoveNodeAction(this);
 	}
 	
 	public void setMouseEvent(MouseEvent mouseEvent)

@@ -1,4 +1,4 @@
-package dashboard.java.actions;
+package dashboard.java.action;
 
 import dashboard.java.global.Global;
 import dashboard.java.model.Stroke;

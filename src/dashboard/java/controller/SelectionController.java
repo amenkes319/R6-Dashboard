@@ -1,4 +1,4 @@
-package dashboard.java.controllers;
+package dashboard.java.controller;
 
 import java.io.IOException;
 

@@ -1,10 +1,11 @@
-package dashboard.java.controllers;
+package dashboard.java.controller;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -13,17 +14,17 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 import dashboard.java.Map;
-import dashboard.java.actions.AddNodeAction;
-import dashboard.java.actions.ClearAction;
-import dashboard.java.actions.ResizeAction;
-import dashboard.java.gestures.NodeGestures;
-import dashboard.java.gestures.SceneGestures;
+import dashboard.java.ZoomPane;
+import dashboard.java.action.AddNodeAction;
+import dashboard.java.action.ClearAction;
+import dashboard.java.action.ResizeAction;
+import dashboard.java.gesture.NodeGestures;
+import dashboard.java.gesture.SceneGestures;
 import dashboard.java.global.Global;
 import dashboard.java.model.Data;
 import dashboard.java.model.NodeData;
 import dashboard.java.model.RandomString;
 import dashboard.java.undo.UndoCollector;
-import dashboard.java.zoompane.ZoomPane;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,6 +58,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -82,6 +84,8 @@ public class MakerController
 	private ResizeAction resizeAction;
 	
 	private ImageView selectedNode;
+	
+	private HashMap<ImageView, Rectangle> borderMap;
 	
 	public void show(Map selectedMap)
 	{
@@ -113,6 +117,8 @@ public class MakerController
 		
 		sceneGestures = new SceneGestures();
 		nodeGestures = new NodeGestures();
+		
+		borderMap = new HashMap<>();
 
 		lineWidthSlider.setValue(5.0);
 		lineWidthSlider.valueProperty().addListener((v, oldVal, newVal) -> {
@@ -146,6 +152,8 @@ public class MakerController
 			{
 				selectedNode.setScaleX(newVal.doubleValue());
 				selectedNode.setScaleY(newVal.doubleValue());
+				getBorder(selectedNode).setScaleX(newVal.doubleValue());
+				getBorder(selectedNode).setScaleY(newVal.doubleValue());
 			}
 		});
 
@@ -475,20 +483,7 @@ public class MakerController
 	
 	public void addNode(String path)
 	{
-		Image img = new Image(path);
-		ImageView imgView = new ImageView(img);
-
-		double imgRatio = img.getWidth() / img.getHeight();
-		imgView.setFitHeight(75);
-		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
-		imgView.setTranslateX(getCurrentPane().getWidth() / 2);
-		imgView.setTranslateY(getCurrentPane().getHeight() / 2);
-		imgView.setPickOnBounds(true);
-		imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-		imgView.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-		imgView.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
-		imgView.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnMouseClickedEventHandler());
-		imgView.setId(new RandomString().nextString());
+		ImageView imgView = getImageView(path, getCurrentPane().getWidth() / 2, getCurrentPane().getHeight() / 2, new RandomString().nextString(), 0);
 
 		addNodeAction.setImageView(imgView);
 		if (addNodeAction.canExecute())
@@ -503,22 +498,7 @@ public class MakerController
 	
 	public void addNodeJSON(NodeData nodeData)
 	{
-		Image img = new Image(nodeData.getPath());
-		ImageView imgView = new ImageView(img);
-
-		double imgRatio = img.getWidth() / img.getHeight();
-
-		imgView.setFitHeight(75);
-		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
-		imgView.setTranslateX(nodeData.getX());
-		imgView.setTranslateY(nodeData.getY());
-		imgView.setPickOnBounds(true);
-		imgView.setId(nodeData.getId());
-		imgView.setRotate(nodeData.getAngle());
-		imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-		imgView.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-		imgView.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
-		imgView.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnMouseClickedEventHandler());
+		ImageView imgView = getImageView(nodeData.getPath(), nodeData.getX(), nodeData.getY(), nodeData.getId(), nodeData.getAngle());
 		
 		Tab currentTab = null;
 		for (Tab tab : Global.maker.getTabPane().getTabs())
@@ -530,6 +510,37 @@ public class MakerController
 			}
 		}
 		((ZoomPane) currentTab.getContent()).getChildren().add(imgView);
+	}
+	
+	private ImageView getImageView(String url, double x, double y, String id, double angle)
+	{
+		Image img = new Image(url);
+		ImageView imgView = new ImageView(img);
+
+		double imgRatio = img.getWidth() / img.getHeight();
+
+		imgView.setFitHeight(75);
+		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
+		imgView.setPickOnBounds(true);
+		imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+		imgView.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+		imgView.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+		imgView.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnMouseClickedEventHandler());
+		imgView.setTranslateX(x);
+		imgView.setTranslateY(y);
+		imgView.setId(id);
+		imgView.setRotate(angle);
+		
+		Rectangle rect = new Rectangle(imgView.getFitWidth(), imgView.getFitHeight(), Color.TRANSPARENT);
+		rect.setStroke(Color.BLACK);
+		rect.setStrokeWidth(2.5);
+		rect.setTranslateX(x);
+		rect.setTranslateY(y);
+		rect.setRotate(angle);
+
+		borderMap.put(imgView, rect);
+		
+		return imgView;
 	}
 	
 	public void drawInit()
@@ -564,12 +575,17 @@ public class MakerController
 		return deleteRadio.isSelected();
 	}
 	
+	public Rectangle getBorder(ImageView imgView)
+	{
+		return borderMap.get(imgView);
+	}
+	
 	public void setSelectedNode(ImageView selectedNode)
 	{
 		this.selectedNode = selectedNode;
 		if (selectedNode == null)
 		{
-			nodeSizeSlider.setValue(1.1);
+			nodeSizeSlider.setValue(1);
 			selectedImgView.setImage(null);
 		}
 		else

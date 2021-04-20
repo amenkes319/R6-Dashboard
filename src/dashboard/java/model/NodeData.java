@@ -4,8 +4,9 @@ public class NodeData
 {
 	private String path, id, tab;
 	private double x, y, angle;
+	private double r, g, b, a;
 
-	public NodeData(String path, String id, double x, double y, double angle, String tab)
+	public NodeData(String path, String id, double x, double y, double angle, String tab, double r, double g, double b, double a)
 	{
 		this.path = path;
 		this.id = id;
@@ -73,6 +74,46 @@ public class NodeData
 	public void setTab(String tab)
 	{
 		this.tab = tab;
+	}
+
+	public double getRed()
+	{
+		return r;
+	}
+
+	public void setRed(double r)
+	{
+		this.r = r;
+	}
+
+	public double getGreen()
+	{
+		return g;
+	}
+
+	public void setGreen(double g)
+	{
+		this.g = g;
+	}
+
+	public double getBlue()
+	{
+		return b;
+	}
+
+	public void setBlue(double b)
+	{
+		this.b = b;
+	}
+
+	public double getAlpha()
+	{
+		return a;
+	}
+
+	public void setAlpha(double a)
+	{
+		this.a = a;
 	}
 
 	public String toString()

@@ -1,4 +1,4 @@
-package dashboard.java.actions;
+package dashboard.java.action;
 
 public interface Action
 {

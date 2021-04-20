@@ -1,8 +1,8 @@
 package dashboard.java.global;
 
-import dashboard.java.controllers.MakerController;
-import dashboard.java.controllers.SelectionController;
-import dashboard.java.controllers.SettingsController;
+import dashboard.java.controller.MakerController;
+import dashboard.java.controller.SelectionController;
+import dashboard.java.controller.SettingsController;
 import dashboard.java.model.Data;
 import javafx.stage.Stage;
 

@@ -13,13 +13,14 @@ import java.util.LinkedList;
 import com.google.gson.Gson;
 
 import dashboard.java.Map;
-import dashboard.java.actions.DrawAction;
+import dashboard.java.ZoomPane;
+import dashboard.java.action.DrawAction;
 import dashboard.java.global.Global;
-import dashboard.java.zoompane.ZoomPane;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Tab;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class Data
@@ -57,7 +58,8 @@ public class Data
 
 	public void addNode(Node node, String path, String tab)
 	{
-		nodes.add(new NodeData(path, node.getId(), node.getTranslateX(), node.getTranslateY(), node.getRotate(), tab));
+		Color color = (Color) Global.maker.getBorder((ImageView) node).getStroke();
+		nodes.add(new NodeData(path, node.getId(), node.getTranslateX(), node.getTranslateY(), node.getRotate(), tab, color.getRed(), color.getGreen(), color.getBlue(), color.getOpacity()));
 	}
 	
 	public LinkedList<NodeData> getNodes()
@@ -67,7 +69,6 @@ public class Data
 	
 	private void fillData()
 	{
-		
 		for (int i = 0; i < nodes.size(); i++)
 		{
 			NodeData nodeData = nodes.get(i);

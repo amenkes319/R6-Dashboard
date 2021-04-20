@@ -1,6 +1,6 @@
-package dashboard.java.gestures;
+package dashboard.java.gesture;
 
-import dashboard.java.actions.DrawAction;
+import dashboard.java.action.DrawAction;
 import dashboard.java.global.Global;
 import dashboard.java.undo.UndoCollector;
 import javafx.event.EventHandler;

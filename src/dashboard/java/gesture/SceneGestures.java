@@ -1,7 +1,7 @@
-package dashboard.java.gestures;
+package dashboard.java.gesture;
 
+import dashboard.java.ZoomPane;
 import dashboard.java.global.Global;
-import dashboard.java.zoompane.ZoomPane;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
@@ -134,7 +134,7 @@ public class SceneGestures
 		}
 	};
 
-	public static double clamp(double value, double min, double max)
+	private double clamp(double value, double min, double max)
 	{
 		if (Double.compare(value, min) < 0) return min;
 		if (Double.compare(value, max) > 0) return max;

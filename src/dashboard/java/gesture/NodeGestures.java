@@ -1,12 +1,12 @@
-package dashboard.java.gestures;
+package dashboard.java.gesture;
 
-import dashboard.java.actions.DeleteNodeAction;
-import dashboard.java.actions.MoveNodeAction;
-import dashboard.java.actions.RotateNodeAction;
+import dashboard.java.action.DeleteNodeAction;
+import dashboard.java.action.MoveNodeAction;
+import dashboard.java.action.RotateNodeAction;
 import dashboard.java.global.Global;
 import dashboard.java.undo.UndoCollector;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -52,7 +52,7 @@ public class NodeGestures
 			if (event.getButton() != MouseButton.PRIMARY) return;
 			if (Global.maker.isDeleteSelected()) return;
 
-			Node node = (Node) event.getSource();
+			ImageView node = (ImageView) event.getSource();
 			nodeDragContext.setMouseAnchorX(event.getSceneX());
 			nodeDragContext.setMouseAnchorY(event.getSceneY());
 			nodeDragContext.setTranslateAnchorX(node.getTranslateX());
@@ -61,7 +61,7 @@ public class NodeGestures
 			if (Global.maker.isDragSelected())
 			{
 				moveNodeAction.setOldDragContext(nodeDragContext.copy());
-				moveNodeAction.setNode(node);
+				moveNodeAction.setNode((ImageView) node);
 				moveNodeAction.setMouseEvent(event);
 				moveNodeAction.setScale(Global.maker.getCurrentPane().getScale());
 			}
@@ -83,7 +83,7 @@ public class NodeGestures
 			if (Global.maker.isDragSelected())
 			{
 				moveNodeAction.setScale(Global.maker.getCurrentPane().getScale());
-				moveNodeAction.setNode((Node) event.getSource());
+				moveNodeAction.setNode((ImageView) event.getSource());
 				moveNodeAction.setMouseEvent(event);
 				moveNodeAction.execute();
 			}
@@ -126,7 +126,7 @@ public class NodeGestures
 		{
 			if (event.getButton() != MouseButton.PRIMARY) return;
 
-			Node node = (Node) event.getSource();
+			ImageView node = (ImageView) event.getSource();
 			if (Global.maker.isDragSelected())
 			{
 				nodeDragContext.setMouseAnchorX(event.getSceneX());
@@ -155,7 +155,7 @@ public class NodeGestures
 		{
 			if (Global.maker.isDeleteSelected())
 			{
-				Node node = (Node) event.getSource();
+				ImageView node = (ImageView) event.getSource();
 				deleteNodeAction.setNode(node);
 				deleteNodeAction.execute();
 	

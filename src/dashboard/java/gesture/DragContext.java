@@ -1,4 +1,4 @@
-package dashboard.java.gestures;
+package dashboard.java.gesture;
 
 public class DragContext
 {

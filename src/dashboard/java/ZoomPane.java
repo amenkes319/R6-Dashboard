@@ -1,7 +1,7 @@
-package dashboard.java.zoompane;
+package dashboard.java;
 
-import dashboard.java.actions.DrawAction;
-import dashboard.java.gestures.CanvasGestures;
+import dashboard.java.action.DrawAction;
+import dashboard.java.gesture.CanvasGestures;
 import dashboard.java.global.Global;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

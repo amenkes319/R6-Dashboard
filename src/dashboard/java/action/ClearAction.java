@@ -1,8 +1,8 @@
-package dashboard.java.actions;
+package dashboard.java.action;
 
+import dashboard.java.ZoomPane;
 import dashboard.java.global.Global;
 import dashboard.java.undo.Undoable;
-import dashboard.java.zoompane.ZoomPane;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.ImageView;
 

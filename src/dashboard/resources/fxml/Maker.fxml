@@ -179,6 +179,13 @@
                      </children>
                   </GridPane>
 						<ColorPicker fx:id="colorPicker" minHeight="25.0" prefHeight="25.0" prefWidth="90.0" />
+                  <HBox alignment="CENTER" prefHeight="40.0">
+                     <children>
+                        <Button fx:id="strokeWidthDownBtn" mnemonicParsing="false" prefWidth="25.0" text="-" />
+                        <TextField fx:id="strokeWidthTxtFld" prefHeight="25.0" prefWidth="40.0" />
+                        <Button fx:id="strokeWidthUpBtn" mnemonicParsing="false" text="+" />
+                     </children>
+                  </HBox>
 						<Slider fx:id="lineWidthSlider" blockIncrement="1.0" majorTickUnit="10" max="30.0" min="0" minWidth="200" minorTickCount="9" showTickLabels="true" showTickMarks="true" />
       		            <Slider fx:id="nodeSizeSlider" blockIncrement="0.0" majorTickUnit="4.9" max="5.0" min="0.1" minWidth="200" minorTickCount="4" showTickLabels="true" showTickMarks="true" value="1.1" />
                   <Label text="Selected:" />
