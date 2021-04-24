@@ -1,14 +1,13 @@
 package dashboard.java.action;
 
 import dashboard.java.gesture.DragContext;
-import dashboard.java.global.Global;
 import dashboard.java.undo.Undoable;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
 public class MoveNodeAction implements Action, Undoable
 {
-	private ImageView node;
+	private Node node;
 	private DragContext oldDragContext, newDragContext;
 	private MouseEvent mouseEvent;
 	private double scale;
@@ -27,7 +26,7 @@ public class MoveNodeAction implements Action, Undoable
 		this.scale = moveNodeAction.getScale();
 	}
 	
-	public MoveNodeAction(ImageView node, DragContext oldDragContext, DragContext newDragContext, MouseEvent mouseEvent, double scale)
+	public MoveNodeAction(Node node, DragContext oldDragContext, DragContext newDragContext, MouseEvent mouseEvent, double scale)
 	{
 		this.node = node;
 		this.oldDragContext = oldDragContext;
@@ -36,12 +35,12 @@ public class MoveNodeAction implements Action, Undoable
 		this.scale = scale;
 	}
 
-	public ImageView getNode()
+	public Node getNode()
 	{
 		return node;
 	}
 
-	public void setNode(ImageView node)
+	public void setNode(Node node)
 	{
 		this.node = node;
 	}
@@ -73,8 +72,6 @@ public class MoveNodeAction implements Action, Undoable
 		double y = oldDragContext.getTranslateAnchorY() / scale;
 		node.setTranslateX(x);
 		node.setTranslateY(y);
-		Global.maker.getBorder(node).setTranslateX(x);
-		Global.maker.getBorder(node).setTranslateY(y);
 	}
 
 	@Override
@@ -84,8 +81,6 @@ public class MoveNodeAction implements Action, Undoable
 		double y = newDragContext.getTranslateAnchorY() / scale;
 		node.setTranslateX(x);
 		node.setTranslateY(y);
-		Global.maker.getBorder(node).setTranslateX(x);
-		Global.maker.getBorder(node).setTranslateY(y);
 	}
 	
 	@Override
@@ -101,8 +96,6 @@ public class MoveNodeAction implements Action, Undoable
 		double y = oldDragContext.getTranslateAnchorY() + ((mouseEvent.getSceneY() - oldDragContext.getMouseAnchorY()) / scale);
 		node.setTranslateX(x);
 		node.setTranslateY(y);
-		Global.maker.getBorder(node).setTranslateX(x);
-		Global.maker.getBorder(node).setTranslateY(y);
 	}
 
 	@Override

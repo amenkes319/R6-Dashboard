@@ -16,11 +16,11 @@ import dashboard.java.Map;
 import dashboard.java.ZoomPane;
 import dashboard.java.action.DrawAction;
 import dashboard.java.global.Global;
+import dashboard.java.node.ImageNode;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Tab;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class Data
@@ -58,8 +58,20 @@ public class Data
 
 	public void addNode(Node node, String path, String tab)
 	{
-		Color color = (Color) Global.maker.getBorder((ImageView) node).getStroke();
-		nodes.add(new NodeData(path, node.getId(), node.getTranslateX(), node.getTranslateY(), node.getRotate(), tab, color.getRed(), color.getGreen(), color.getBlue(), color.getOpacity()));
+		if (node instanceof ImageNode)
+		{
+			Color color = (Color) ((ImageNode) node).getBorder().getStroke();
+			nodes.add(new NodeData(path, node.getId(), node.getTranslateX(), node.getTranslateY(), node.getRotate(), tab, color.getRed(), color.getGreen(), color.getBlue(), color.getOpacity()));
+		}
+//		else if (node instanceof ShapeNode)
+//		{
+//			Color color = (Color) ((ShapeNode) node).getBorder().getStroke();
+//			nodes.add(new NodeData(path, node.getId(), node.getTranslateX(), node.getTranslateY(), node.getRotate(), tab, color.getRed(), color.getGreen(), color.getBlue(), color.getOpacity()));
+//		}
+		else
+		{
+			nodes.add(new NodeData(path, node.getId(), node.getTranslateX(), node.getTranslateY(), node.getRotate(), tab));
+		}
 	}
 	
 	public LinkedList<NodeData> getNodes()

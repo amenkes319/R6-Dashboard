@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -24,6 +23,7 @@ import dashboard.java.global.Global;
 import dashboard.java.model.Data;
 import dashboard.java.model.NodeData;
 import dashboard.java.model.RandomString;
+import dashboard.java.node.ImageNode;
 import dashboard.java.undo.UndoCollector;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -38,6 +38,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
@@ -58,7 +59,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -83,9 +83,7 @@ public class MakerController
 	private ClearAction clearAction;
 	private ResizeAction resizeAction;
 	
-	private ImageView selectedNode;
-	
-	private HashMap<ImageView, Rectangle> borderMap;
+	private Node selectedNode;
 	
 	public void show(Map selectedMap)
 	{
@@ -118,8 +116,6 @@ public class MakerController
 		sceneGestures = new SceneGestures();
 		nodeGestures = new NodeGestures();
 		
-		borderMap = new HashMap<>();
-
 		lineWidthSlider.setValue(5.0);
 		lineWidthSlider.valueProperty().addListener((v, oldVal, newVal) -> {
 			for (Tab tab : tabPane.getTabs())
@@ -152,8 +148,6 @@ public class MakerController
 			{
 				selectedNode.setScaleX(newVal.doubleValue());
 				selectedNode.setScaleY(newVal.doubleValue());
-				getBorder(selectedNode).setScaleX(newVal.doubleValue());
-				getBorder(selectedNode).setScaleY(newVal.doubleValue());
 			}
 		});
 
@@ -343,7 +337,7 @@ public class MakerController
 		    }
 		});
 
-		final Enumeration<JarEntry> entries = jar.entries();
+		Enumeration<JarEntry> entries = jar.entries();
 		while (entries.hasMoreElements())
 		{
 			String filePath = entries.nextElement().getName();
@@ -483,13 +477,13 @@ public class MakerController
 	
 	public void addNode(String path)
 	{
-		ImageView imgView = getImageView(path, getCurrentPane().getWidth() / 2, getCurrentPane().getHeight() / 2, new RandomString().nextString(), 0);
+		ImageNode imgNode = addImageNode(path, getCurrentPane().getWidth() / 2, getCurrentPane().getHeight() / 2, new RandomString().nextString(), 0);
 
-		addNodeAction.setImageView(imgView);
+		addNodeAction.setImageNode(imgNode);
 		if (addNodeAction.canExecute())
 		{
 			addNodeAction.execute();
-			Global.data.addNode(imgView, path, getCurrentTab().getText());
+			Global.data.addNode(imgNode, path, getCurrentTab().getText());
 			
 			UndoCollector.INSTANCE.add(addNodeAction);
 			addNodeAction.reset();
@@ -498,7 +492,7 @@ public class MakerController
 	
 	public void addNodeJSON(NodeData nodeData)
 	{
-		ImageView imgView = getImageView(nodeData.getPath(), nodeData.getX(), nodeData.getY(), nodeData.getId(), nodeData.getAngle());
+		ImageNode imgNode = addImageNode(nodeData.getPath(), nodeData.getX(), nodeData.getY(), nodeData.getId(), nodeData.getAngle());
 		
 		Tab currentTab = null;
 		for (Tab tab : Global.maker.getTabPane().getTabs())
@@ -509,44 +503,44 @@ public class MakerController
 				break;
 			}
 		}
-		((ZoomPane) currentTab.getContent()).getChildren().add(imgView);
+		((ZoomPane) currentTab.getContent()).getChildren().add(imgNode);
 	}
 	
-	private ImageView getImageView(String url, double x, double y, String id, double angle)
+	private ImageNode addImageNode(String url, double x, double y, String id, double angle)
 	{
 		Image img = new Image(url);
-		ImageView imgView = new ImageView(img);
+		ImageNode imgNode = new ImageNode(img);
 
 		double imgRatio = img.getWidth() / img.getHeight();
 
-		imgView.setFitHeight(75);
-		imgView.setFitWidth(imgView.getFitHeight() * imgRatio);
-		imgView.setPickOnBounds(true);
-		imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-		imgView.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-		imgView.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
-		imgView.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnMouseClickedEventHandler());
-		imgView.setTranslateX(x);
-		imgView.setTranslateY(y);
-		imgView.setId(id);
-		imgView.setRotate(angle);
+		imgNode.setFitHeight(75);
+		imgNode.setFitWidth(imgNode.getFitHeight() * imgRatio);
+		imgNode.setPickOnBounds(true);
+		imgNode.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+		imgNode.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+		imgNode.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+		imgNode.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnMouseClickedEventHandler());
+		imgNode.setTranslateX(x);
+		imgNode.setTranslateY(y);
+		imgNode.setId(id);
+		imgNode.setRotate(angle);
 		
-		Rectangle rect = new Rectangle(imgView.getFitWidth(), imgView.getFitHeight(), Color.TRANSPARENT);
-		rect.setStroke(Color.BLACK);
-		rect.setStrokeWidth(2.5);
-		rect.setTranslateX(x);
-		rect.setTranslateY(y);
-		rect.setRotate(angle);
+		ColorPicker cp = new ColorPicker();
+		cp.setValue(Color.BLACK);
+		cp.getCustomColors().addAll(Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.PURPLE, Color.MAGENTA);
+	    MenuItem menu = new MenuItem(null, cp);
+	    menu.setOnAction(e -> imgNode.getBorder().setStroke(cp.getValue()));
 
-		borderMap.put(imgView, rect);
+	    ContextMenu contextMenu = new ContextMenu(menu);
+	    imgNode.setOnContextMenuRequested(e -> contextMenu.show(imgNode, e.getScreenX(), e.getScreenY()));
 		
-		return imgView;
+		return imgNode;
 	}
 	
 	public void drawInit()
 	{
 		colorPicker.setValue(Color.BLACK);
-		colorPicker.getCustomColors().addAll(Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.PURPLE);
+		colorPicker.getCustomColors().addAll(Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.PURPLE, Color.MAGENTA);
 		colorPicker.setOnAction(e -> tabPane.getTabs().forEach(tab -> ((ZoomPane) tab.getContent()).getGC().setStroke(colorPicker.getValue())));
 	}
 	
@@ -575,12 +569,7 @@ public class MakerController
 		return deleteRadio.isSelected();
 	}
 	
-	public Rectangle getBorder(ImageView imgView)
-	{
-		return borderMap.get(imgView);
-	}
-	
-	public void setSelectedNode(ImageView selectedNode)
+	public void setSelectedNode(Node selectedNode)
 	{
 		this.selectedNode = selectedNode;
 		if (selectedNode == null)
@@ -591,18 +580,20 @@ public class MakerController
 		else
 		{
 			nodeSizeSlider.setValue(selectedNode.getScaleX());
-			selectedImgView.setImage(selectedNode.getImage());
+			
+			if (selectedNode instanceof ImageNode)
+				selectedImgView.setImage(((ImageNode) selectedNode).getImage());
 		}
 	}
 	
 	public ColorPicker getColorPicker()
 	{
-		return this.colorPicker;
+		return colorPicker;
 	}
 	
 	public Slider getLineWidthSlider()
 	{
-		return this.lineWidthSlider;
+		return lineWidthSlider;
 	}
 	
 	public Map getMap()

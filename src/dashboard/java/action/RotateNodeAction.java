@@ -1,12 +1,11 @@
 package dashboard.java.action;
 
-import dashboard.java.global.Global;
 import dashboard.java.undo.Undoable;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 
 public class RotateNodeAction implements Action, Undoable
 {
-	private ImageView node;
+	private Node node;
 	private double oldTheta, newTheta;
 
 	public RotateNodeAction()
@@ -14,7 +13,7 @@ public class RotateNodeAction implements Action, Undoable
 		reset();
 	}
 	
-	public RotateNodeAction(ImageView node)
+	public RotateNodeAction(Node node)
 	{
 		this.node = node;
 		this.oldTheta = 0;
@@ -28,12 +27,12 @@ public class RotateNodeAction implements Action, Undoable
 		this.newTheta = other.getNewTheta();
 	}
 	
-	public ImageView getNode()
+	public Node getNode()
 	{
 		return node;
 	}
 	
-	public void setNode(ImageView node)
+	public void setNode(Node node)
 	{
 		this.node = node;
 	}
@@ -62,14 +61,12 @@ public class RotateNodeAction implements Action, Undoable
 	public void undo()
 	{
 		node.setRotate(oldTheta);
-		Global.maker.getBorder(node).setRotate(oldTheta);
 	}
 
 	@Override
 	public void redo()
 	{
 		node.setRotate(newTheta);
-		Global.maker.getBorder(node).setRotate(newTheta);
 	}
 
 	@Override
@@ -82,7 +79,6 @@ public class RotateNodeAction implements Action, Undoable
 	public void execute()
 	{
 		node.setRotate(newTheta);
-		Global.maker.getBorder(node).setRotate(newTheta);
 	}
 
 	@Override

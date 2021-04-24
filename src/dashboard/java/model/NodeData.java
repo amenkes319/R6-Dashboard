@@ -6,6 +6,20 @@ public class NodeData
 	private double x, y, angle;
 	private double r, g, b, a;
 
+	public NodeData(String path, String id, double x, double y, double angle, String tab)
+	{
+		this.path = path;
+		this.id = id;
+		this.x = x;
+		this.y = y;
+		this.angle = angle;
+		this.tab = tab;
+		this.r = 0.0;
+		this.g = 0.0;
+		this.b = 0.0;
+		this.a = 0.0;
+	}
+
 	public NodeData(String path, String id, double x, double y, double angle, String tab, double r, double g, double b, double a)
 	{
 		this.path = path;
@@ -14,6 +28,10 @@ public class NodeData
 		this.y = y;
 		this.angle = angle;
 		this.tab = tab;
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = a;
 	}
 
 	public String getPath()

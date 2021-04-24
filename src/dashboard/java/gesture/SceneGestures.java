@@ -2,9 +2,11 @@ package dashboard.java.gesture;
 
 import dashboard.java.ZoomPane;
 import dashboard.java.global.Global;
+import dashboard.java.node.ImageNode;
 import javafx.event.EventHandler;
+import javafx.event.EventTarget;
 import javafx.scene.Cursor;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -45,21 +47,29 @@ public class SceneGestures
 	{
 		return onScrollEventHandler;
 	}
+	
+	private boolean bPrimaryMouseDown, bMiddleMouseDown;
 
 	private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>()
 	{
 		public void handle(MouseEvent event)
 		{
-			if (event.getButton() != MouseButton.MIDDLE) return;
-			
-			Global.primaryStage.getScene().setCursor(Cursor.MOVE);
-			sceneDragContext.setMouseAnchorX(event.getSceneX());
-			sceneDragContext.setMouseAnchorY(event.getSceneY());
-
-			ZoomPane pane = Global.maker.getCurrentPane();
-			
-			sceneDragContext.setTranslateAnchorX(pane.getTranslateX());
-			sceneDragContext.setTranslateAnchorY(pane.getTranslateY());
+			if (event.getButton() == MouseButton.PRIMARY)
+			{
+				bPrimaryMouseDown = true;
+			}
+			else if (event.getButton() == MouseButton.MIDDLE)
+			{
+				bMiddleMouseDown = true;
+				Global.primaryStage.getScene().setCursor(Cursor.MOVE);
+				sceneDragContext.setMouseAnchorX(event.getSceneX());
+				sceneDragContext.setMouseAnchorY(event.getSceneY());
+	
+				ZoomPane pane = Global.maker.getCurrentPane();
+				
+				sceneDragContext.setTranslateAnchorX(pane.getTranslateX());
+				sceneDragContext.setTranslateAnchorY(pane.getTranslateY());
+			}
 		}
 	};
 
@@ -82,10 +92,15 @@ public class SceneGestures
 	{
 		public void handle(MouseEvent event)
 		{
-			if (event.getButton() != MouseButton.MIDDLE)
-				return;
-
-			Global.primaryStage.getScene().setCursor(Cursor.DEFAULT);
+			if (event.getButton() == MouseButton.PRIMARY)
+			{
+				bPrimaryMouseDown = false;
+			}
+			else if (event.getButton() == MouseButton.MIDDLE)
+			{
+				bMiddleMouseDown = false;
+				Global.primaryStage.getScene().setCursor(Cursor.DEFAULT);
+			}
 		}
 	};
 	
@@ -96,8 +111,9 @@ public class SceneGestures
 		{
 			if (Global.maker.isDragSelected())
 			{
-				if (event.getTarget() instanceof ImageView)
-					Global.maker.setSelectedNode((ImageView) event.getTarget());
+				EventTarget target = event.getTarget();
+				if (target instanceof ImageNode /* || target instanceof ShapeNode*/)
+					Global.maker.setSelectedNode((Node) event.getTarget());
 				else
 					Global.maker.setSelectedNode(null);
 			}
@@ -109,6 +125,8 @@ public class SceneGestures
 		@Override
 		public void handle(ScrollEvent event)
 		{
+			if (bPrimaryMouseDown || bMiddleMouseDown) return;
+			
 			ZoomPane pane = Global.maker.getCurrentPane();
 
 			double delta = 1.2;

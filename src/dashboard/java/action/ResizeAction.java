@@ -1,12 +1,11 @@
 package dashboard.java.action;
 
-import dashboard.java.global.Global;
 import dashboard.java.undo.Undoable;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 
 public class ResizeAction implements Action, Undoable
 {
-	private ImageView node;
+	private Node node;
 	private double oldScale, newScale;
 
 	public ResizeAction()
@@ -26,8 +25,6 @@ public class ResizeAction implements Action, Undoable
 	{
 		node.setScaleX(oldScale);
 		node.setScaleY(oldScale);
-		Global.maker.getBorder(node).setScaleX(oldScale);
-		Global.maker.getBorder(node).setScaleY(oldScale);
 	}
 
 	@Override
@@ -35,8 +32,6 @@ public class ResizeAction implements Action, Undoable
 	{
 		node.setScaleX(newScale);
 		node.setScaleY(newScale);
-		Global.maker.getBorder(node).setScaleX(newScale);
-		Global.maker.getBorder(node).setScaleY(newScale);
 	}
 
 	@Override
@@ -50,8 +45,6 @@ public class ResizeAction implements Action, Undoable
 	{
 		node.setScaleX(newScale);
 		node.setScaleY(newScale);
-		Global.maker.getBorder(node).setScaleX(newScale);
-		Global.maker.getBorder(node).setScaleY(newScale);
 	}
 
 	@Override
@@ -68,12 +61,12 @@ public class ResizeAction implements Action, Undoable
 		newScale = 1;
 	}
 
-	public ImageView getNode()
+	public Node getNode()
 	{
 		return node;
 	}
 
-	public void setNode(ImageView node)
+	public void setNode(Node node)
 	{
 		this.node = node;
 	}

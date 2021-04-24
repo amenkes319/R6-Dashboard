@@ -6,7 +6,7 @@ import dashboard.java.action.RotateNodeAction;
 import dashboard.java.global.Global;
 import dashboard.java.undo.UndoCollector;
 import javafx.event.EventHandler;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -52,7 +52,7 @@ public class NodeGestures
 			if (event.getButton() != MouseButton.PRIMARY) return;
 			if (Global.maker.isDeleteSelected()) return;
 
-			ImageView node = (ImageView) event.getSource();
+			Node node = (Node) event.getSource();
 			nodeDragContext.setMouseAnchorX(event.getSceneX());
 			nodeDragContext.setMouseAnchorY(event.getSceneY());
 			nodeDragContext.setTranslateAnchorX(node.getTranslateX());
@@ -61,7 +61,7 @@ public class NodeGestures
 			if (Global.maker.isDragSelected())
 			{
 				moveNodeAction.setOldDragContext(nodeDragContext.copy());
-				moveNodeAction.setNode((ImageView) node);
+				moveNodeAction.setNode(node);
 				moveNodeAction.setMouseEvent(event);
 				moveNodeAction.setScale(Global.maker.getCurrentPane().getScale());
 			}
@@ -83,7 +83,7 @@ public class NodeGestures
 			if (Global.maker.isDragSelected())
 			{
 				moveNodeAction.setScale(Global.maker.getCurrentPane().getScale());
-				moveNodeAction.setNode((ImageView) event.getSource());
+				moveNodeAction.setNode((Node) event.getSource());
 				moveNodeAction.setMouseEvent(event);
 				moveNodeAction.execute();
 			}
@@ -126,7 +126,7 @@ public class NodeGestures
 		{
 			if (event.getButton() != MouseButton.PRIMARY) return;
 
-			ImageView node = (ImageView) event.getSource();
+			Node node = (Node) event.getSource();
 			if (Global.maker.isDragSelected())
 			{
 				nodeDragContext.setMouseAnchorX(event.getSceneX());
@@ -155,7 +155,7 @@ public class NodeGestures
 		{
 			if (Global.maker.isDeleteSelected())
 			{
-				ImageView node = (ImageView) event.getSource();
+				Node node = (Node) event.getSource();
 				deleteNodeAction.setNode(node);
 				deleteNodeAction.execute();
 	

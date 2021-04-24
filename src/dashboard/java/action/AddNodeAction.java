@@ -1,12 +1,12 @@
 package dashboard.java.action;
 
 import dashboard.java.global.Global;
+import dashboard.java.node.ImageNode;
 import dashboard.java.undo.Undoable;
-import javafx.scene.image.ImageView;
 
 public class AddNodeAction implements Action, Undoable
 {
-	private ImageView imgView;
+	private ImageNode imgNode;
 	
 	public AddNodeAction()
 	{
@@ -15,28 +15,28 @@ public class AddNodeAction implements Action, Undoable
 	
 	public AddNodeAction(AddNodeAction addNodeAction)
 	{
-		this.imgView = addNodeAction.getImageView();
+		this.imgNode = addNodeAction.getImageNode();
 	}
 
-	public AddNodeAction(ImageView imgView)
+	public AddNodeAction(ImageNode imgNode)
 	{
-		this.imgView = imgView;
+		this.imgNode = imgNode;
 	}
 
-	public ImageView getImageView()
+	public ImageNode getImageNode()
 	{
-		return imgView;
+		return imgNode;
 	}
 
-	public void setImageView(ImageView imgView)
+	public void setImageNode(ImageNode imgNode)
 	{
-		this.imgView = imgView;
+		this.imgNode = imgNode;
 	}
 
 	@Override
 	public void undo()
 	{
-		Global.maker.getCurrentPane().getChildren().removeAll(Global.maker.getBorder(imgView), imgView);
+		Global.maker.getCurrentPane().getChildren().removeAll(imgNode.getBorder(), imgNode);
 	}
 
 	@Override
@@ -54,18 +54,18 @@ public class AddNodeAction implements Action, Undoable
 	@Override
 	public void execute()
 	{
-		Global.maker.getCurrentPane().getChildren().addAll(Global.maker.getBorder(imgView), imgView);
+		Global.maker.getCurrentPane().getChildren().addAll(imgNode.getBorder(), imgNode);
 	}
 
 	@Override
 	public boolean canExecute()
 	{
-		return imgView != null;
+		return imgNode != null;
 	}
 
 	@Override
 	public void reset()
 	{
-		imgView = null;
+		imgNode = null;
 	}
 }
