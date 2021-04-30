@@ -10,8 +10,8 @@ public class Global
 {
 	public static Stage primaryStage;
 	
-	public static SelectionController selection = new SelectionController();
-	public static MakerController maker = new MakerController();
-	public static SettingsController settings = new SettingsController();
-	public static Data data = new Data();
+	public final static SelectionController selection = new SelectionController();
+	public final static MakerController maker = new MakerController();
+	public final static SettingsController settings = new SettingsController();
+	public final static Data data = new Data();
 }

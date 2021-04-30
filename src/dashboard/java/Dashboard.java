@@ -9,7 +9,7 @@ public class Dashboard extends Application
 	public void start(Stage primaryStage) 
 	{
 		Global.primaryStage = primaryStage;
-        Global.primaryStage.setTitle("R6 Dashboard - v0.3.0.3");
+        Global.primaryStage.setTitle("R6 Dashboard - v0.3.0");
 		Global.selection.show();
 	}
 	
